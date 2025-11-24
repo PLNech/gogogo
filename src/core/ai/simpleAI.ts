@@ -119,8 +119,8 @@ function scoreMove(board: Board, pos: Position, player: 'black' | 'white', confi
   // Master players spread out, don't create heavy blocks
   if (config.level >= 4 && isOverlyDense(board, pos, player, config.level)) {
     // Level 4: Large penalty (-600)
-    // Level 5: Massive penalty (-2000, increased to override corner bonuses)
-    const densityPenalty = config.level >= 5 ? -2000 : -600
+    // Level 5: Massive penalty (-3000, must override all bonuses including invasion/corner)
+    const densityPenalty = config.level >= 5 ? -3000 : -600
     score += densityPenalty
   }
 

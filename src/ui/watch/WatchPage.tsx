@@ -79,11 +79,13 @@ export function WatchPage() {
 
   // Update configs when levels change
   useEffect(() => {
-    setBlackConfig(AI_PRESETS[blackLevel])
+    const config = AI_PRESETS[blackLevel]
+    if (config) setBlackConfig(config)
   }, [blackLevel])
 
   useEffect(() => {
-    setWhiteConfig(AI_PRESETS[whiteLevel])
+    const config = AI_PRESETS[whiteLevel]
+    if (config) setWhiteConfig(config)
   }, [whiteLevel])
 
   // Auto-play logic
