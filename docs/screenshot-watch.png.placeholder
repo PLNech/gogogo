@@ -1,0 +1,17 @@
+PLACEHOLDER FOR SCREENSHOT
+
+This file should be replaced with a screenshot of the /watch page showing:
+- A 19x19 board with an ongoing AI vs AI match
+- Both AIs at master level (Level 5)
+- Territory visualization enabled (gradient shading)
+- Win probability graph showing the game progression
+- Last completed games section visible
+
+To capture:
+1. Navigate to: http://localhost:5173/watch?size=19&black=5&white=5&speed=500
+2. Let the game play for 30-50 moves
+3. Take a screenshot showing the full page
+4. Save as: docs/screenshot-watch.png
+5. Delete this placeholder file
+
+Recommended dimensions: 1920x1080 or similar widescreen aspect ratio
