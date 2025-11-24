@@ -1,0 +1,105 @@
+.board-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.debug-controls {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.debug-controls h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+}
+
+.debug-controls > div {
+  margin: 0.5rem 0;
+}
+
+.debug-controls button {
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.debug-controls button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.debug-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.game-info {
+  display: flex;
+  gap: 2rem;
+  font-size: 1.1rem;
+}
+
+.game-info > div {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.board-grid {
+  display: grid;
+  gap: 0;
+  background: #dcb35c;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.board-cell {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid #8b7355;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-cell:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.board-cell.territory-black {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.board-cell.territory-white {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.stone {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.stone.black {
+  background: radial-gradient(circle at 30% 30%, #4a4a4a, #000);
+}
+
+.stone.white {
+  background: radial-gradient(circle at 30% 30%, #fff, #d0d0d0);
+}
