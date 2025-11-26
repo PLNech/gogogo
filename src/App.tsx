@@ -3,20 +3,19 @@ import { BoardView } from './ui/board/BoardView'
 import { CurrencyDisplay } from './ui/game/CurrencyDisplay'
 import { Milestone1 } from './ui/game/Milestone1'
 import { Milestone2 } from './ui/game/Milestone2'
-import { UpgradesPanel } from './ui/game/UpgradesPanel'
 import { WatchPage } from './ui/watch/WatchPage'
 import { IdlePanel } from './ui/idle/IdlePanel'
 import { useGameStore } from './state/gameStore'
 import { getCurrentMoveCount, getUnlockedBoardSizes } from './domain/upgrades/upgrades'
 import { useUpgradeStore } from './state/upgradeStore'
 
-type Tab = 'game' | 'upgrades' | 'idle' | 'watch' | 'debug'
+type Tab = 'game' | 'idle' | 'watch' | 'debug'
 
 function App() {
   // Initialize tab from URL path
   const getInitialTab = (): Tab => {
-    const path = window.location.pathname.slice(1) // Remove leading '/'
-    if (path === 'watch' || path === 'upgrades' || path === 'idle' || path === 'debug') {
+    const path = window.location.pathname.replace('/gogogo/', '').replace('/gogogo', '').replace('/', '')
+    if (path === 'watch' || path === 'idle' || path === 'debug') {
       return path as Tab
     }
     return 'game'
@@ -29,8 +28,9 @@ function App() {
   // Sync URL with tab state
   useEffect(() => {
     const path = tab === 'game' ? '/' : `/${tab}`
-    if (window.location.pathname !== path) {
-      window.history.pushState(null, '', path + window.location.search)
+    const fullPath = import.meta.env.BASE_URL + path.slice(1)
+    if (window.location.pathname !== fullPath) {
+      window.history.pushState(null, '', fullPath + window.location.search)
     }
   }, [tab])
 
@@ -48,12 +48,6 @@ function App() {
           className={tab === 'game' ? 'active' : ''}
         >
           Game
-        </button>
-        <button
-          onClick={() => setTab('upgrades')}
-          className={tab === 'upgrades' ? 'active' : ''}
-        >
-          Upgrades
         </button>
         <button
           onClick={() => setTab('idle')}
@@ -84,8 +78,6 @@ function App() {
         <WatchPage />
       ) : tab === 'idle' ? (
         <IdlePanel />
-      ) : tab === 'upgrades' ? (
-        <UpgradesPanel />
       ) : (
         <div>
           {/* Milestone 1: Intro and Capture */}

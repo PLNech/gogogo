@@ -114,11 +114,24 @@ export function BoardView({ initialSize = 3, showDebug = false, aiEnabled = fals
     const blackScore = territory.black + captures.black
     const whiteScore = territory.white + captures.white
 
-    // Award stones based on total score (more generous!)
-    const stonesToEarn = blackScore + whiteScore
+    // Reward system:
+    // - Draw: 1 stone
+    // - Victory: 1 stone + 1 per point of victory margin
+    let stonesToEarn = 0
+    if (blackScore === whiteScore) {
+      // Draw
+      stonesToEarn = 1
+    } else if (blackScore > whiteScore) {
+      // Black wins (player)
+      const margin = blackScore - whiteScore
+      stonesToEarn = 1 + margin
+    } else {
+      // White wins (AI) - still give 1 stone for playing
+      stonesToEarn = 1
+    }
 
     console.log(`🎮 Game Over! Black: ${blackScore}, White: ${whiteScore}`)
-    console.log(`💰 Earning ${stonesToEarn} stones!`)
+    console.log(`💰 Earning ${stonesToEarn} stones! (${blackScore > whiteScore ? 'Victory!' : blackScore === whiteScore ? 'Draw' : 'Defeat'})`)
 
     earnStones(stonesToEarn)
 
