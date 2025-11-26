@@ -114,11 +114,15 @@ export function BoardView({ initialSize = 3, showDebug = false, aiEnabled = fals
     const blackScore = territory.black + captures.black
     const whiteScore = territory.white + captures.white
 
-    // Award stones based on score
-    const stonesToEarn = Math.floor(blackScore + whiteScore / 2)
+    // Award stones based on total score (more generous!)
+    const stonesToEarn = blackScore + whiteScore
+
+    console.log(`🎮 Game Over! Black: ${blackScore}, White: ${whiteScore}`)
+    console.log(`💰 Earning ${stonesToEarn} stones!`)
+
     earnStones(stonesToEarn)
 
-    console.log(`Game Over! Black: ${blackScore}, White: ${whiteScore}, Earned: ${stonesToEarn} stones`)
+    console.log(`✅ earnStones(${stonesToEarn}) called`)
   }
 
   const handleNewGame = () => {
