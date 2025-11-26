@@ -4,7 +4,7 @@ import { getAIMove } from '../../core/ai/simpleAI'
 import { useCurrencyStore } from '../../state/currencyStore'
 import { useGameStore } from '../../state/gameStore'
 import { useUpgradeStore } from '../../state/upgradeStore'
-import { getCurrentMoveCount } from '../../domain/upgrades/upgrades'
+import { getCurrentMoveCount, getUnlockedBoardSizes } from '../../domain/upgrades/upgrades'
 import type { Board } from '../../core/go/types'
 import './BoardView.css'
 
@@ -31,6 +31,7 @@ export function BoardView({ initialSize = 3, showDebug = false, aiEnabled = fals
   const resetGame = useGameStore((state) => state.reset)
   const purchased = useUpgradeStore((state) => state.purchased)
   const maxMoves = getCurrentMoveCount(purchased)
+  const unlockedSizes = getUnlockedBoardSizes(purchased)
 
   // AI move effect
   useEffect(() => {
@@ -162,7 +163,7 @@ export function BoardView({ initialSize = 3, showDebug = false, aiEnabled = fals
           <h3>Debug Controls</h3>
           <div>
             <label>Board Size: </label>
-            {[1, 3, 5, 7, 9].map(size => (
+            {unlockedSizes.map(size => (
               <button
                 key={size}
                 onClick={() => handleSizeChange(size)}
