@@ -1,10 +1,12 @@
+import { useMemo } from 'react'
 import { useUpgradeStore } from '../../state/upgradeStore'
 import { useCurrencyStore } from '../../state/currencyStore'
-import { UPGRADES } from '../../domain/upgrades/upgrades'
+import { UPGRADES, getAvailableUpgrades } from '../../domain/upgrades/upgrades'
 import './UpgradesPanel.css'
 
 export function UpgradesPanel() {
-  const availableIds = useUpgradeStore((state) => state.getAvailable())
+  const purchased = useUpgradeStore((state) => state.purchased)
+  const availableIds = useMemo(() => getAvailableUpgrades(purchased), [purchased])
   const purchaseUpgrade = useUpgradeStore((state) => state.purchaseUpgrade)
   const stones = useCurrencyStore((state) => state.stones)
   const canAfford = useCurrencyStore((state) => state.canAfford)
