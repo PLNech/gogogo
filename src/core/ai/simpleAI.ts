@@ -1,18 +1,20 @@
 import type { Board, Position, Stone } from '../go/types'
-import { getStone, placeStone, captureStones, getGroup, countLiberties, countTerritory } from '../go/board'
+import { getStone, placeStone, captureStones, countTerritory } from '../go/board'
 import type { AIConfig } from './types'
 import { AI_PRESETS } from './types'
-import { evaluateInfluence, evaluateTerritorialSecurity, estimateScore, evaluateGroupHealth, isFillingOwnTerritory, evaluateConnection, isOnBoundary, isOverlyDense, findOpponentGroups, evaluateAttackValue, evaluateCornerWallControl, evaluateInvasionReduction, evaluateReduction } from './evaluation'
-import { getOpeningMoves, evaluateJoseki, evaluateChineseOpening } from './openings'
-import { evaluateBasicInstinct } from './basicInstinct'
-import { detectLadder, isLadderBreaker } from './ladder'
-import { evaluateShapes } from './shapes'
+import { GoMCTS } from './mcts'
+import { estimateScore } from './evaluation'
 
 export interface AIDecision {
   action: 'move' | 'pass'
   position?: Position
   confidence: number
   score: number
+  mctsData?: {
+    bestMove?: Position
+    winRate?: number
+    visits?: number
+  }
 }
 
 export function getAIMove(board: Board, player: 'black' | 'white', captures: { black: number; white: number } = { black: 0, white: 0 }, config?: Partial<AIConfig>, moveCount: number = 0): Position | null {
@@ -22,68 +24,31 @@ export function getAIMove(board: Board, player: 'black' | 'white', captures: { b
 
 export function getAIDecision(board: Board, player: 'black' | 'white', captures: { black: number; white: number } = { black: 0, white: 0 }, config?: Partial<AIConfig>, moveCount: number = 0): AIDecision {
   const fullConfig = { ...AI_PRESETS[2], ...config }
-  const emptyPositions = getEmptyPositions(board)
+
+  // Use MCTS for better decision making
+  const mcts = new GoMCTS(fullConfig, 500, 50); // 500 iterations, 50ms max time
+  const mctsResult = mcts.search(board, player, moveCount);
 
   // Estimate current score
   const currentScore = estimateScore(board, captures, player)
 
   // If no empty positions, must pass
+  const emptyPositions = getEmptyPositions(board)
   if (emptyPositions.length === 0) {
     return { action: 'pass', confidence: 1.0, score: currentScore }
   }
 
-  // Opening strategy for higher levels (first 6 moves)
-  if (fullConfig.level >= 3 && moveCount < 6) {
-    const openingMoves = getOpeningMoves(board, moveCount, fullConfig.level)
-    if (openingMoves.length > 0) {
-      // Prefer opening moves with some randomness
-      const move = openingMoves[Math.floor(Math.random() * Math.min(openingMoves.length, 3))]
-      return {
-        action: 'move',
-        position: move!,
-        confidence: 0.8,
-        score: currentScore
-      }
-    }
-  }
-
-  // Score each position
-  const scoredMoves = emptyPositions.map(pos => ({
-    pos,
-    score: scoreMove(board, pos, player, fullConfig, captures, moveCount)
-  }))
-
-  // Filter out self-capture moves (negative score)
-  const validMoves = scoredMoves.filter(m => m.score >= 0)
-
-  // If no valid moves, pass
-  if (validMoves.length === 0) {
-    return { action: 'pass', confidence: 0.8, score: currentScore }
-  }
-
-  // Sort by score descending
-  validMoves.sort((a, b) => b.score - a.score)
-  const bestMove = validMoves[0]!
-
-  // Decide whether to pass or play
-  // Pass if: winning by a lot and no move improves position significantly
-  const passingThreshold = fullConfig.level >= 3 ? 5 : 10
-
-  if (currentScore > passingThreshold && bestMove.score < 5) {
-    // Winning and no good moves -> pass
-    return { action: 'pass', confidence: 0.7, score: currentScore }
-  }
-
-  // Add randomness based on config
-  const randomnessFactor = Math.max(1, Math.floor(validMoves.length * fullConfig.randomness))
-  const topMoves = validMoves.slice(0, Math.max(1, randomnessFactor))
-  const chosen = topMoves[Math.floor(Math.random() * topMoves.length)]!
-
+  // Return MCTS-based decision
   return {
     action: 'move',
-    position: chosen.pos,
-    confidence: 0.5 + (chosen.score / (bestMove.score + 1)) * 0.5,
-    score: currentScore
+    position: mctsResult.position,
+    confidence: Math.min(1.0, mctsResult.winRate * 2), // Normalize confidence
+    score: currentScore,
+    mctsData: {
+      bestMove: mctsResult.position,
+      winRate: mctsResult.winRate,
+      visits: mctsResult.visits
+    }
   }
 }
 

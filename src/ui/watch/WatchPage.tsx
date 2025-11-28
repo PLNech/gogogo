@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { createBoard, placeStone, captureStones, countTerritory, getStone, getTerritoryMap } from '../../core/go/board'
-import { getAIMove } from '../../core/ai/simpleAI'
+import { getAIMove, getAIDecision } from '../../core/ai/simpleAI'
 import { AI_PRESETS } from '../../core/ai/types'
 import { useAIStatsStore } from '../../state/aiStatsStore'
 import { estimateScore } from '../../core/ai/evaluation'
@@ -15,6 +15,12 @@ interface MoveHistory {
   blackScore: number
   whiteScore: number
   blackWinProb: number
+  movePosition: { row: number; col: number } | null
+  mctsData?: {
+    bestMove?: { row: number; col: number }
+    winRate?: number
+    visits?: number
+  }
 }
 
 export function WatchPage() {
@@ -98,6 +104,7 @@ export function WatchPage() {
     timeoutRef.current = setTimeout(() => {
       // Check max moves (if enabled)
       if (maxMovesEnabled && moveCount >= maxMoves) {
+        console.log('[DEBUG] Max moves reached:', moveCount, '>', maxMoves);
         endGame()
         return
       }
@@ -105,16 +112,57 @@ export function WatchPage() {
       const config = currentPlayer === 'black' ? blackConfig : whiteConfig
       const aiMovePos = getAIMove(board, currentPlayer, captures, config, moveCount)
 
+      console.log(`[DEBUG] AI move for ${currentPlayer}:`, {
+        moveCount,
+        currentPlayer,
+        aiMovePos,
+        boardSize: board.size,
+        moveHistoryLength: moveHistory.length
+      });
+
       if (!aiMovePos) {
-        // AI decided to pass - game over (simplified end game)
-        endGame()
-        return
+        // AI decided to pass - check if this is a proper game over condition
+        console.log('[DEBUG] AI decided to pass for', currentPlayer);
+
+        // In Go, game ends when both players pass consecutively
+        // But we should only end the game if we've seen two passes in a row
+        // This means we need to check if the last two moves were passes from different players
+
+        // If we don't have enough history to determine consecutive passes, just continue
+        if (moveHistory.length < 1) {
+          console.log('[DEBUG] Not enough history to determine pass pattern, continuing game');
+          setCurrentPlayer(currentPlayer === 'black' ? 'white' : 'black')
+          return;
+        }
+
+        // Check if this is a proper pass situation
+        // We should only end the game if BOTH players have passed consecutively
+        // This means the previous move was by the other player, and they also passed
+        if (moveHistory.length >= 1) {
+          const lastMove = moveHistory[moveHistory.length - 1];
+
+          // If the last move was by the other player and it was also a pass (no move position)
+          // Then we have two consecutive passes and should end the game
+          if (lastMove.player === (currentPlayer === 'black' ? 'white' : 'black') &&
+              !lastMove.movePosition) {
+            console.log('[DEBUG] Two consecutive passes detected - ending game');
+            endGame();
+            return;
+          }
+        }
+
+        // If we reach here, it's just a single pass, not the end of game
+        // Continue with the game by switching player
+        console.log('[DEBUG] Single pass detected, continuing game');
+        setCurrentPlayer(currentPlayer === 'black' ? 'white' : 'black')
+        return;
       }
 
       // Ko rule: pass previous board to placeStone
       const newBoard = placeStone(board, aiMovePos.row, aiMovePos.col, currentPlayer, previousBoard)
       if (!newBoard) {
         // Invalid move (including Ko violation), skip turn
+        console.log('[DEBUG] Invalid move (Ko or overlap) for', currentPlayer, 'at', aiMovePos.row, aiMovePos.col);
         setCurrentPlayer(currentPlayer === 'black' ? 'white' : 'black')
         return
       }
@@ -143,12 +191,27 @@ export function WatchPage() {
       // Convert score difference to win probability (sigmoid-like)
       const blackWinProb = 1 / (1 + Math.exp(-scoreDiff / 10))
 
+      console.log('[DEBUG] Move recorded:', {
+        moveNumber: moveCount + 1,
+        player: currentPlayer,
+        blackScore,
+        whiteScore,
+        blackWinProb: blackWinProb * 100,
+        captured,
+        boardState: {
+          size: finalBoard.size,
+          stones: finalBoard.stones.flat().filter(Boolean).length
+        }
+      });
+
       setMoveHistory(prev => [...prev, {
         moveNumber: moveCount + 1,
         player: currentPlayer,
         blackScore,
         whiteScore,
-        blackWinProb: blackWinProb * 100
+        blackWinProb: blackWinProb * 100,
+        movePosition: aiMovePos || null,
+        mctsData: aiDecision.mctsData
       }])
     }, moveSpeed)
 
@@ -158,11 +221,24 @@ export function WatchPage() {
   }, [isPlaying, gameOver, board, currentPlayer, moveCount, moveSpeed, maxMoves, blackConfig, whiteConfig])
 
   const endGame = () => {
+    console.log('[DEBUG] Ending game with move count:', moveCount);
+
     // Calculate final scores
     const territory = countTerritory(board)
     const blackScore = territory.black + captures.black
     const whiteScore = territory.white + captures.white
     const winner = blackScore > whiteScore ? 'black' : blackScore < whiteScore ? 'white' : 'draw'
+
+    console.log('[DEBUG] Final game state:', {
+      blackScore,
+      whiteScore,
+      winner,
+      territory,
+      captures,
+      moveCount,
+      boardSize: board.size,
+      stonesOnBoard: board.stones.flat().filter(Boolean).length
+    });
 
     // Save final board to completed boards (keep last 5)
     setCompletedBoards(prev => {
@@ -531,6 +607,47 @@ export function WatchPage() {
                   <span>⚫ Black favored</span>
                   <span>50%</span>
                   <span>⚪ White favored</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* AI Decision Visibility Section */}
+          {moveHistory.length > 0 && (
+            <div className="ai-decision-section">
+              <h3>AI Decision Making</h3>
+              <div className="decision-info">
+                <div className="decision-stats">
+                  <div><strong>Latest Move:</strong> {moveHistory[moveHistory.length - 1].movePosition ?
+                    `(${moveHistory[moveHistory.length - 1].movePosition.row}, ${moveHistory[moveHistory.length - 1].movePosition.col})` : 'Pass'}
+                  </div>
+                  <div><strong>MCTS Visits:</strong> {moveHistory[moveHistory.length - 1].mctsData?.visits || 0}</div>
+                  <div><strong>Win Rate:</strong> {(moveHistory[moveHistory.length - 1].mctsData?.winRate ?
+                    (moveHistory[moveHistory.length - 1].mctsData.winRate * 100).toFixed(1) : '0.0')}%</div>
+                </div>
+
+                {moveHistory[moveHistory.length - 1].mctsData?.bestMove && (
+                  <div className="best-move-indicator">
+                    <strong>Best Move:</strong> ({moveHistory[moveHistory.length - 1].mctsData.bestMove.row},
+                    {moveHistory[moveHistory.length - 1].mctsData.bestMove.col})
+                  </div>
+                )}
+              </div>
+
+              <div className="mcts-analysis">
+                <h4>MCTS Analysis</h4>
+                <div className="analysis-details">
+                  <div className="analysis-item">
+                    <strong>Search Depth:</strong> 500 iterations
+                  </div>
+                  <div className="analysis-item">
+                    <strong>Time Limit:</strong> 50ms
+                  </div>
+                  <div className="analysis-item">
+                    <strong>Confidence:</strong> {moveHistory[moveHistory.length - 1].mctsData?.winRate ?
+                      (moveHistory[moveHistory.length - 1].mctsData.winRate * 2).toFixed(2) : '0.00'}
+                      (normalized)
+                  </div>
                 </div>
               </div>
             </div>
