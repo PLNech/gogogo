@@ -110,7 +110,10 @@ def main():
     # Model
     if args.resume:
         model, start_step = load_checkpoint(args.resume, config)
+        # Update config from loaded model
+        config = model.config
         print(f"Resumed from {args.resume} at step {start_step}")
+        print(f"Using checkpoint config: {config.num_blocks} blocks, {config.num_filters} filters")
     else:
         model = create_model(config)
         start_step = 0
@@ -129,8 +132,8 @@ def main():
     # Logging
     writer = SummaryWriter('logs')
 
-    # Best model for evaluation
-    best_model = create_model(config)
+    # Best model for evaluation - use same config as loaded model
+    best_model = GoNet(config).to(config.device)
     best_model.load_state_dict(model.state_dict())
 
     global_step = start_step
