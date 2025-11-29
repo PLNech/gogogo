@@ -77,12 +77,12 @@ export const opening_44_33 = (): Board => parseAsciiBoard(`
 
 /**
  * Simple capture: Black in atari
- * White to play and capture
+ * White to play and capture at (2,1)
  */
 export const atari_simple = (): Board => setupPosition([
-  ['.', '.', '.'],
-  ['.', 'X', '.'],
-  ['O', 'O', '.']
+  ['O', 'O', '.'],
+  ['O', 'X', 'O'],
+  ['.', '.', '.']
 ])
 
 /**
