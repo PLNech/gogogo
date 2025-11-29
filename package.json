@@ -15,7 +15,9 @@
     "deploy": "npm run build && node deploy.js",
     "train": "node runSelfPlayTraining.js",
     "demo": "node demoAgenticLoop.js",
-    "blog": "npx http-server blog -p 3001 -o"
+    "blog": "npx http-server blog -p 3001 -o",
+    "visualize": "tsx src/cli/visualize.ts",
+    "viz-python": "python3 scripts/visualize_policy.py"
   },
   "dependencies": {
     "beautiful-skill-tree": "^1.7.1",

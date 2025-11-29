@@ -60,6 +60,8 @@ Not all groups are equal.
 Corner groups, strong. Eyes, stronger.
 Liberties matter. Position matters.
 
+![Group Strength](../images/group_strength.png)
+
 ```typescript
 strength = liberties * 0.4
          + eyes * 0.2

@@ -70,6 +70,15 @@ Eight passes. Eight planes. One position.
 
 ---
 
+## Visual Representation
+
+![Liberty Planes](../images/liberty_planes.png)
+
+Each plane captures stones with specific liberty counts.
+The network sees all layers simultaneously.
+
+---
+
 ## Tests Green
 
 All 10 feature extraction tests pass.
