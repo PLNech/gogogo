@@ -83,8 +83,48 @@ GoGoGo is an idle/incremental game centered around the ancient game of Go (Baduk
 
 ## Development Methodology
 
-### CURRENT FOCUS: V1 Go AI (Single Difficulty Level)
-**Goal: Build a competent Go AI that doesn't suck**
+### CURRENT FOCUS: Neural Network Go AI Training
+**Goal: Train AlphaZero-style neural network AI using self-play**
+
+**CRITICAL: Follow PLAN.md for all neural training work**
+- PLAN.md contains the detailed implementation roadmap
+- Update PLAN.md status as work progresses
+- All training decisions documented there
+
+**Two Modes:**
+1. **Training Mode** (Developer): Self-play → train → checkpoint → evaluate → repeat
+2. **Playing Mode** (Users): Pre-trained models exported to TensorFlow.js for browser
+
+**Hardware:** RTX 4080 12GB - sufficient for 9x9 training, iterative 19x19
+
+**Key Directories:**
+```
+training/           # Python training code (PyTorch)
+├── models/         # Network architectures
+├── mcts/           # Neural MCTS implementation
+├── selfplay/       # Game generation
+├── train/          # Training loop
+└── checkpoints/    # Saved model states
+
+src/core/ai/        # TypeScript inference (browser)
+├── neural/         # TensorFlow.js inference
+└── models/         # Exported ONNX/TFJS models
+```
+
+**Training Loop:**
+```
+1. Self-play games (N games with current model)
+2. Store (board, policy, value) tuples
+3. Train network on replay buffer
+4. Checkpoint model
+5. Evaluate vs previous checkpoint
+6. If stronger → promote, else → continue training
+7. Export to TFJS periodically for browser testing
+```
+
+**Existing Heuristics → Features:**
+- `src/core/ai/policy.ts` heuristics can inform feature engineering
+- Not used directly in neural network - superseded by learned features
 
 ### MANDATORY: Blog Post for Every Deliverable
 **CRITICAL RULE**: Each phase deliverable MUST include a blog post entry
@@ -311,6 +351,7 @@ git push
 - Use `sg` (ast-grep) for precise AST-based navigation
 - Prioritize reading existing code before modifications
 - Test first, implement second, UI last
+- **ALWAYS use Poetry** for Python package management (never pip/venv directly)
 
 ## Meta: Capturing Learnings
 **CRITICAL**: When you make an error or realize a mistake:

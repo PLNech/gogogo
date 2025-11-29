@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "gogogo-training"
+version = "0.1.0"
+description = "AlphaZero-style neural network training for Go AI"
+authors = ["GoGoGo"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+torch = {version = "^2.5.0", source = "pytorch-cu121"}
+numpy = "^2.0"
+tensorboard = "^2.14"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+
+[[tool.poetry.source]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+train = "train:main"

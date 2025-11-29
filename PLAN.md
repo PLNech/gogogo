@@ -503,22 +503,199 @@
 
 ---
 
-## Current Sprint: MVP (Milestones 1-2)
+## CURRENT SPRINT: Neural Network Go AI Training
 
-**Focus**: Get Milestone 1 and 2 working end-to-end with tests
+**Focus**: Train AlphaZero-style neural network using self-play on RTX 4080
 
-**Next Up After PLAN.md**:
-1. Initialize Vite project
-2. Setup directory structure
-3. Implement core Go logic (1x1, 3x3, 5x5 boards)
-4. Implement simple AI
-5. Implement currency system
-6. Build UI for M1 and M2
-7. End-to-end tests
-8. Deploy MVP
+**Hardware**: RTX 4080 12GB VRAM, CUDA 12.5
 
 ---
 
-**Last Updated**: 2025-11-23
-**Total Features Tracked**: 250+
-**Status**: Ready to start implementation
+### Phase 0: Training Infrastructure
+- [ ] TODO - Create `training/` directory structure
+- [ ] TODO - Setup Python environment (PyTorch + CUDA)
+- [ ] TODO - Verify GPU detection and CUDA works
+
+### Phase 1: Board Representation (Tensors)
+- [ ] TODO - Board state → tensor conversion (19×19 planes)
+- [ ] TODO - Feature planes:
+  - [ ] Black stones plane (1)
+  - [ ] White stones plane (1)
+  - [ ] Current player plane (1)
+  - [ ] Move history planes (8 moves × 2 colors = 16)
+  - [ ] Liberty count planes (1-4+ liberties = 4)
+  - [ ] Ko point plane (1)
+  - **Total: ~24 planes**
+- [ ] TODO - Tests for tensor conversion
+
+### Phase 2: Neural Network Architecture
+- [ ] TODO - ResNet backbone (start simple: 6 blocks, 128 filters)
+- [ ] TODO - Policy head (outputs 361 move probabilities for 19×19)
+- [ ] TODO - Value head (outputs single scalar -1 to +1)
+- [ ] TODO - Tests for network forward pass
+- [ ] TODO - GPU memory check (fit in 12GB)
+
+### Phase 3: Neural MCTS
+- [ ] TODO - MCTS node with neural network evaluation
+- [ ] TODO - UCB formula with policy prior: `Q + c * P * sqrt(N_parent) / (1 + N)`
+- [ ] TODO - Leaf evaluation via value head (no random rollouts)
+- [ ] TODO - MCTS search loop (configurable iterations)
+- [ ] TODO - Temperature-based move selection
+- [ ] TODO - Tests for MCTS correctness
+
+### Phase 4: Self-Play Game Generation
+- [ ] TODO - Play game using neural MCTS
+- [ ] TODO - Record (board_state, mcts_policy, game_result) tuples
+- [ ] TODO - Save games to replay buffer (disk-based for large datasets)
+- [ ] TODO - Parallel game generation (multiple games simultaneously)
+- [ ] TODO - Tests for self-play games
+
+### Phase 5: Training Loop
+- [ ] TODO - Load replay buffer samples
+- [ ] TODO - Policy loss: cross-entropy vs MCTS policy
+- [ ] TODO - Value loss: MSE vs game outcome
+- [ ] TODO - Combined loss: `L = L_policy + L_value`
+- [ ] TODO - Optimizer: Adam or SGD with momentum
+- [ ] TODO - Learning rate schedule
+- [ ] TODO - Checkpointing (save every N steps)
+- [ ] TODO - Logging (TensorBoard or wandb)
+- [ ] TODO - Tests for training step
+
+### Phase 6: Evaluation & Iteration
+- [ ] TODO - Pit current model vs previous checkpoint
+- [ ] TODO - Win rate calculation (need >55% to promote)
+- [ ] TODO - Elo estimation (optional)
+- [ ] TODO - Automated training loop:
+  ```
+  while True:
+    1. Generate N self-play games
+    2. Add to replay buffer
+    3. Train for K steps
+    4. Checkpoint
+    5. Evaluate vs previous
+    6. If better → promote, else → continue
+  ```
+
+### Phase 7: Export to Browser
+- [ ] TODO - Export PyTorch model to ONNX
+- [ ] TODO - Convert ONNX to TensorFlow.js
+- [ ] TODO - Test inference in browser
+- [ ] TODO - Integrate with existing game UI
+
+### Phase 8: Difficulty Scaling
+- [ ] TODO - Weak AI: fewer MCTS iterations (8-16)
+- [ ] TODO - Medium AI: moderate iterations (64-128)
+- [ ] TODO - Strong AI: full iterations (400-800)
+- [ ] TODO - Multiple model sizes for different levels
+
+---
+
+### Training Parameters (Starting Point)
+
+```python
+# Network
+BOARD_SIZE = 9  # Start with 9x9, scale to 19x19 later
+NUM_BLOCKS = 6  # Residual blocks
+NUM_FILTERS = 128  # Channels per conv layer
+INPUT_PLANES = 24  # Feature planes
+
+# MCTS
+MCTS_SIMULATIONS = 100  # Per move during self-play
+C_PUCT = 1.5  # Exploration constant
+TEMPERATURE = 1.0  # First 30 moves, then 0 (argmax)
+
+# Training
+BATCH_SIZE = 256
+LEARNING_RATE = 0.001
+REPLAY_BUFFER_SIZE = 100_000  # Position tuples
+GAMES_PER_ITERATION = 100
+TRAINING_STEPS_PER_ITERATION = 1000
+CHECKPOINT_INTERVAL = 500  # Steps
+
+# Hardware
+NUM_PARALLEL_GAMES = 4  # Depends on RAM
+```
+
+---
+
+### Training Commands (To Be Implemented)
+
+```bash
+# Setup
+cd training
+python -m venv venv
+source venv/bin/activate
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+pip install numpy tensorboard
+
+# Verify GPU
+python -c "import torch; print(torch.cuda.is_available())"
+
+# Train
+python train.py --board-size 9 --iterations 100
+
+# Evaluate
+python evaluate.py --model checkpoints/latest.pt --games 100
+
+# Export
+python export.py --model checkpoints/best.pt --output ../src/core/ai/models/
+```
+
+---
+
+### Success Criteria
+
+**9x9 Board (First Target)**:
+- [ ] Network trains without crashing
+- [ ] Self-play games are legal (no rule violations)
+- [ ] Win rate vs random > 90%
+- [ ] Win rate vs previous model > 55% (improvement)
+- [ ] Training completes in < 24 hours for basic strength
+
+**19x19 Board (Later)**:
+- [ ] Scale network (more blocks, more filters)
+- [ ] Longer training (days not hours)
+- [ ] Competent play (doesn't build walls, understands territory)
+
+---
+
+### File Structure
+
+```
+training/
+├── __init__.py
+├── config.py          # Hyperparameters
+├── board.py           # Board representation (tensors)
+├── model.py           # Neural network (ResNet + heads)
+├── mcts.py            # Neural MCTS
+├── selfplay.py        # Game generation
+├── train.py           # Training loop
+├── evaluate.py        # Model evaluation
+├── export.py          # ONNX/TFJS export
+├── utils.py           # Helpers
+├── checkpoints/       # Saved models
+├── games/             # Self-play game records
+└── logs/              # TensorBoard logs
+```
+
+---
+
+## Previous Sprint: MVP (Milestones 1-2)
+
+**Status**: Basic game working, now pivoting to neural AI
+
+**Completed**:
+- [x] Basic Go rules (capture, territory)
+- [x] Simple heuristic AI (wall-building problem)
+- [x] Game UI with board rendering
+- [x] Currency system
+
+**On Hold**:
+- Heuristic AI improvements (superseded by neural approach)
+- Policy tactical lookahead (features may inform neural network)
+
+---
+
+**Last Updated**: 2025-11-29
+**Total Features Tracked**: 300+
+**Status**: Neural network training infrastructure in progress
