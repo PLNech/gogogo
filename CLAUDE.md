@@ -93,15 +93,17 @@ GoGoGo is an idle/incremental game centered around the ancient game of Go (Baduk
 1. **FORMAT**: MARKDOWN (.md) files ONLY - NEVER HTML
    - File format: `blog/posts/YYYY-MM-DD-title.md`
    - Use proper Markdown syntax (headers, code blocks, quotes)
-   - GitHub Pages will render the Markdown
-2. **Tone**: Subtle, evasive, go-inspired, evocative, poetic, short and impactful prose
-3. **Structure**:
-   - Philosophical opening (go proverb, haiku, or meditation)
-   - System explanation (clear but poetic)
-   - Code samples in Markdown code blocks with language tags
-   - At least 1 key code sample showing implementation
-   - Closing reflection
-4. **Theme**: Simplicity + strength, works in light/dark mode
+2. **LENGTH**: SHORT. CONCISE. POETIC.
+   - More white space, less text
+   - Short paragraphs (1-3 sentences max)
+   - Let code breathe
+   - No long explanations - show, don't tell
+3. **Tone**: Subtle, evasive, go-inspired, evocative, spare prose
+4. **Structure**:
+   - Philosophical opening (go proverb or haiku)
+   - Brief system explanation
+   - 1-2 key code samples (small, focused)
+   - Brief closing reflection
 5. **Purpose**: Grounds delivery in functional requirements completion
 
 **Blog Infrastructure**:
