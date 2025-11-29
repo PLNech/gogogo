@@ -38,12 +38,11 @@ def draw_goban(ax, size=5, title=""):
 def place_stones(ax, blacks, whites):
     """Place stones on the board"""
     for (row, col) in blacks:
-        circle = plt.Circle((col, row), 0.4, color='black', zorder=10)
+        circle = plt.Circle((col, row), 0.4, facecolor='black', edgecolor='black', linewidth=2, zorder=10)
         ax.add_patch(circle)
 
     for (row, col) in whites:
-        circle = plt.Circle((col, row), 0.4, color='white',
-                          edgecolor='black', linewidth=1.5, zorder=10)
+        circle = plt.Circle((col, row), 0.4, facecolor='white', edgecolor='black', linewidth=2.5, zorder=10)
         ax.add_patch(circle)
 
 def visualize_policy_heatmap():
@@ -67,23 +66,35 @@ def visualize_policy_heatmap():
     # Center
     priors[2, 2] = 0.00
 
-    fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+    fig, ax = plt.subplots(1, 1, figsize=(10, 8))
 
     im = ax.imshow(priors, cmap='YlOrRd', vmin=0, vmax=0.25)
-    ax.set_title('Policy Network Move Priors', fontsize=16, fontweight='bold')
+    ax.set_title('Policy Network: Move Prior Probabilities\n(Empty 5x5 Board)',
+                 fontsize=16, fontweight='bold')
 
     # Add grid
     for i in range(size):
         ax.axhline(i - 0.5, color='black', linewidth=0.5)
         ax.axvline(i - 0.5, color='black', linewidth=0.5)
 
-    # Add text values
+    # Add text values with percentages
     for i in range(size):
         for j in range(size):
             if priors[i, j] > 0:
-                text = ax.text(j, i, f'{priors[i, j]:.2f}',
-                             ha="center", va="center", color="black", fontsize=12,
+                percent = f'{priors[i, j]*100:.1f}%'
+                text = ax.text(j, i, percent,
+                             ha="center", va="center", color="black", fontsize=11,
                              fontweight='bold')
+
+    # Add annotations
+    ax.annotate('Corners:\nHighest priority\n(25%)', xy=(0, 0), xytext=(-1.5, -1.5),
+               fontsize=10, color='darkred', fontweight='bold',
+               bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
+
+    ax.annotate('Center:\nLowest priority\n(0%)', xy=(2, 2), xytext=(3.5, 3.5),
+               fontsize=10, color='darkblue', fontweight='bold',
+               bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8),
+               arrowprops=dict(arrowstyle='->', color='darkblue', lw=2))
 
     ax.set_xticks(range(size))
     ax.set_yticks(range(size))
@@ -91,7 +102,7 @@ def visualize_policy_heatmap():
     ax.set_ylabel('Row', fontsize=12)
 
     cbar = plt.colorbar(im, ax=ax)
-    cbar.set_label('Prior Probability', fontsize=12)
+    cbar.set_label('Prior Probability\n(Where AI wants to play)', fontsize=11)
 
     plt.tight_layout()
     output_path = OUTPUT_DIR / 'policy_heatmap.png'

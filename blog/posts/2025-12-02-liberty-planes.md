@@ -14,7 +14,11 @@
 A Go position is not one thing.
 It is eight layers, stacked.
 
-AlphaGo taught us this.
+**What are liberties?** Empty points adjacent to a stone.
+**1 liberty** = stone in atari (can be captured next move).
+**0 liberties** = captured.
+
+AlphaGo taught us to see all liberty counts at once.
 
 ---
 
