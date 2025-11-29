@@ -5,12 +5,25 @@ GoGoGo is an idle/incremental game centered around the ancient game of Go (Baduk
 
 ## Architecture Principles
 
+### CRITICAL: Test-Driven Development (TDD) & Separation of Concerns (SOC)
+**ALL development MUST follow TDD methodology:**
+1. **Write tests FIRST** - Never write implementation before tests
+2. **Run tests to see them fail** - Verify test is testing what you think
+3. **Write minimal implementation** - Make tests pass with simplest code
+4. **Refactor** - Clean up while keeping tests green
+5. **Repeat** - Every feature, every change follows this cycle
+
+**Separation of Concerns is NON-NEGOTIABLE:**
+- **Core/Engine Layer** (`src/core/`): ZERO React dependencies, pure TypeScript
+- **Domain Layer** (`src/domain/`): Business logic, NO UI concerns
+- **State Layer** (`src/state/`): State management bridges, minimal logic
+- **UI Layer** (`src/ui/`): React components only, NO business logic
+
 ### Senior Staff Architect Standards
 - **Lean MVP First**: Build minimum viable features, validate, then iterate
 - **YAGNI (You Aren't Gonna Need It)**: No speculative features or over-engineering
-- **Separation of Concerns**: Clear boundaries between layers
-- **TDD with Late UI**: Engine and tests first, UI last
 - **Clean Architecture**: Domain logic independent of frameworks
+- **Make it work, make it right, make it fast**: In that order
 
 ### Layer Structure
 ```
@@ -70,16 +83,75 @@ GoGoGo is an idle/incremental game centered around the ancient game of Go (Baduk
 
 ## Development Methodology
 
-### MVP Phase 1 - Core Engine
+### CURRENT FOCUS: V1 Go AI (Single Difficulty Level)
+**Goal: Build a competent Go AI that doesn't suck**
+
+### MANDATORY: Blog Post for Every Deliverable
+**CRITICAL RULE**: Each phase deliverable MUST include a blog post entry
+
+**Blog Post Requirements**:
+1. **FORMAT**: MARKDOWN (.md) files ONLY - NEVER HTML
+   - File format: `blog/posts/YYYY-MM-DD-title.md`
+   - Use proper Markdown syntax (headers, code blocks, quotes)
+   - GitHub Pages will render the Markdown
+2. **Tone**: Subtle, evasive, go-inspired, evocative, poetic, short and impactful prose
+3. **Structure**:
+   - Philosophical opening (go proverb, haiku, or meditation)
+   - System explanation (clear but poetic)
+   - Code samples in Markdown code blocks with language tags
+   - At least 1 key code sample showing implementation
+   - Closing reflection
+4. **Theme**: Simplicity + strength, works in light/dark mode
+5. **Purpose**: Grounds delivery in functional requirements completion
+
+**Blog Infrastructure**:
+- Minimal GitHub Pages blog
+- Posts are Markdown: `blog/posts/YYYY-MM-DD-title.md`
+- Landing page links to posts
+- Simple, elegant theme that honors Go's aesthetic
+
+**DATES**: Always use current/recent dates relative to project context
+
+**Phase 1: Simplify & Stabilize**
+1. **Audit existing AI code**
+   - Identify what works, what doesn't
+   - Consolidate multiple AI implementations
+   - Fix failing tests
+2. **Define single target strength**
+   - Pick ONE difficulty level to perfect
+   - Focus on correctness over variety
+   - Establish measurable benchmarks
+
+**Phase 2: TDD-Driven AI Improvement**
+1. **Test-first feature extraction**
+   - Write tests for board state representation
+   - Implement basic feature extraction (liberties, captures, territory)
+   - Test edge cases (ko, seki, life/death)
+2. **Test-first heuristic evaluation**
+   - Write tests for position evaluation
+   - Implement clean, testable heuristics
+   - Validate against known positions
+3. **Test-first MCTS integration**
+   - Write tests for MCTS search
+   - Implement clean MCTS with proper UCT
+   - Test convergence and move selection
+
+**Phase 3: Visualization & Analysis**
+1. **CLI-based game viewer**
+   - ASCII board representation
+   - Move-by-move playback
+   - Statistics and analysis
+2. **Self-play evaluation**
+   - Automated game generation
+   - Win rate tracking
+   - Performance benchmarking
+
+### MVP Phase 1 - Core Engine (LATER)
 **Test First, UI Last**
-1. Implement Go rules integration (Tenuki)
+1. Implement Go rules integration
    - Unit tests for capture, ko, scoring
    - Test multiple board sizes (9x9, 13x13, 19x19)
-2. Implement basic AI
-   - Simple random + heuristic AI
-   - MCTS with configurable iterations
-   - Web Worker integration tests
-3. Implement currency earning
+2. Implement currency earning
    - Game outcome → currency calculation
    - Persistence tests
 
@@ -192,16 +264,67 @@ npm run type-check   # TypeScript check
 ```
 
 ## Git Workflow
+
+### CRITICAL: Commit Early, Commit Often
+- **Commit after every logical unit of work** - don't batch up changes
+- **Push periodically** - SSH is configured, push to share progress
+- Commit when:
+  - Tests go from red to green
+  - A feature is complete (even if small)
+  - Files are created/moved/deleted
+  - After writing blog posts
+  - Before starting risky refactoring
+
+### Branch Strategy
 - Never push to main/develop without explicit request
-- Feature branches only: `feature/board-rendering`, `feature/mcts-ai`
-- Commit messages: Clear, imperative mood ("Add MCTS worker", "Fix ko rule detection")
+- Feature branches for new work: `feature/board-rendering`, `feature/mcts-ai`
+- Current work can stay on master if it's iterative development
+
+### Commit Messages
+- Clear, imperative mood: "Add MCTS worker", "Fix ko rule detection"
+- Start with verb: Add, Fix, Update, Remove, Refactor
+- Reference what changed, not why (why goes in comments/docs)
 - Small, focused commits preferred
+
+### Example Session
+```bash
+# After fixing tests
+git add src/core/ai/simpleAI.ts
+git commit -m "Fix missing imports in simpleAI.ts"
+
+# After creating fixtures
+git add src/test/fixtures/ src/test/utils/
+git commit -m "Add test fixtures and boardSetup utilities"
+
+# After blog post
+git add blog/posts/2025-11-28-first-stone.md
+git commit -m "Add 'First Stone' blog post"
+
+# Push periodically (every 3-5 commits or end of session)
+git push
+```
 
 ## AI Development Notes
 - Use `rg` (ripgrep) for fast codebase search
 - Use `sg` (ast-grep) for precise AST-based navigation
 - Prioritize reading existing code before modifications
 - Test first, implement second, UI last
+
+## Meta: Capturing Learnings
+**CRITICAL**: When you make an error or realize a mistake:
+1. **Immediately update CLAUDE.md** with guidance to prevent recurrence
+2. **Document the pattern**, not just the specific instance
+3. **Add it to the relevant section** (or create new section if needed)
+4. **Make it actionable** - clear rules, not vague suggestions
+
+**Examples of learnings to capture**:
+- File format mistakes (HTML vs Markdown)
+- Architectural violations (UI in core/)
+- Test patterns that work/don't work
+- Common pitfalls in the domain (Go rules edge cases)
+- Workflow improvements discovered
+
+**This file is living documentation** - it should grow with the project
 
 ## PLAN.md Tracking (MANDATORY)
 - **MUST maintain PLAN.md** with ALL features from complete game design (all 7 milestones)

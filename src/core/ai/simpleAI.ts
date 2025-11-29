@@ -1,9 +1,27 @@
 import type { Board, Position, Stone } from '../go/types'
-import { getStone, placeStone, captureStones, countTerritory } from '../go/board'
+import { getStone, placeStone, captureStones, countTerritory, getGroup, countLiberties } from '../go/board'
 import type { AIConfig } from './types'
 import { AI_PRESETS } from './types'
 import { GoMCTS } from './mcts'
-import { estimateScore } from './evaluation'
+import {
+  estimateScore,
+  evaluateInfluence,
+  evaluateTerritorialSecurity,
+  evaluateGroupHealth,
+  findOpponentGroups,
+  evaluateAttackValue,
+  evaluateConnection,
+  isFillingOwnTerritory,
+  isOverlyDense,
+  isOnBoundary,
+  evaluateCornerWallControl,
+  evaluateInvasionReduction,
+  evaluateReduction
+} from './evaluation'
+import { evaluateShapes } from './shapes'
+import { evaluateBasicInstinct } from './basicInstinct'
+import { evaluateJoseki, evaluateChineseOpening } from './openings'
+import { detectLadder, isLadderBreaker } from './ladder'
 
 export interface AIDecision {
   action: 'move' | 'pass'
@@ -25,10 +43,6 @@ export function getAIMove(board: Board, player: 'black' | 'white', captures: { b
 export function getAIDecision(board: Board, player: 'black' | 'white', captures: { black: number; white: number } = { black: 0, white: 0 }, config?: Partial<AIConfig>, moveCount: number = 0): AIDecision {
   const fullConfig = { ...AI_PRESETS[2], ...config }
 
-  // Use MCTS for better decision making
-  const mcts = new GoMCTS(fullConfig, 500, 50); // 500 iterations, 50ms max time
-  const mctsResult = mcts.search(board, player, moveCount);
-
   // Estimate current score
   const currentScore = estimateScore(board, captures, player)
 
@@ -38,17 +52,29 @@ export function getAIDecision(board: Board, player: 'black' | 'white', captures:
     return { action: 'pass', confidence: 1.0, score: currentScore }
   }
 
-  // Return MCTS-based decision
+  // Temporarily use heuristic evaluation for all moves
+  // (In Phase 3, we'll integrate this with MCTS properly)
+  const scoredMoves = emptyPositions
+    .map(pos => ({
+      position: pos,
+      score: scoreMove(board, pos, player, fullConfig, captures, moveCount)
+    }))
+    .filter(m => m.score > -1000) // Filter out illegal moves
+    .sort((a, b) => b.score - a.score)
+
+  if (scoredMoves.length === 0) {
+    // No legal moves, pass
+    return { action: 'pass', confidence: 1.0, score: currentScore }
+  }
+
+  const bestMove = scoredMoves[0]!
+
+  // Return heuristic-based decision
   return {
     action: 'move',
-    position: mctsResult.position,
-    confidence: Math.min(1.0, mctsResult.winRate * 2), // Normalize confidence
-    score: currentScore,
-    mctsData: {
-      bestMove: mctsResult.position,
-      winRate: mctsResult.winRate,
-      visits: mctsResult.visits
-    }
+    position: bestMove.position,
+    confidence: Math.min(1.0, bestMove.score / 100), // Normalize confidence
+    score: currentScore
   }
 }
 
