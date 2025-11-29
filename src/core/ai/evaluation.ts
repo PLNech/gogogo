@@ -33,6 +33,7 @@ export function evaluateInfluence(board: Board, pos: Position, player: 'black' |
 
 /**
  * Evaluate territorial security of a position
+ * REDUCED: Friendly stone bonus to prevent wall-building
  */
 export function evaluateTerritorialSecurity(board: Board, pos: Position, player: 'black' | 'white'): number {
   // Check if position is in a corner or edge (more secure)
@@ -40,10 +41,10 @@ export function evaluateTerritorialSecurity(board: Board, pos: Position, player:
   let security = 0
 
   // Corners and edges are valuable for territory
-  if (distToEdge === 0) security += 15 // Edge
-  if (distToEdge === 1) security += 10 // Near edge
+  if (distToEdge === 0) security += 10 // Edge (reduced from 15)
+  if (distToEdge === 1) security += 6  // Near edge (reduced from 10)
   if ((pos.row === 0 || pos.row === board.size - 1) && (pos.col === 0 || pos.col === board.size - 1)) {
-    security += 25 // Corner
+    security += 15 // Corner (reduced from 25)
   }
 
   // Check for friendly nearby stones (more secure)
@@ -64,8 +65,9 @@ export function evaluateTerritorialSecurity(board: Board, pos: Position, player:
     }
   }
 
-  security += friendlyNearby * 3
-  security -= enemyNearby * 3
+  // REDUCED: Lower bonus to prevent walls (was 3, now 1)
+  security += friendlyNearby * 1
+  security -= enemyNearby * 2
 
   return security
 }
@@ -254,10 +256,12 @@ export function isOnBoundary(board: Board, pos: Position, player: 'black' | 'whi
 
 /**
  * Evaluate connection potential - prefer moves that connect groups
+ * CRITICAL: Penalize adjacent play to same group (prevents walls)
  */
 export function evaluateConnection(board: Board, pos: Position, player: 'black' | 'white'): number {
   let connectionValue = 0
   const nearbyGroups = new Set<string>()
+  let adjacentToSameGroup = false
 
   // Check 2-space knight moves and adjacent for friendly stones
   for (let dr = -2; dr <= 2; dr++) {
@@ -273,13 +277,24 @@ export function evaluateConnection(board: Board, pos: Position, player: 'black' 
         const group = getGroup(board, r, c)
         const groupKey = group.map(p => `${p.row},${p.col}`).sort().join('|')
         nearbyGroups.add(groupKey)
+
+        // Check if immediately adjacent (wall-forming)
+        if (Math.abs(dr) <= 1 && Math.abs(dc) <= 1) {
+          adjacentToSameGroup = true
+        }
       }
     }
   }
 
-  // More nearby groups = better connection potential
+  // Connecting 2+ separate groups is GOOD
   if (nearbyGroups.size >= 2) {
-    connectionValue = 15 * nearbyGroups.size
+    connectionValue = 20 * nearbyGroups.size  // Reward true connections
+  }
+
+  // But playing immediately adjacent to a single group is BAD (makes walls)
+  // Unless we're connecting multiple groups
+  if (adjacentToSameGroup && nearbyGroups.size === 1) {
+    connectionValue -= 50  // STRONG penalty for wall-building
   }
 
   return connectionValue
