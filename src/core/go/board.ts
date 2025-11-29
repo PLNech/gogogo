@@ -289,3 +289,20 @@ export function boardsEqual(board1: Board, board2: Board): boolean {
 
   return true
 }
+
+/**
+ * Get adjacent positions (up, down, left, right)
+ * Only returns valid positions within board bounds
+ */
+export function getAdjacentPositions(board: Board, row: number, col: number): Position[] {
+  const adjacents: Position[] = [
+    { row: row - 1, col },
+    { row: row + 1, col },
+    { row, col: col - 1 },
+    { row, col: col + 1 }
+  ]
+
+  return adjacents.filter(
+    p => p.row >= 0 && p.row < board.size && p.col >= 0 && p.col < board.size
+  )
+}
