@@ -86,13 +86,24 @@ def parse_sgf_file(sgf_path: str, target_size: int = 19) -> Optional[List[Tuple[
     return samples if len(samples) >= 20 else None
 
 
-def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None) -> Tuple[np.ndarray, np.ndarray]:
+def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None, use_cache: bool = True) -> Tuple[np.ndarray, np.ndarray]:
     """Load all SGF files from directory and create training dataset.
 
     Returns:
         states: (N, planes, size, size) board states
         moves: (N, 2) move coordinates (row, col)
     """
+    # Check cache first
+    cache_dir = Path('dataset_cache')
+    cache_dir.mkdir(exist_ok=True)
+    cache_key = f"size{target_size}_max{max_games or 'all'}"
+    cache_file = cache_dir / f"{cache_key}.npz"
+
+    if use_cache and cache_file.exists():
+        print(f"Loading from cache: {cache_file}")
+        data = np.load(cache_file)
+        return data['states'], data['moves']
+
     sgf_files = list(Path(data_dir).rglob('*.sgf'))
 
     if max_games:
@@ -117,7 +128,15 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
 
     print(f"Loaded {len(all_states)} training positions from {len(sgf_files)} games")
 
-    return np.array(all_states, dtype=np.float32), np.array(all_moves, dtype=np.int64)
+    states = np.array(all_states, dtype=np.float32)
+    moves = np.array(all_moves, dtype=np.int64)
+
+    # Save to cache
+    if use_cache:
+        print(f"Saving to cache: {cache_file}")
+        np.savez(cache_file, states=states, moves=moves)
+
+    return states, moves
 
 
 if __name__ == '__main__':

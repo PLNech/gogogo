@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Config:
-    board_size: int = 9
+    board_size: int = 13  # Sweet spot: 19x19 too big, 9x9 too small
     num_blocks: int = 6
     num_filters: int = 128
     input_planes: int = 17
