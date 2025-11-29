@@ -1,6 +1,7 @@
 """Monte Carlo Tree Search with neural network."""
 import numpy as np
 import math
+import time
 from typing import Dict, List, Tuple, Optional
 from board import Board
 from config import Config
@@ -74,15 +75,20 @@ class MCTS:
         self.model = model
         self.config = config
 
-    def search(self, board: Board) -> np.ndarray:
+    def search(self, board: Board, verbose: bool = False) -> np.ndarray:
         """Run MCTS and return visit count distribution."""
+        start_time = time.time()
         root = MCTSNode()
 
         # Expand root with neural network
         policy, value = self.model.predict(board.to_tensor())
         root.expand(board, policy)
 
-        for _ in range(self.config.mcts_simulations):
+        for sim in range(self.config.mcts_simulations):
+            if verbose and sim > 0 and sim % 10 == 0:
+                elapsed = time.time() - start_time
+                print(f"      MCTS sim {sim}/{self.config.mcts_simulations} ({elapsed:.1f}s elapsed)")
+            _  = sim  # Use the variable
             node = root
             scratch_board = board.copy()
             search_path = [node]

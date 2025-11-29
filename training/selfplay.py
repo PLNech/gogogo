@@ -33,7 +33,7 @@ class GameRecord:
         return samples
 
 
-def play_game(model, config: Config) -> List[Tuple[np.ndarray, np.ndarray, float]]:
+def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False) -> List[Tuple[np.ndarray, np.ndarray, float]]:
     """Play a single self-play game."""
     board = Board(config.board_size)
     mcts = MCTS(model, config)
@@ -42,9 +42,15 @@ def play_game(model, config: Config) -> List[Tuple[np.ndarray, np.ndarray, float
     move_count = 0
     max_moves = config.board_size ** 2 * 2  # Reasonable limit
 
+    if verbose:
+        print(f"  [Game {game_idx+1}] Starting game...")
+
     while not board.is_game_over() and move_count < max_moves:
         # Get MCTS policy
-        policy = mcts.search(board)
+        if verbose and move_count % 10 == 0:
+            print(f"  [Game {game_idx+1}] Move {move_count}/{max_moves}, running MCTS ({config.mcts_simulations} sims)...")
+
+        policy = mcts.search(board, verbose=(verbose and move_count % 10 == 0))
 
         # Record state before move
         record.add(
@@ -73,15 +79,18 @@ def play_game(model, config: Config) -> List[Tuple[np.ndarray, np.ndarray, float
     else:
         winner = 0  # Draw
 
+    if verbose:
+        print(f"  [Game {game_idx+1}] Finished after {move_count} moves. Winner: {'Black' if winner == 1 else 'White' if winner == -1 else 'Draw'}")
+
     return record.finalize(winner)
 
 
-def generate_games(model, config: Config, num_games: int) -> List[Tuple[np.ndarray, np.ndarray, float]]:
+def generate_games(model, config: Config, num_games: int, verbose: bool = True) -> List[Tuple[np.ndarray, np.ndarray, float]]:
     """Generate multiple self-play games."""
     all_samples = []
 
     for i in range(num_games):
-        samples = play_game(model, config)
+        samples = play_game(model, config, game_idx=i, verbose=verbose)
         all_samples.extend(samples)
         print(f"Game {i+1}/{num_games}: {len(samples)} positions")
 
