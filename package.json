@@ -12,7 +12,10 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "type-check": "tsc --noEmit",
-    "deploy": "npm run build && node deploy.js"
+    "deploy": "npm run build && node deploy.js",
+    "train": "node runSelfPlayTraining.js",
+    "demo": "node demoAgenticLoop.js",
+    "blog": "npx http-server blog -p 3001 -o"
   },
   "dependencies": {
     "beautiful-skill-tree": "^1.7.1",
