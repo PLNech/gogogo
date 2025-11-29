@@ -23,9 +23,13 @@ A journey through AI and Go. Building intelligence through play, making oneself 
 - [**Foundation**](posts/2025-11-30-foundation.md) (Nov 30, 2025) - Tests first. Simplicity through subtraction. All tests green.
 - [**Test Fixtures**](posts/2025-12-01-test-fixtures.md) (Dec 1, 2025) - Building test infrastructure with patterns and clarity.
 
+### Phase 1: Board Representation
+
+- [**Liberty Planes**](posts/2025-12-02-liberty-planes.md) (Dec 2, 2025) - SOTA feature extraction. Eight layers. One position.
+- [**Group Mind**](posts/2025-12-03-group-mind.md) (Dec 3, 2025) - Life and death. Eyes and strength. Critical points.
+
 ### Coming Soon
 
-- **Phase 1**: Board Representation - SOTA feature extraction
 - **Phase 2**: Heuristic Policy - Move priors, evaluation, rollouts
 - **Phase 3**: Enhanced MCTS - Tree search with policy integration
 - **Phase 4**: Analysis Tools - CLI visualization, game records
