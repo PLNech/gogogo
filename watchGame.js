@@ -2,19 +2,102 @@
 
 /**
  * Watch Two AIs Play Against Each Other
- * Self-play with 50ms delay per move
+ * Self-play with configurable parameters
+ *
+ * Usage:
+ *   npm run watch              # Default 5x5 board, 50ms delay
+ *   npm run watch -- -n 9      # 9x9 board
+ *   npm run watch -- -n 19 -d 100  # 19x19 board, 100ms delay
+ *   npm run watch -- -h        # Show help
  */
 
 import { createBoard, placeStone, getStone, countTerritory } from './src/core/go/board.js'
 import { computeMovePriors, evaluateMove } from './src/core/ai/policy.js'
 
-const DELAY_MS = 50
-const SIZE = 5
+// Parse CLI arguments
+function parseArgs() {
+    const args = process.argv.slice(2)
+    const config = {
+        size: 5,
+        delay: 50,
+        showHelp: false
+    }
+
+    for (let i = 0; i < args.length; i++) {
+        switch (args[i]) {
+            case '-h':
+            case '--help':
+                config.showHelp = true
+                break
+            case '-n':
+            case '--size':
+                config.size = parseInt(args[++i])
+                if (isNaN(config.size) || config.size < 3 || config.size > 19) {
+                    console.error('Error: Board size must be between 3 and 19')
+                    process.exit(1)
+                }
+                break
+            case '-d':
+            case '--delay':
+                config.delay = parseInt(args[++i])
+                if (isNaN(config.delay) || config.delay < 0) {
+                    console.error('Error: Delay must be a positive number')
+                    process.exit(1)
+                }
+                break
+            default:
+                console.error(`Unknown option: ${args[i]}`)
+                console.log('Use -h for help')
+                process.exit(1)
+        }
+    }
+
+    return config
+}
+
+function showHelp() {
+    console.log(`
+╔════════════════════════════════════════╗
+║   GoGoGo - AI Self-Play Viewer         ║
+╚════════════════════════════════════════╝
+
+Watch two AIs play against each other with live visualization.
+
+USAGE:
+  npm run watch                      # Default: 5x5 board, 50ms delay
+  npm run watch -- [OPTIONS]
+
+OPTIONS:
+  -n, --size <N>      Board size (3-19)           [default: 5]
+  -d, --delay <MS>    Delay per move (ms)         [default: 50]
+  -h, --help          Show this help
+
+EXAMPLES:
+  npm run watch -- -n 9               # 9x9 board
+  npm run watch -- -n 19 -d 100       # 19x19 board, slower moves
+  npm run watch -- -n 13 -d 0         # 13x13 board, no delay
+
+COMING SOON:
+  -a, --ai <TYPE>     AI type (policy, mcts, hybrid)
+  -i, --iterations    MCTS iterations per move
+  -v, --verbose       Show detailed move analysis
+  -q, --quiet         Minimal output
+  -s, --save <FILE>   Save game to SGF file
+
+`)
+    process.exit(0)
+}
+
+const config = parseArgs()
+if (config.showHelp) showHelp()
+
+const DELAY_MS = config.delay
+const SIZE = config.size
 
 function visualizeBoard(board, lastMove) {
     console.clear()
     console.log('\n╔════════════════════════════════════════╗')
-    console.log('║   GoGoGo - AI Self-Play                ║')
+    console.log(`║   GoGoGo - AI Self-Play (${SIZE}x${SIZE})`.padEnd(41) + '║')
     console.log('╚════════════════════════════════════════╝\n')
 
     console.log('  ' + Array.from({ length: board.size }, (_, i) => i).join(' '))
@@ -142,21 +225,38 @@ async function playGame() {
     console.log('║   Game Complete!                       ║')
     console.log('╚════════════════════════════════════════╝\n')
 
+    console.log(`Board: ${SIZE}x${SIZE}`)
     console.log(`Total moves: ${moveCount}`)
+    console.log(`Reason: ${passCount >= 2 ? 'Both players passed' : 'Board full'}\n`)
+
+    // Count stones on board
+    let blackStones = 0
+    let whiteStones = 0
+    for (let row = 0; row < board.size; row++) {
+        for (let col = 0; col < board.size; col++) {
+            const stone = getStone(board, row, col)
+            if (stone === 'black') blackStones++
+            if (stone === 'white') whiteStones++
+        }
+    }
 
     const territory = countTerritory(board)
-    console.log(`\nTerritory:`)
-    console.log(`  ● Black: ${territory.black} points`)
-    console.log(`  ○ White: ${territory.white} points`)
+    const blackTotal = blackStones + territory.black
+    const whiteTotal = whiteStones + territory.white
 
-    if (territory.black > territory.white) {
-        console.log('\n🏆 Black wins!')
-    } else if (territory.white > territory.black) {
-        console.log('\n🏆 White wins!')
+    console.log('Final Score:')
+    console.log(`  ● Black: ${blackStones} stones + ${territory.black} territory = ${blackTotal} points`)
+    console.log(`  ○ White: ${whiteStones} stones + ${territory.white} territory = ${whiteTotal} points`)
+
+    if (blackTotal > whiteTotal) {
+        console.log(`\n🏆 Black wins by ${blackTotal - whiteTotal} points!`)
+    } else if (whiteTotal > blackTotal) {
+        console.log(`\n🏆 White wins by ${whiteTotal - blackTotal} points!`)
     } else {
         console.log('\n🤝 Draw!')
     }
 
+    console.log(`\n⏱️  Average time per move: ${DELAY_MS}ms`)
     console.log()
 }
 

@@ -2,12 +2,83 @@
 
 /**
  * Play a game of Go against the AI
- * Simple CLI interface - No compilation needed
+ *
+ * Usage:
+ *   npm run play              # Default 5x5 board
+ *   npm run play -- -n 9      # 9x9 board
+ *   npm run play -- -h        # Show help
  */
 
 import { createBoard, placeStone, getStone } from './src/core/go/board.js'
 import { computeMovePriors } from './src/core/ai/policy.js'
 import * as readline from 'readline'
+
+// Parse CLI arguments
+function parseArgs() {
+    const args = process.argv.slice(2)
+    const config = {
+        size: 5,
+        showHelp: false
+    }
+
+    for (let i = 0; i < args.length; i++) {
+        switch (args[i]) {
+            case '-h':
+            case '--help':
+                config.showHelp = true
+                break
+            case '-n':
+            case '--size':
+                config.size = parseInt(args[++i])
+                if (isNaN(config.size) || config.size < 3 || config.size > 19) {
+                    console.error('Error: Board size must be between 3 and 19')
+                    process.exit(1)
+                }
+                break
+            default:
+                console.error(`Unknown option: ${args[i]}`)
+                console.log('Use -h for help')
+                process.exit(1)
+        }
+    }
+
+    return config
+}
+
+function showHelp() {
+    console.log(`
+╔════════════════════════════════════════╗
+║   GoGoGo - Play Against AI             ║
+╚════════════════════════════════════════╝
+
+Play a game of Go against the AI.
+
+USAGE:
+  npm run play                   # Default: 5x5 board
+  npm run play -- [OPTIONS]
+
+OPTIONS:
+  -n, --size <N>      Board size (3-19)           [default: 5]
+  -h, --help          Show this help
+
+EXAMPLES:
+  npm run play -- -n 9            # Play on 9x9 board
+  npm run play -- -n 13           # Play on 13x13 board
+
+GAMEPLAY:
+  • You are Black (●), AI is White (○)
+  • Enter moves as: row,col (e.g., "2,3")
+  • Type "pass" or "p" to pass
+  • Type "quit" or "q" to exit
+
+`)
+    process.exit(0)
+}
+
+const config = parseArgs()
+if (config.showHelp) showHelp()
+
+const SIZE = config.size
 
 const rl = readline.createInterface({
     input: process.stdin,
