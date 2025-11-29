@@ -41,16 +41,15 @@ export function placeStone(
 
   const newBoard = { ...board, stones: newStones }
 
+  // Apply captures
+  const { board: boardAfterCaptures, captured } = captureStones(newBoard, row, col, stone)
+
   // Ko rule: check if this move would return to the previous board state
-  // (after captures are applied)
-  if (previousBoard) {
-    const { board: boardAfterCaptures } = captureStones(newBoard, row, col, stone)
-    if (boardsEqual(boardAfterCaptures, previousBoard)) {
-      return null // Ko violation
-    }
+  if (previousBoard && boardsEqual(boardAfterCaptures, previousBoard)) {
+    return null // Ko violation
   }
 
-  return newBoard
+  return boardAfterCaptures
 }
 
 export function captureStones(

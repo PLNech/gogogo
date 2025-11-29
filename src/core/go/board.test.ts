@@ -51,14 +51,14 @@ describe('Board', () => {
   describe('captureStones', () => {
     it('captures surrounded stone in corner', () => {
       // Black at (0,0), White surrounds at (0,1) and (1,0)
+      // The last white stone should automatically capture black
       let board = createBoard(3)
       board = placeStone(board, 0, 0, 'black')!
       board = placeStone(board, 0, 1, 'white')!
-      board = placeStone(board, 1, 0, 'white')!
+      board = placeStone(board, 1, 0, 'white')! // This captures black at (0,0)
 
-      const { board: newBoard, captured } = captureStones(board, 1, 0, 'white')
-      expect(captured).toBe(1)
-      expect(getStone(newBoard, 0, 0)).toBeNull()
+      // Black stone should be captured
+      expect(getStone(board, 0, 0)).toBeNull()
     })
 
     it('captures group of stones', () => {
@@ -68,12 +68,11 @@ describe('Board', () => {
       board = placeStone(board, 0, 1, 'black')!
       board = placeStone(board, 0, 2, 'white')!
       board = placeStone(board, 1, 0, 'white')!
-      board = placeStone(board, 1, 1, 'white')!
+      board = placeStone(board, 1, 1, 'white')! // This captures both black stones
 
-      const { board: newBoard, captured } = captureStones(board, 1, 1, 'white')
-      expect(captured).toBe(2)
-      expect(getStone(newBoard, 0, 0)).toBeNull()
-      expect(getStone(newBoard, 0, 1)).toBeNull()
+      // Both black stones should be captured
+      expect(getStone(board, 0, 0)).toBeNull()
+      expect(getStone(board, 0, 1)).toBeNull()
     })
 
     it('does not capture stones with liberties', () => {

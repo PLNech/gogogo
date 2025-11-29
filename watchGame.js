@@ -18,7 +18,7 @@ import { computeMovePriors, evaluateMove } from './src/core/ai/policy.js'
 function parseArgs() {
     const args = process.argv.slice(2)
     const config = {
-        size: 5,
+        size: 19,
         delay: 50,
         showHelp: false
     }
@@ -64,11 +64,11 @@ function showHelp() {
 Watch two AIs play against each other with live visualization.
 
 USAGE:
-  npm run watch                      # Default: 5x5 board, 50ms delay
+  npm run watch                      # Default: 19x19 board, 50ms delay
   npm run watch -- [OPTIONS]
 
 OPTIONS:
-  -n, --size <N>      Board size (3-19)           [default: 5]
+  -n, --size <N>      Board size (3-19)           [default: 19]
   -d, --delay <MS>    Delay per move (ms)         [default: 50]
   -h, --help          Show this help
 
@@ -100,11 +100,13 @@ function visualizeBoard(board, lastMove) {
     console.log(`║   GoGoGo - AI Self-Play (${SIZE}x${SIZE})`.padEnd(41) + '║')
     console.log('╚════════════════════════════════════════╝\n')
 
-    console.log('  ' + Array.from({ length: board.size }, (_, i) => i).join(' '))
-    console.log('  ' + '─'.repeat(board.size * 2 - 1))
+    // Column headers with two digits
+    console.log('   ' + Array.from({ length: board.size }, (_, i) => String(i).padStart(2, '0')).join(' '))
+    console.log('   ' + '─'.repeat(board.size * 3 - 1))
 
     for (let row = 0; row < board.size; row++) {
-        let line = `${row}│`
+        // Row label with two digits
+        let line = `${String(row).padStart(2, '0')}│`
         for (let col = 0; col < board.size; col++) {
             const stone = getStone(board, row, col)
             const isLastMove = lastMove && lastMove.row === row && lastMove.col === col
@@ -116,7 +118,7 @@ function visualizeBoard(board, lastMove) {
             } else {
                 line += '·'
             }
-            if (col < board.size - 1) line += ' '
+            if (col < board.size - 1) line += '  ' // Two spaces between columns
         }
         console.log(line)
     }

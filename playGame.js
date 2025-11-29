@@ -17,7 +17,7 @@ import * as readline from 'readline'
 function parseArgs() {
     const args = process.argv.slice(2)
     const config = {
-        size: 5,
+        size: 19,
         showHelp: false
     }
 
@@ -54,11 +54,11 @@ function showHelp() {
 Play a game of Go against the AI.
 
 USAGE:
-  npm run play                   # Default: 5x5 board
+  npm run play                   # Default: 19x19 board
   npm run play -- [OPTIONS]
 
 OPTIONS:
-  -n, --size <N>      Board size (3-19)           [default: 5]
+  -n, --size <N>      Board size (3-19)           [default: 19]
   -h, --help          Show this help
 
 EXAMPLES:
@@ -86,11 +86,13 @@ const rl = readline.createInterface({
 })
 
 function visualizeBoard(board) {
-    console.log('\n  ' + Array.from({ length: board.size }, (_, i) => i).join(' '))
-    console.log('  ' + '─'.repeat(board.size * 2 - 1))
+    // Column headers with two digits
+    console.log('\n   ' + Array.from({ length: board.size }, (_, i) => String(i).padStart(2, '0')).join(' '))
+    console.log('   ' + '─'.repeat(board.size * 3 - 1))
 
     for (let row = 0; row < board.size; row++) {
-        let line = `${row}│`
+        // Row label with two digits
+        let line = `${String(row).padStart(2, '0')}│`
         for (let col = 0; col < board.size; col++) {
             const stone = getStone(board, row, col)
             if (stone === 'black') {
@@ -100,7 +102,7 @@ function visualizeBoard(board) {
             } else {
                 line += '·'
             }
-            if (col < board.size - 1) line += ' '
+            if (col < board.size - 1) line += '  ' // Two spaces between columns
         }
         console.log(line)
     }
