@@ -1,9 +1,47 @@
 """Self-play game generation."""
 import numpy as np
+import time
 from typing import List, Tuple
 from board import Board
 from mcts import MCTS
 from config import Config
+
+
+def get_game_stats(board: Board) -> dict:
+    """Get current game statistics."""
+    black_stones = np.sum(board.board == 1)
+    white_stones = np.sum(board.board == -1)
+
+    # Count groups
+    visited = set()
+    black_groups = 0
+    white_groups = 0
+
+    for r in range(board.size):
+        for c in range(board.size):
+            if (r, c) in visited or board.board[r, c] == 0:
+                continue
+
+            group = board.get_group(r, c)
+            for pos in group:
+                visited.add(pos)
+
+            if board.board[r, c] == 1:
+                black_groups += 1
+            else:
+                white_groups += 1
+
+    # Territory estimate (simple version)
+    score = board.score()
+
+    return {
+        'black_stones': black_stones,
+        'white_stones': white_stones,
+        'black_groups': black_groups,
+        'white_groups': white_groups,
+        'score': score,
+        'empty': board.size ** 2 - black_stones - white_stones
+    }
 
 
 class GameRecord:
@@ -33,10 +71,10 @@ class GameRecord:
         return samples
 
 
-def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False) -> List[Tuple[np.ndarray, np.ndarray, float]]:
-    """Play a single self-play game."""
+def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False, batch_size: int = 8) -> List[Tuple[np.ndarray, np.ndarray, float]]:
+    """Play a single self-play game with batched MCTS."""
     board = Board(config.board_size)
-    mcts = MCTS(model, config)
+    mcts = MCTS(model, config, batch_size=batch_size)
     record = GameRecord()
 
     move_count = 0
@@ -48,9 +86,13 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False) -
     while not board.is_game_over() and move_count < max_moves:
         # Get MCTS policy
         if verbose and move_count % 10 == 0:
-            print(f"  [Game {game_idx+1}] Move {move_count}/{max_moves}, running MCTS ({config.mcts_simulations} sims)...")
+            stats = get_game_stats(board)
+            print(f"  [Game {game_idx+1}] Move {move_count}/{max_moves} | "
+                  f"B:{stats['black_stones']}({stats['black_groups']}g) "
+                  f"W:{stats['white_stones']}({stats['white_groups']}g) "
+                  f"Score:{stats['score']:+.1f} Empty:{stats['empty']}")
 
-        policy = mcts.search(board, verbose=(verbose and move_count % 10 == 0))
+        policy = mcts.search(board, verbose=False)  # Batched MCTS is already efficient
 
         # Record state before move
         record.add(
