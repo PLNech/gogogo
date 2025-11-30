@@ -511,170 +511,187 @@
 
 ---
 
+## 🚨 CURRENT STATE (2025-11-30)
+
+**Status**: GPU crashed during overnight training. REBOOT REQUIRED.
+
+### What Happened:
+- Supervised training ran for ~16 min (batch 2400/3735)
+- CUDA error: "unspecified launch failure" (likely GPU overheating/driver instability)
+- GPU now in bad state, can't reset without reboot
+
+### What's Been Done:
+- [x] DONE - Training infrastructure created
+- [x] DONE - Pro games downloaded (93,164 games from CWI.nl)
+- [x] DONE - SGF parser with caching
+- [x] DONE - Supervised training script
+- [x] DONE - Batched MCTS (15x speedup)
+- [x] DONE - Defensive training practices added
+
+### Available Checkpoints:
+```
+checkpoints/
+├── supervised_best.pt       # From --quick run (4 blocks, 64 filters)
+├── supervised_epoch_1.pt
+├── supervised_epoch_2.pt
+├── supervised_epoch_3.pt
+└── supervised_final.pt
+```
+Note: These are from the `--quick` test run. The full training (6 blocks, 128 filters) crashed before saving.
+
+---
+
+## 📋 NEXT STEPS AFTER REBOOT
+
+### Step 1: Reset GPU
+```bash
+# Just reboot the machine
+sudo reboot
+```
+
+### Step 2: Verify GPU Works
+```bash
+cd ~/Work/Perso/Games/gogogo/training
+poetry run python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}'); print(torch.cuda.get_device_name(0))"
+```
+
+### Step 3: Run Supervised Training (with defensive practices)
+```bash
+cd ~/Work/Perso/Games/gogogo/training
+
+# Full training with mid-epoch checkpoints
+poetry run python train_supervised.py --board-size 19 --max-games 5000 --epochs 10
+
+# If it crashes again, resume from checkpoint:
+poetry run python train_supervised.py --board-size 19 --max-games 5000 --epochs 10 \
+    --resume checkpoints/supervised_epoch_1_batch_2000.pt
+```
+
+### Step 4: Self-Play Training (after supervised completes)
+```bash
+poetry run python train.py --board-size 19 --resume checkpoints/supervised_best.pt --iterations 50
+```
+
+### Step 5: Monitor with TensorBoard
+```bash
+poetry run tensorboard --logdir logs
+# Open http://localhost:6006
+```
+
+---
+
+## Defensive Training Features (Now Implemented)
+
+- ✅ **Mid-epoch checkpoints**: Every 1000 batches
+- ✅ **Gradient clipping**: Prevents exploding gradients
+- ✅ **CUDA cache clearing**: Every 500 batches
+- ✅ **Emergency save on crash**: Catches RuntimeError/KeyboardInterrupt
+- ✅ **Resume support**: `--resume` flag continues from checkpoint
+- ✅ **Batched MCTS**: 15x GPU speedup via batch inference
+
+---
+
 ### Phase 0: Training Infrastructure
-- [ ] TODO - Create `training/` directory structure
-- [ ] TODO - Setup Python environment (PyTorch + CUDA)
-- [ ] TODO - Verify GPU detection and CUDA works
+- [x] DONE - Create `training/` directory structure
+- [x] DONE - Setup Poetry environment (PyTorch + CUDA 12.5)
+- [x] DONE - Verify GPU detection and CUDA works
 
 ### Phase 1: Board Representation (Tensors)
-- [ ] TODO - Board state → tensor conversion (19×19 planes)
-- [ ] TODO - Feature planes:
-  - [ ] Black stones plane (1)
-  - [ ] White stones plane (1)
-  - [ ] Current player plane (1)
-  - [ ] Move history planes (8 moves × 2 colors = 16)
-  - [ ] Liberty count planes (1-4+ liberties = 4)
-  - [ ] Ko point plane (1)
-  - **Total: ~24 planes**
-- [ ] TODO - Tests for tensor conversion
+- [x] DONE - Board state → tensor conversion (17 planes)
+- [x] DONE - Feature planes:
+  - [x] Current player stones (1)
+  - [x] Opponent stones (1)
+  - [x] Current player indicator (1)
+  - [x] Move history planes (7 × 2 = 14)
+- [x] DONE - Tests for tensor conversion
 
 ### Phase 2: Neural Network Architecture
-- [ ] TODO - ResNet backbone (start simple: 6 blocks, 128 filters)
-- [ ] TODO - Policy head (outputs 361 move probabilities for 19×19)
-- [ ] TODO - Value head (outputs single scalar -1 to +1)
-- [ ] TODO - Tests for network forward pass
-- [ ] TODO - GPU memory check (fit in 12GB)
+- [x] DONE - ResNet backbone (configurable blocks/filters)
+- [x] DONE - Policy head (outputs move probabilities)
+- [x] DONE - Value head (outputs scalar -1 to +1)
+- [x] DONE - GPU memory check (fits in 12GB)
 
 ### Phase 3: Neural MCTS
-- [ ] TODO - MCTS node with neural network evaluation
-- [ ] TODO - UCB formula with policy prior: `Q + c * P * sqrt(N_parent) / (1 + N)`
-- [ ] TODO - Leaf evaluation via value head (no random rollouts)
-- [ ] TODO - MCTS search loop (configurable iterations)
-- [ ] TODO - Temperature-based move selection
-- [ ] TODO - Tests for MCTS correctness
+- [x] DONE - MCTS node with neural network evaluation
+- [x] DONE - UCB formula with policy prior
+- [x] DONE - Leaf evaluation via value head
+- [x] DONE - Batched MCTS for GPU efficiency (15x speedup)
+- [x] DONE - Temperature-based move selection
 
-### Phase 4: Self-Play Game Generation
-- [ ] TODO - Play game using neural MCTS
-- [ ] TODO - Record (board_state, mcts_policy, game_result) tuples
-- [ ] TODO - Save games to replay buffer (disk-based for large datasets)
-- [ ] TODO - Parallel game generation (multiple games simultaneously)
-- [ ] TODO - Tests for self-play games
+### Phase 4: Supervised Pre-Training (NEW)
+- [x] DONE - Download pro games database (CWI.nl, 93K games)
+- [x] DONE - SGF parser with tensor conversion
+- [x] DONE - Dataset caching (fast reload)
+- [x] DONE - Supervised training script
+- [ ] **IN PROGRESS** - Train on pro games (crashed, needs reboot)
 
-### Phase 5: Training Loop
-- [ ] TODO - Load replay buffer samples
-- [ ] TODO - Policy loss: cross-entropy vs MCTS policy
-- [ ] TODO - Value loss: MSE vs game outcome
-- [ ] TODO - Combined loss: `L = L_policy + L_value`
-- [ ] TODO - Optimizer: Adam or SGD with momentum
-- [ ] TODO - Learning rate schedule
-- [ ] TODO - Checkpointing (save every N steps)
-- [ ] TODO - Logging (TensorBoard or wandb)
-- [ ] TODO - Tests for training step
+### Phase 5: Self-Play Game Generation
+- [x] DONE - Play game using neural MCTS
+- [x] DONE - Record (board_state, mcts_policy, game_result) tuples
+- [x] DONE - Replay buffer implementation
+- [x] DONE - Game stats display (stones, groups, score)
+- [ ] TODO - Run self-play after supervised training
 
-### Phase 6: Evaluation & Iteration
-- [ ] TODO - Pit current model vs previous checkpoint
-- [ ] TODO - Win rate calculation (need >55% to promote)
-- [ ] TODO - Elo estimation (optional)
-- [ ] TODO - Automated training loop:
-  ```
-  while True:
-    1. Generate N self-play games
-    2. Add to replay buffer
-    3. Train for K steps
-    4. Checkpoint
-    5. Evaluate vs previous
-    6. If better → promote, else → continue
-  ```
+### Phase 6: Training Loop
+- [x] DONE - Load replay buffer samples
+- [x] DONE - Policy loss: cross-entropy
+- [x] DONE - Value loss: MSE
+- [x] DONE - Optimizer: Adam
+- [x] DONE - Checkpointing (every N steps + mid-epoch)
+- [x] DONE - TensorBoard logging
+- [x] DONE - Emergency checkpoint on crash
 
-### Phase 7: Export to Browser
-- [ ] TODO - Export PyTorch model to ONNX
-- [ ] TODO - Convert ONNX to TensorFlow.js
-- [ ] TODO - Test inference in browser
-- [ ] TODO - Integrate with existing game UI
+### Phase 7: Evaluation & Iteration
+- [x] DONE - Pit current model vs previous checkpoint
+- [x] DONE - Win rate calculation
+- [ ] TODO - Run full evaluation cycle
 
-### Phase 8: Difficulty Scaling
-- [ ] TODO - Weak AI: fewer MCTS iterations (8-16)
-- [ ] TODO - Medium AI: moderate iterations (64-128)
-- [ ] TODO - Strong AI: full iterations (400-800)
-- [ ] TODO - Multiple model sizes for different levels
+### Phase 8: Export to Browser
+- [ ] LATER - Export PyTorch model to ONNX
+- [ ] LATER - Convert ONNX to TensorFlow.js
+- [ ] LATER - Test inference in browser
 
 ---
 
-### Training Parameters (Starting Point)
-
-```python
-# Network
-BOARD_SIZE = 9  # Start with 9x9, scale to 19x19 later
-NUM_BLOCKS = 6  # Residual blocks
-NUM_FILTERS = 128  # Channels per conv layer
-INPUT_PLANES = 24  # Feature planes
-
-# MCTS
-MCTS_SIMULATIONS = 100  # Per move during self-play
-C_PUCT = 1.5  # Exploration constant
-TEMPERATURE = 1.0  # First 30 moves, then 0 (argmax)
-
-# Training
-BATCH_SIZE = 256
-LEARNING_RATE = 0.001
-REPLAY_BUFFER_SIZE = 100_000  # Position tuples
-GAMES_PER_ITERATION = 100
-TRAINING_STEPS_PER_ITERATION = 1000
-CHECKPOINT_INTERVAL = 500  # Steps
-
-# Hardware
-NUM_PARALLEL_GAMES = 4  # Depends on RAM
-```
-
----
-
-### Training Commands (To Be Implemented)
+### Training Commands
 
 ```bash
-# Setup
+# Setup (already done)
 cd training
-python -m venv venv
-source venv/bin/activate
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
-pip install numpy tensorboard
+poetry install
 
 # Verify GPU
-python -c "import torch; print(torch.cuda.is_available())"
+poetry run python -c "import torch; print(torch.cuda.is_available())"
 
-# Train
-python train.py --board-size 9 --iterations 100
+# Supervised training on pro games
+poetry run python train_supervised.py --board-size 19 --max-games 5000 --epochs 10
 
-# Evaluate
-python evaluate.py --model checkpoints/latest.pt --games 100
+# Self-play training (after supervised)
+poetry run python train.py --board-size 19 --resume checkpoints/supervised_best.pt --iterations 50
 
-# Export
-python export.py --model checkpoints/best.pt --output ../src/core/ai/models/
+# Quick test (smaller network)
+poetry run python train_supervised.py --board-size 19 --max-games 100 --epochs 3 --quick
 ```
 
 ---
 
-### Success Criteria
-
-**9x9 Board (First Target)**:
-- [ ] Network trains without crashing
-- [ ] Self-play games are legal (no rule violations)
-- [ ] Win rate vs random > 90%
-- [ ] Win rate vs previous model > 55% (improvement)
-- [ ] Training completes in < 24 hours for basic strength
-
-**19x19 Board (Later)**:
-- [ ] Scale network (more blocks, more filters)
-- [ ] Longer training (days not hours)
-- [ ] Competent play (doesn't build walls, understands territory)
-
----
-
-### File Structure
+### File Structure (Current)
 
 ```
 training/
-├── __init__.py
-├── config.py          # Hyperparameters
+├── pyproject.toml     # Poetry dependencies
+├── config.py          # Hyperparameters (DEFAULT, QUICK configs)
 ├── board.py           # Board representation (tensors)
 ├── model.py           # Neural network (ResNet + heads)
-├── mcts.py            # Neural MCTS
-├── selfplay.py        # Game generation
-├── train.py           # Training loop
-├── evaluate.py        # Model evaluation
-├── export.py          # ONNX/TFJS export
-├── utils.py           # Helpers
+├── mcts.py            # Neural MCTS (batched for GPU)
+├── selfplay.py        # Game generation + replay buffer
+├── train.py           # Self-play training loop
+├── train_supervised.py # Supervised training on pro games
+├── sgf_parser.py      # SGF file parser + dataset loader
+├── TRAIN.md           # Quick training instructions
 ├── checkpoints/       # Saved models
-├── games/             # Self-play game records
+├── dataset_cache/     # Cached parsed games (fast reload)
+├── data/games/        # Raw SGF files (93K games)
 └── logs/              # TensorBoard logs
 ```
 
