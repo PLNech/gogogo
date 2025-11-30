@@ -8,7 +8,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.tensorboard import SummaryWriter
 import numpy as np
 from config import Config, DEFAULT, QUICK
-from model import GoNet, create_model, save_checkpoint
+from model import GoNet, create_model, save_checkpoint, load_checkpoint
 from sgf_parser import load_sgf_dataset
 
 
@@ -33,8 +33,8 @@ class ProGameDataset(Dataset):
         return torch.FloatTensor(state), torch.LongTensor([action_idx])
 
 
-def train_step(model, optimizer, states, actions, device):
-    """Single supervised training step."""
+def train_step(model, optimizer, states, actions, device, grad_clip: float = 1.0):
+    """Single supervised training step with gradient clipping."""
     model.train()
 
     states = states.to(device)
@@ -49,9 +49,10 @@ def train_step(model, optimizer, states, actions, device):
     # No value loss in supervised training (we don't have game outcomes)
     total_loss = policy_loss
 
-    # Backward
+    # Backward with gradient clipping for stability
     optimizer.zero_grad()
     total_loss.backward()
+    torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
     optimizer.step()
 
     return {
@@ -87,6 +88,7 @@ def main():
     parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--quick', action='store_true', help='Use quick config for testing')
     parser.add_argument('--data-dir', type=str, default='data/games')
+    parser.add_argument('--resume', type=str, default=None, help='Resume from checkpoint')
     args = parser.parse_args()
 
     # Config
@@ -123,7 +125,13 @@ def main():
     print(f"Val: {len(val_dataset):,} positions")
 
     # Model
-    model = create_model(config)
+    start_step = 0
+    if args.resume:
+        model, start_step = load_checkpoint(args.resume, config)
+        config = model.config  # Use checkpoint's config
+        print(f"Resumed from {args.resume} at step {start_step}")
+    else:
+        model = create_model(config)
     print(f"Parameters: {sum(p.numel() for p in model.parameters()):,}")
 
     # Optimizer
@@ -140,44 +148,63 @@ def main():
     # Logging
     writer = SummaryWriter('logs')
 
-    global_step = 0
+    global_step = start_step
     best_accuracy = 0.0
 
-    for epoch in range(args.epochs):
-        print(f"\n=== Epoch {epoch + 1}/{args.epochs} ===")
+    try:
+        for epoch in range(args.epochs):
+            print(f"\n=== Epoch {epoch + 1}/{args.epochs} ===")
 
-        # Training
-        model.train()
-        epoch_loss = 0.0
-        num_batches = 0
+            # Training
+            model.train()
+            epoch_loss = 0.0
+            num_batches = 0
 
-        for batch_idx, (states, actions) in enumerate(train_loader):
-            losses = train_step(model, optimizer, states, actions, config.device)
+            for batch_idx, (states, actions) in enumerate(train_loader):
+                losses = train_step(model, optimizer, states, actions, config.device)
 
-            epoch_loss += losses['total_loss']
-            num_batches += 1
-            global_step += 1
+                epoch_loss += losses['total_loss']
+                num_batches += 1
+                global_step += 1
 
-            if batch_idx % 100 == 0:
-                print(f"  Batch {batch_idx}/{len(train_loader)}: loss={losses['total_loss']:.4f}")
+                if batch_idx % 100 == 0:
+                    print(f"  Batch {batch_idx}/{len(train_loader)}: loss={losses['total_loss']:.4f}")
 
-            writer.add_scalar('Loss/train', losses['total_loss'], global_step)
+                # Clear CUDA cache periodically to prevent fragmentation
+                if batch_idx > 0 and batch_idx % 500 == 0 and config.device == 'cuda':
+                    torch.cuda.empty_cache()
 
-        avg_loss = epoch_loss / num_batches
-        print(f"Epoch {epoch + 1} avg loss: {avg_loss:.4f}")
+                # Mid-epoch checkpoint every 1000 batches
+                if batch_idx > 0 and batch_idx % 1000 == 0:
+                    if config.device == 'cuda':
+                        torch.cuda.synchronize()  # Ensure all ops complete before saving
+                    save_checkpoint(model, optimizer, global_step, f'checkpoints/supervised_epoch_{epoch + 1}_batch_{batch_idx}.pt')
+                    print(f"  [Checkpoint saved: epoch {epoch + 1}, batch {batch_idx}]")
 
-        # Validation
-        val_accuracy = evaluate_accuracy(model, val_loader, config.device)
-        print(f"Validation accuracy: {val_accuracy:.1%}")
-        writer.add_scalar('Accuracy/val', val_accuracy, epoch + 1)
+                writer.add_scalar('Loss/train', losses['total_loss'], global_step)
 
-        # Save checkpoint
-        if val_accuracy > best_accuracy:
-            best_accuracy = val_accuracy
-            save_checkpoint(model, optimizer, global_step, 'checkpoints/supervised_best.pt')
-            print(f"New best accuracy: {val_accuracy:.1%}")
+            avg_loss = epoch_loss / num_batches
+            print(f"Epoch {epoch + 1} avg loss: {avg_loss:.4f}")
 
-        save_checkpoint(model, optimizer, global_step, f'checkpoints/supervised_epoch_{epoch + 1}.pt')
+            # Validation
+            val_accuracy = evaluate_accuracy(model, val_loader, config.device)
+            print(f"Validation accuracy: {val_accuracy:.1%}")
+            writer.add_scalar('Accuracy/val', val_accuracy, epoch + 1)
+
+            # Save checkpoint
+            if val_accuracy > best_accuracy:
+                best_accuracy = val_accuracy
+                save_checkpoint(model, optimizer, global_step, 'checkpoints/supervised_best.pt')
+                print(f"New best accuracy: {val_accuracy:.1%}")
+
+            save_checkpoint(model, optimizer, global_step, f'checkpoints/supervised_epoch_{epoch + 1}.pt')
+
+    except (RuntimeError, KeyboardInterrupt) as e:
+        print(f"\n[!] Training interrupted: {e}")
+        print("[!] Saving emergency checkpoint...")
+        save_checkpoint(model, optimizer, global_step, 'checkpoints/supervised_emergency.pt')
+        print("[!] Saved to checkpoints/supervised_emergency.pt")
+        raise
 
     # Final save
     save_checkpoint(model, optimizer, global_step, 'checkpoints/supervised_final.pt')
