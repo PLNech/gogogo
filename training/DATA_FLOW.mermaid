@@ -1,0 +1,59 @@
+%% GoGoGo Training Data Pipeline
+%% Shows how data flows from SGF files to training
+
+flowchart LR
+    subgraph DataSource["Data Source"]
+        SGF[("SGF Files<br/>93K pro games")]
+    end
+
+    subgraph Parser["SGF Parser"]
+        direction TB
+        PARSE["parse_sgf_file()"]
+        REPLAY["Replay game<br/>on Board"]
+        EXTRACT["Extract per-position:<br/>• board tensor<br/>• move played<br/>• value target<br/>• ownership map<br/>• opponent move"]
+    end
+
+    subgraph Cache["Dataset Cache"]
+        NPZ[("NPZ Cache<br/>~5GB for 300K pos")]
+    end
+
+    subgraph Dataset["PyTorch Dataset"]
+        direction TB
+        PROGAME["ProGameDataset"]
+        AUG["Augmentation<br/>8 symmetries"]
+        CURRICULUM["CurriculumSampler<br/>tactical focus"]
+    end
+
+    subgraph Training["Training Loop"]
+        direction TB
+        BATCH["DataLoader<br/>batch_size=256"]
+        FORWARD["Forward Pass"]
+        LOSS["Multi-head Loss"]
+        BACKWARD["Backward + Optim"]
+    end
+
+    subgraph Losses["Loss Components"]
+        L1["Policy NLL × 1.0"]
+        L2["Value MSE × 1.5"]
+        L3["Ownership BCE × 1.5/b²"]
+        L4["Opponent NLL × 0.15"]
+    end
+
+    SGF --> PARSE
+    PARSE --> REPLAY
+    REPLAY --> EXTRACT
+    EXTRACT --> NPZ
+    NPZ --> PROGAME
+    PROGAME --> AUG
+    AUG --> CURRICULUM
+    CURRICULUM --> BATCH
+    BATCH --> FORWARD
+    FORWARD --> LOSS
+    LOSS --> L1 & L2 & L3 & L4
+    L1 & L2 & L3 & L4 --> BACKWARD
+
+    style SGF fill:#e3f2fd
+    style NPZ fill:#fff8e1
+    style PROGAME fill:#e8f5e9
+    style FORWARD fill:#fce4ec
+    style LOSS fill:#ffebee

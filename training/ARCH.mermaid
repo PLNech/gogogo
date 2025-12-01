@@ -1,0 +1,120 @@
+%% GoGoGo Neural Network Architecture
+%% Based on KataGo improvements over AlphaZero
+%% See ARCH.md for detailed documentation
+
+graph TD
+    subgraph Input["Input Layer"]
+        IN[/"Board State<br/>27 planes × 19 × 19"/]
+    end
+
+    subgraph Backbone["Backbone (Pre-activation ResNet)"]
+        CONV_INIT["Initial Conv 3×3<br/>→ 128 filters"]
+
+        subgraph ResBlocks["6 Residual Blocks"]
+            RB1["ResBlock 1"]
+            RB2["ResBlock 2"]
+            RB3["ResBlock 3 + GlobalPool"]
+            RB4["ResBlock 4"]
+            RB5["ResBlock 5"]
+            RB6["ResBlock 6 + GlobalPool"]
+        end
+    end
+
+    subgraph PolicyHead["Policy Head"]
+        P_CONV["Conv 1×1 → 2ch"]
+        P_BN["BatchNorm + ReLU"]
+        P_FLAT["Flatten"]
+        P_FC["FC → 362<br/>(361 + pass)"]
+        P_SOFT["Log Softmax"]
+
+        OP_FC["Opponent FC → 362"]
+        OP_SOFT["Log Softmax"]
+    end
+
+    subgraph ValueHead["Value Head"]
+        V_CONV["Conv 1×1 → 1ch"]
+        V_BN["BatchNorm + ReLU"]
+        V_FLAT["Flatten"]
+        V_FC1["FC → 256"]
+        V_FC2["FC → 1"]
+        V_TANH["Tanh"]
+    end
+
+    subgraph OwnershipHead["Ownership Head (KataGo)"]
+        O_CONV["Conv 1×1 → 1ch"]
+        O_OUT[/"Output: 19×19<br/>logits → BCE"/]
+    end
+
+    subgraph Outputs["Training Outputs"]
+        POLICY[["Policy<br/>log π(a|s)"]]
+        VALUE[["Value<br/>v ∈ [-1,1]"]]
+        OWNERSHIP[["Ownership<br/>19×19 logits"]]
+        OPP_POLICY[["Opponent Policy<br/>log π_opp(a|s)"]]
+    end
+
+    subgraph Loss["Loss Function (KataGo weights)"]
+        L_P["Policy Loss<br/>NLL × 1.0"]
+        L_V["Value Loss<br/>MSE × 1.5"]
+        L_O["Ownership Loss<br/>BCE × 1.5/b²"]
+        L_OP["Opponent Loss<br/>NLL × 0.15"]
+        L_TOTAL["Total Loss"]
+    end
+
+    %% Connections
+    IN --> CONV_INIT
+    CONV_INIT --> RB1
+    RB1 --> RB2
+    RB2 --> RB3
+    RB3 --> RB4
+    RB4 --> RB5
+    RB5 --> RB6
+
+    RB6 --> P_CONV
+    P_CONV --> P_BN
+    P_BN --> P_FLAT
+    P_FLAT --> P_FC
+    P_FC --> P_SOFT
+    P_SOFT --> POLICY
+
+    P_FLAT --> OP_FC
+    OP_FC --> OP_SOFT
+    OP_SOFT --> OPP_POLICY
+
+    RB6 --> V_CONV
+    V_CONV --> V_BN
+    V_BN --> V_FLAT
+    V_FLAT --> V_FC1
+    V_FC1 --> V_FC2
+    V_FC2 --> V_TANH
+    V_TANH --> VALUE
+
+    RB6 --> O_CONV
+    O_CONV --> O_OUT
+    O_OUT --> OWNERSHIP
+
+    POLICY --> L_P
+    VALUE --> L_V
+    OWNERSHIP --> L_O
+    OPP_POLICY --> L_OP
+
+    L_P --> L_TOTAL
+    L_V --> L_TOTAL
+    L_O --> L_TOTAL
+    L_OP --> L_TOTAL
+
+    %% Styling
+    classDef input fill:#e1f5fe,stroke:#01579b
+    classDef backbone fill:#fff3e0,stroke:#e65100
+    classDef policy fill:#e8f5e9,stroke:#2e7d32
+    classDef value fill:#fce4ec,stroke:#c2185b
+    classDef ownership fill:#f3e5f5,stroke:#7b1fa2
+    classDef loss fill:#ffebee,stroke:#c62828
+    classDef output fill:#e0f2f1,stroke:#00695c
+
+    class IN input
+    class CONV_INIT,RB1,RB2,RB3,RB4,RB5,RB6 backbone
+    class P_CONV,P_BN,P_FLAT,P_FC,P_SOFT,OP_FC,OP_SOFT policy
+    class V_CONV,V_BN,V_FLAT,V_FC1,V_FC2,V_TANH value
+    class O_CONV,O_OUT ownership
+    class POLICY,VALUE,OWNERSHIP,OPP_POLICY output
+    class L_P,L_V,L_O,L_OP,L_TOTAL loss
