@@ -75,7 +75,8 @@ class ProGameDataset(Dataset):
 
     def __init__(self, states: np.ndarray, moves: np.ndarray, board_size: int,
                  values: np.ndarray = None, ownership: np.ndarray = None,
-                 opponent_moves: np.ndarray = None, augment: bool = False):
+                 opponent_moves: np.ndarray = None, score_bins: np.ndarray = None,
+                 augment: bool = False):
         # Pre-convert to tensors (faster than converting each time)
         self.states = torch.from_numpy(states).float()
         self.moves = moves
@@ -83,6 +84,7 @@ class ProGameDataset(Dataset):
         self.values = torch.from_numpy(values).float() if values is not None else None
         self.ownership = torch.from_numpy(ownership).float() if ownership is not None else None
         self.opponent_moves = opponent_moves  # Keep as numpy for augmentation
+        self.score_bins = torch.from_numpy(score_bins).long() if score_bins is not None else None
         self.augment = augment
 
     def __len__(self):
@@ -94,6 +96,7 @@ class ProGameDataset(Dataset):
         value = self.values[idx] if self.values is not None else None
         own = self.ownership[idx] if self.ownership is not None else None
         opp_move = self.opponent_moves[idx] if self.opponent_moves is not None else None
+        score_bin = self.score_bins[idx] if self.score_bins is not None else None
 
         # Data augmentation: random rotation/reflection (8 symmetries)
         if self.augment:
@@ -127,7 +130,7 @@ class ProGameDataset(Dataset):
         action_idx = move[0] * self.board_size + move[1]
 
         # Build result tuple based on what data is available
-        # Order: state, action, [value], [ownership], [opponent_action]
+        # Order: state, action, [value], [ownership], [opponent_action], [score_bin]
         result = [state, torch.tensor(action_idx, dtype=torch.long)]
         if value is not None:
             result.append(value)
@@ -136,13 +139,16 @@ class ProGameDataset(Dataset):
         if opp_move is not None:
             opp_action_idx = opp_move[0] * self.board_size + opp_move[1]
             result.append(torch.tensor(opp_action_idx, dtype=torch.long))
+        if score_bin is not None:
+            result.append(score_bin)
         return tuple(result) if len(result) > 2 else tuple(result)
 
 
 def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip: float = 1.0,
                value_targets=None, value_weight: float = 1.0, use_bce_value: bool = False,
                ownership_targets=None, board_size: int = 19,
-               opponent_actions=None, opponent_weight: float = 0.15):
+               opponent_actions=None, opponent_weight: float = 0.15,
+               score_targets=None, score_weight: float = 0.02):
     """Single supervised training step with mixed precision and gradient clipping.
 
     Args:
@@ -154,6 +160,8 @@ def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip
         board_size: Board size for ownership loss weighting (KataGo uses 1.5/b²)
         opponent_actions: Optional opponent move targets (KataGo: 1.30x speedup)
         opponent_weight: Weight for opponent policy loss (KataGo uses 0.15)
+        score_targets: Optional score bin targets (0-100, -1 for invalid)
+        score_weight: Weight for score distribution loss (KataGo uses 0.02)
     """
     model.train()
 
@@ -165,26 +173,33 @@ def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip
         ownership_targets = ownership_targets.to(device, non_blocking=True)
     if opponent_actions is not None:
         opponent_actions = opponent_actions.to(device, non_blocking=True)
+    if score_targets is not None:
+        score_targets = score_targets.to(device, non_blocking=True)
 
     optimizer.zero_grad(set_to_none=True)  # Faster than zero_grad()
 
     # Determine what outputs we need
     return_ownership = ownership_targets is not None
     return_opponent = opponent_actions is not None
+    return_score = score_targets is not None
 
     # Mixed precision forward pass
     if scaler is not None:
         with autocast(device_type='cuda'):
             # Get model outputs based on what we need
             outputs = model(states, return_ownership=return_ownership,
-                           return_opponent_policy=return_opponent)
-            if return_ownership or return_opponent:
+                           return_opponent_policy=return_opponent,
+                           return_score_dist=return_score)
+            if return_ownership or return_opponent or return_score:
                 log_policies, values = outputs[0], outputs[1]
                 idx = 2
                 ownership_logits = outputs[idx] if return_ownership else None
                 if return_ownership:
                     idx += 1
                 opp_log_policies = outputs[idx] if return_opponent else None
+                if return_opponent:
+                    idx += 1
+                score_logits = outputs[idx] if return_score else None
             else:
                 log_policies, values = outputs
 
@@ -224,8 +239,23 @@ def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip
             else:
                 opponent_loss = torch.tensor(0.0, device=device)
 
+            # Score distribution loss (cross-entropy) if targets provided
+            # KataGo: weight = 0.02, richer signal than just win/loss
+            # Targets: 0-100 for valid scores, -1 for invalid (resign games)
+            if score_targets is not None:
+                # Mask out invalid scores (-1)
+                valid_mask = score_targets >= 0
+                if valid_mask.sum() > 0:
+                    score_loss = F.cross_entropy(
+                        score_logits[valid_mask], score_targets[valid_mask])
+                else:
+                    score_loss = torch.tensor(0.0, device=device)
+            else:
+                score_loss = torch.tensor(0.0, device=device)
+
             total_loss = (policy_loss + value_weight * value_loss +
-                         ownership_loss + opponent_weight * opponent_loss)
+                         ownership_loss + opponent_weight * opponent_loss +
+                         score_weight * score_loss)
 
         # Mixed precision backward
         scaler.scale(total_loss).backward()
@@ -236,14 +266,18 @@ def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip
     else:
         # Standard precision
         outputs = model(states, return_ownership=return_ownership,
-                       return_opponent_policy=return_opponent)
-        if return_ownership or return_opponent:
+                       return_opponent_policy=return_opponent,
+                       return_score_dist=return_score)
+        if return_ownership or return_opponent or return_score:
             log_policies, values = outputs[0], outputs[1]
             idx = 2
             ownership_logits = outputs[idx] if return_ownership else None
             if return_ownership:
                 idx += 1
             opp_log_policies = outputs[idx] if return_opponent else None
+            if return_opponent:
+                idx += 1
+            score_logits = outputs[idx] if return_score else None
         else:
             log_policies, values = outputs
 
@@ -274,8 +308,19 @@ def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip
         else:
             opponent_loss = torch.tensor(0.0, device=device)
 
+        if score_targets is not None:
+            valid_mask = score_targets >= 0
+            if valid_mask.sum() > 0:
+                score_loss = F.cross_entropy(
+                    score_logits[valid_mask], score_targets[valid_mask])
+            else:
+                score_loss = torch.tensor(0.0, device=device)
+        else:
+            score_loss = torch.tensor(0.0, device=device)
+
         total_loss = (policy_loss + value_weight * value_loss +
-                     ownership_loss + opponent_weight * opponent_loss)
+                     ownership_loss + opponent_weight * opponent_loss +
+                     score_weight * score_loss)
 
         total_loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
@@ -286,6 +331,7 @@ def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip
         'value_loss': value_loss.item() if value_targets is not None else 0.0,
         'ownership_loss': ownership_loss.item() if ownership_targets is not None else 0.0,
         'opponent_loss': opponent_loss.item() if opponent_actions is not None else 0.0,
+        'score_loss': score_loss.item() if score_targets is not None else 0.0,
         'total_loss': total_loss.item()
     }
 
@@ -347,6 +393,10 @@ def main():
                         help='Network backbone: resnet (default) or mobilenetv2 (Cazenave 2020)')
     parser.add_argument('--mobilenet-expansion', type=int, default=4,
                         help='MobileNetV2 expansion factor (default: 4)')
+    parser.add_argument('--score-dist', action='store_true',
+                        help='Train score distribution head (KataGo: richer signal than win/loss)')
+    parser.add_argument('--score-weight', type=float, default=0.02,
+                        help='Weight for score distribution loss (default: 0.02, KataGo uses 0.02)')
     args = parser.parse_args()
 
     # Config
@@ -399,6 +449,8 @@ def main():
         print(f"BCE value loss: ENABLED (Cazenave 2020)")
     if args.wed:
         print(f"WED sampling: ENABLED (each game counts equally)")
+    if args.score_dist:
+        print(f"Score distribution: ENABLED (weight={args.score_weight})")
 
     # Load dataset
     print(f"\nLoading pro games from {args.data_dir}...")
@@ -417,16 +469,18 @@ def main():
         include_tactical_mask=include_tactical_mask,
         include_ownership=args.ownership,
         include_opponent_move=args.opponent_move,
-        include_game_weight=args.wed
+        include_game_weight=args.wed,
+        include_score=args.score_dist
     )
 
     # Unpack results based on what was requested
-    # Order: states, moves, [values], [tactical_mask], [ownership], [opponent_moves], [sample_weights]
+    # Order: states, moves, [values], [tactical_mask], [ownership], [opponent_moves], [sample_weights], [score_bins]
     idx = 0
     states = load_result[idx]; idx += 1
     moves = load_result[idx]; idx += 1
     values = None
     sample_weights = None
+    score_bins = None
     if args.train_value:
         values = load_result[idx]; idx += 1
     if include_tactical_mask:
@@ -437,6 +491,8 @@ def main():
         opponent_moves = load_result[idx]; idx += 1
     if args.wed:
         sample_weights = load_result[idx]; idx += 1
+    if args.score_dist:
+        score_bins = load_result[idx]; idx += 1
 
     if len(states) == 0:
         print("No games found!")
@@ -472,6 +528,12 @@ def main():
     else:
         train_weights = None
 
+    # Split score bins if using score distribution
+    if score_bins is not None:
+        train_score_bins, val_score_bins = score_bins[:val_split], score_bins[val_split:]
+    else:
+        train_score_bins, val_score_bins = None, None
+
     # Split tactical mask if using curriculum
     train_tactical_mask = None
     if tactical_mask is not None:
@@ -479,10 +541,12 @@ def main():
 
     train_dataset = ProGameDataset(train_states, train_moves, config.board_size,
                                    values=train_values, ownership=train_ownership,
-                                   opponent_moves=train_opponent, augment=True)
+                                   opponent_moves=train_opponent, score_bins=train_score_bins,
+                                   augment=True)
     val_dataset = ProGameDataset(val_states, val_moves, config.board_size,
                                  values=val_values, ownership=val_ownership,
-                                 opponent_moves=val_opponent, augment=False)
+                                 opponent_moves=val_opponent, score_bins=val_score_bins,
+                                 augment=False)
 
     # Optimize data loading for i9 (20 cores) + RTX 4080 (12GB)
     num_workers = min(8, os.cpu_count() or 4)  # Use 8 workers for parallel loading
@@ -608,7 +672,7 @@ def main():
 
             for batch_idx, batch in enumerate(train_loader):
                 # Unpack batch based on what data was requested
-                # Order from ProGameDataset: (state, action, [value], [ownership])
+                # Order from ProGameDataset: (state, action, [value], [ownership], [opponent_action], [score_bin])
                 idx = 0
                 states = batch[idx]; idx += 1
                 actions = batch[idx]; idx += 1
@@ -616,6 +680,7 @@ def main():
                 value_targets = None
                 ownership_targets = None
                 opponent_actions = None
+                score_targets = None
 
                 if args.train_value:
                     value_targets = batch[idx]; idx += 1
@@ -623,6 +688,8 @@ def main():
                     ownership_targets = batch[idx]; idx += 1
                 if args.opponent_move:
                     opponent_actions = batch[idx]; idx += 1
+                if args.score_dist:
+                    score_targets = batch[idx]; idx += 1
 
                 losses = train_step(model, optimizer, states, actions, config.device,
                                    scaler=scaler, value_targets=value_targets,
@@ -631,7 +698,9 @@ def main():
                                    ownership_targets=ownership_targets,
                                    board_size=config.board_size,
                                    opponent_actions=opponent_actions,
-                                   opponent_weight=args.opponent_weight)
+                                   opponent_weight=args.opponent_weight,
+                                   score_targets=score_targets,
+                                   score_weight=args.score_weight)
                 scheduler.step()
 
                 epoch_loss += losses['total_loss']
@@ -644,7 +713,7 @@ def main():
 
                 if batch_idx % 100 == 0:
                     loss_str = f"loss={losses['total_loss']:.4f}"
-                    if args.train_value or args.ownership or args.opponent_move:
+                    if args.train_value or args.ownership or args.opponent_move or args.score_dist:
                         loss_str += f" (p={losses['policy_loss']:.3f}"
                         if args.train_value:
                             loss_str += f" v={losses['value_loss']:.3f}"
@@ -652,6 +721,8 @@ def main():
                             loss_str += f" o={losses['ownership_loss']:.3f}"
                         if args.opponent_move:
                             loss_str += f" op={losses['opponent_loss']:.3f}"
+                        if args.score_dist:
+                            loss_str += f" sc={losses['score_loss']:.3f}"
                         loss_str += ")"
                     print(f"  Batch {batch_idx}/{len(train_loader)}: {loss_str} lr={lr:.2e}")
 

@@ -180,7 +180,16 @@ class GoNet(nn.Module):
         # Output is logits; use BCE loss with targets mapped from [-1,1] to [0,1]
         self.ownership_conv = nn.Conv2d(config.num_filters, 1, 1)
 
-    def forward(self, x, return_ownership: bool = False, return_opponent_policy: bool = False):
+        # Score distribution head (KataGo: richer signal than win/loss)
+        # Predicts P(final_score = k) for k in [-50, +50] (101 bins)
+        # Cross-entropy loss against actual score bin
+        self.score_bins = 101  # -50 to +50
+        self.score_conv = nn.Conv2d(config.num_filters, 1, 1, bias=False)
+        self.score_bn = nn.BatchNorm2d(1)
+        self.score_fc = nn.Linear(config.board_size ** 2, self.score_bins)
+
+    def forward(self, x, return_ownership: bool = False, return_opponent_policy: bool = False,
+                return_score_dist: bool = False):
         # x: (batch, planes, size, size)
         x = F.relu(self.bn_init(self.conv_init(x)))
 
@@ -204,13 +213,19 @@ class GoNet(nn.Module):
         value = torch.tanh(self.value_fc2(v))
 
         # Build return tuple based on what was requested
-        if return_ownership or return_opponent_policy:
+        if return_ownership or return_opponent_policy or return_score_dist:
             result = [policy, value]
             if return_ownership:
                 ownership = self.ownership_conv(x)
                 result.append(ownership)
             if return_opponent_policy:
                 result.append(opponent_policy)
+            if return_score_dist:
+                # Score distribution head
+                s = F.relu(self.score_bn(self.score_conv(x)))
+                s = s.view(s.size(0), -1)
+                score_logits = self.score_fc(s)  # Raw logits for cross-entropy
+                result.append(score_logits)
             return tuple(result)
 
         return policy, value
