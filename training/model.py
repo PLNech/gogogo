@@ -74,8 +74,67 @@ class ResBlock(nn.Module):
         return x
 
 
+class MobileNetV2Block(nn.Module):
+    """MobileNetV2-style inverted residual block (Cazenave 2020).
+
+    Key differences from standard ResNet:
+    - Inverted bottleneck: expand → depthwise → project (instead of squeeze)
+    - Depthwise separable convolutions: more efficient
+    - Linear bottleneck: no ReLU at the end (preserves information)
+    - ReLU6 instead of ReLU (better for quantization, empirically works well)
+
+    Reference: https://arxiv.org/abs/2001.09613
+    """
+
+    def __init__(self, channels: int, expansion: int = 4, use_global_pool: bool = False):
+        super().__init__()
+        expanded = channels * expansion
+
+        # 1. Expand: 1x1 conv to increase channels
+        self.expand_conv = nn.Conv2d(channels, expanded, 1, bias=False)
+        self.expand_bn = nn.BatchNorm2d(expanded)
+
+        # 2. Depthwise: 3x3 depthwise conv (groups = channels)
+        self.depthwise_conv = nn.Conv2d(expanded, expanded, 3, padding=1, groups=expanded, bias=False)
+        self.depthwise_bn = nn.BatchNorm2d(expanded)
+
+        # 3. Project: 1x1 conv to reduce channels (linear bottleneck - no activation)
+        self.project_conv = nn.Conv2d(expanded, channels, 1, bias=False)
+        self.project_bn = nn.BatchNorm2d(channels)
+
+        # Optional global pooling
+        self.global_pool = GlobalPoolingBlock(channels) if use_global_pool else None
+
+    def forward(self, x):
+        residual = x
+
+        # Expand
+        x = F.relu6(self.expand_bn(self.expand_conv(x)))
+
+        # Depthwise conv
+        x = F.relu6(self.depthwise_bn(self.depthwise_conv(x)))
+
+        # Project (linear - no activation!)
+        x = self.project_bn(self.project_conv(x))
+
+        # Add residual
+        x = x + residual
+
+        # Optional global pooling
+        if self.global_pool is not None:
+            x = self.global_pool(x)
+
+        return x
+
+
 class GoNet(nn.Module):
-    """AlphaZero-style network for Go with KataGo improvements."""
+    """AlphaZero-style network for Go with KataGo improvements.
+
+    Backbone options:
+    - "resnet": Standard pre-activation residual blocks
+    - "mobilenetv2": MobileNetV2-style inverted residual blocks (Cazenave 2020)
+                    More parameter-efficient with depthwise separable convolutions
+    """
 
     def __init__(self, config: Config):
         super().__init__()
@@ -89,10 +148,18 @@ class GoNet(nn.Module):
 
         # Residual tower with global pooling every few blocks
         self.res_blocks = nn.ModuleList()
+        backbone = getattr(config, 'backbone', 'resnet')  # Default to resnet for compatibility
+        expansion = getattr(config, 'mobilenet_expansion', 4)
+
         for i in range(config.num_blocks):
             # Add global pooling every 3rd block (or at least once)
             use_global = (i > 0 and i % 3 == 0) or (i == config.num_blocks - 1)
-            self.res_blocks.append(ResBlock(config.num_filters, use_global_pool=use_global))
+
+            if backbone == 'mobilenetv2':
+                self.res_blocks.append(MobileNetV2Block(
+                    config.num_filters, expansion=expansion, use_global_pool=use_global))
+            else:  # resnet
+                self.res_blocks.append(ResBlock(config.num_filters, use_global_pool=use_global))
 
         # Policy head (shared conv, separate FC for player and opponent)
         self.policy_conv = nn.Conv2d(config.num_filters, 2, 1, bias=False)

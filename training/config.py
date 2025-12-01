@@ -6,7 +6,10 @@ class Config:
     board_size: int = 13  # Sweet spot: 19x19 too big, 9x9 too small
     num_blocks: int = 6
     num_filters: int = 128
-    input_planes: int = 17
+    input_planes: int = 17  # 17 basic, 27 with tactical features
+    tactical_features: bool = False  # Enable neuro-symbolic tactical planes
+    backbone: str = "resnet"  # "resnet" or "mobilenetv2" (Cazenave 2020)
+    mobilenet_expansion: int = 4  # Expansion factor for MobileNetV2 blocks
     mcts_simulations: int = 100
     c_puct: float = 1.5
     temperature: float = 1.0

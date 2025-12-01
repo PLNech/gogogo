@@ -343,6 +343,10 @@ def main():
                         help='Use BCE loss for value head (Cazenave 2020: more robust on small networks)')
     parser.add_argument('--wed', action='store_true',
                         help='Weight by Episode Duration - each game counts equally (Cazenave 2020)')
+    parser.add_argument('--backbone', type=str, default='resnet', choices=['resnet', 'mobilenetv2'],
+                        help='Network backbone: resnet (default) or mobilenetv2 (Cazenave 2020)')
+    parser.add_argument('--mobilenet-expansion', type=int, default=4,
+                        help='MobileNetV2 expansion factor (default: 4)')
     args = parser.parse_args()
 
     # Config
@@ -367,11 +371,18 @@ def main():
     else:
         config.input_planes = 17
 
+    # Backbone selection
+    config.backbone = args.backbone
+    config.mobilenet_expansion = args.mobilenet_expansion
+
     print(f"Device: {config.device}")
     print(f"Board size: {config.board_size}")
     print(f"Batch size: {config.batch_size}")
     print(f"Input planes: {config.input_planes} ({'tactical' if config.tactical_features else 'basic'})")
-    print(f"Network: {config.num_blocks} blocks, {config.num_filters} filters")
+    backbone_str = config.backbone
+    if config.backbone == 'mobilenetv2':
+        backbone_str += f" (expansion={config.mobilenet_expansion})"
+    print(f"Network: {config.num_blocks} blocks, {config.num_filters} filters, {backbone_str} backbone")
     if args.train_value:
         print(f"Value training: ENABLED (weight={args.value_weight})")
     if args.curriculum:
