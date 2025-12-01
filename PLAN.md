@@ -511,37 +511,114 @@
 
 ---
 
-## 🚨 CURRENT STATE (2025-11-30)
+## 🚨 CURRENT STATE (2025-12-01)
 
-**Status**: GPU crashed during overnight training. REBOOT REQUIRED.
+**Status**: KataGo 2019 techniques implemented. Now implementing post-2019 SOTA improvements.
 
-### What Happened:
-- Supervised training ran for ~16 min (batch 2400/3735)
-- CUDA error: "unspecified launch failure" (likely GPU overheating/driver instability)
-- GPU now in bad state, can't reset without reboot
+### KataGo Techniques Implemented ✅
+- [x] DONE - Curriculum learning (tactical positions first)
+- [x] DONE - Ownership head (1.65× speedup, 361× more signal)
+- [x] DONE - Opponent move prediction (1.30× speedup)
+- [x] DONE - Architecture diagrams (ARCH.mermaid, DATA_FLOW.mermaid)
 
 ### What's Been Done:
 - [x] DONE - Training infrastructure created
 - [x] DONE - Pro games downloaded (93,164 games from CWI.nl)
-- [x] DONE - SGF parser with caching
-- [x] DONE - Supervised training script
+- [x] DONE - SGF parser with caching + ownership + opponent moves
+- [x] DONE - Supervised training script with all aux targets
 - [x] DONE - Batched MCTS (15x speedup)
 - [x] DONE - Defensive training practices added
 
-### Available Checkpoints:
+### Current Test Command:
+```bash
+cd training && poetry run python train_supervised.py \
+  --tactical-features --curriculum --ownership --opponent-move \
+  --epochs 20 --max-positions 300000
 ```
-checkpoints/
-├── supervised_best.pt       # From --quick run (4 blocks, 64 filters)
-├── supervised_epoch_1.pt
-├── supervised_epoch_2.pt
-├── supervised_epoch_3.pt
-└── supervised_final.pt
-```
-Note: These are from the `--quick` test run. The full training (6 blocks, 128 filters) crashed before saving.
 
 ---
 
-## 📋 NEXT STEPS AFTER REBOOT
+## 🔬 POST-KATAGO SOTA IMPROVEMENTS (2019-2025 Research)
+
+Based on comprehensive literature review. Sources in ARCH.md.
+
+### Phase A: Quick Wins (1-2 days each) 🟢
+
+**A.1: NN Evaluation Cache**
+- [ ] TODO - Cache `model(state)` keyed by board hash
+- [ ] TODO - Reuse across MCTS playouts and tree reuse between moves
+- Source: [Speculative MCTS, NeurIPS 2024] - up to 5.8× speedup
+- Complexity: Low (dict + hash function)
+
+**A.2: WED (Weight by Episode Duration)**
+- [ ] TODO - Weight samples: `mean_episode_length / this_episode_length`
+- [ ] TODO - Each *game* contributes equally, not each *position*
+- Source: [Manipulating Distributions, 2020] - "single most effective technique"
+- Complexity: Very low (one line in loss)
+
+**A.3: BCE Value Loss**
+- [ ] TODO - Replace `MSE(value, target)` with `BCE(sigmoid(value), (target+1)/2)`
+- Source: [Cazenave MobileNet, 2020] - more robust on small networks
+- Complexity: Very low (change loss function)
+
+### Phase B: Medium Effort (1-2 weeks each) 🟡
+
+**B.1: MobileNetV2 Backbone** ⭐ HIGH PRIORITY
+- [ ] TODO - Replace ResBlocks with inverted bottleneck blocks
+- [ ] TODO - Pattern: `x → Conv1x1(expand 4x) → DepthwiseConv3x3 → Conv1x1(project) → + x`
+- [ ] TODO - Keep 64-96 channels, 20-30 blocks
+- Source: [Cazenave MobileNet, 2020] - beats larger ResNets in playing strength
+- Complexity: Medium (rewrite ResBlock class)
+
+**B.2: Score Distribution Head**
+- [ ] TODO - Add head predicting P(final_score = k) for k in [-50, +50]
+- [ ] TODO - Cross-entropy loss against actual score
+- Source: [KataGo 2019] - we skipped this, should add
+- Complexity: Low (one conv head + softmax over 101 bins)
+
+**B.3: LATE Simulation Scheduling**
+- [ ] LATER - Early training: more playouts for late-game moves
+- [ ] LATER - Gradually shift budget to earlier moves
+- [ ] LATER - Weight loss by `w(generation, move_index)`
+- Source: [LATE, ECAI 2023] - beats KataGo's RPC, 20-80% compute savings
+- Complexity: Medium (modify self-play loop)
+
+**B.4: Go-Exploit State Archive**
+- [ ] LATER - Archive positions with high MCTS variance / policy disagreement
+- [ ] LATER - Start 30-50% of games from archived states
+- Source: [Go-Exploit, 2023] - more sample-efficient than standard AlphaZero
+- Complexity: Medium (archive buffer + selection logic)
+
+### Phase C: Ambitious (weeks-months) 🔴
+
+**C.1: ResTNet Hybrid Architecture**
+- [ ] LATER - Interleave ResNet (R) and Transformer (T) blocks
+- [ ] LATER - Pattern: RRRTRRTRRT (10 blocks)
+- [ ] LATER - Relative positional attention, 2D↔1D conversion
+- Source: [ResTNet, IJCAI 2025] - win rate 53.6% → 60.9% vs KataGo
+- Complexity: High (transformer blocks)
+
+**C.2: EfficientFormer Integration**
+- [ ] LATER - Replace some conv blocks with EfficientFormer meta-blocks
+- [ ] LATER - Keep 19×19 resolution (no patching)
+- Source: [ViT for Go, 2023] - beats 20×256 ResNet
+- Complexity: High (new architecture family)
+
+**C.3: Lightweight Reanalyze**
+- [ ] LATER - Periodically re-run MCTS on old buffer positions
+- [ ] LATER - Update policy/value targets in place
+- Source: [MuZero Unplugged, 2021] - improves data efficiency
+- Complexity: Medium (background job)
+
+**C.4: Full MuZero Dynamics**
+- [ ] LATER - Learn transition model for planning
+- [ ] LATER - Self-supervised latent consistency loss
+- Source: [EfficientZero, NeurIPS 2021] - 500× sample efficiency
+- Complexity: Very high (paradigm shift)
+
+---
+
+## 📋 NEXT STEPS
 
 ### Step 1: Reset GPU
 ```bash
