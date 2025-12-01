@@ -551,22 +551,24 @@ Based on comprehensive literature review. Sources in ARCH.md.
 - Complexity: Low (dict + hash function)
 
 **A.2: WED (Weight by Episode Duration)**
-- [ ] TODO - Weight samples: `mean_episode_length / this_episode_length`
-- [ ] TODO - Each *game* contributes equally, not each *position*
+- [x] DONE - Weight samples: `1 / game_length` so each game counts equally
+- [x] DONE - WeightedRandomSampler for position sampling (--wed flag)
 - Source: [Manipulating Distributions, 2020] - "single most effective technique"
 - Complexity: Very low (one line in loss)
 
 **A.3: BCE Value Loss**
-- [ ] TODO - Replace `MSE(value, target)` with `BCE(sigmoid(value), (target+1)/2)`
+- [x] DONE - Replace MSE with BCE: `BCE((tanh_output+1)/2, (target+1)/2)`
+- [x] DONE - Disable autocast for BCE (not autocast-safe)
 - Source: [Cazenave MobileNet, 2020] - more robust on small networks
 - Complexity: Very low (change loss function)
 
 ### Phase B: Medium Effort (1-2 weeks each) 🟡
 
 **B.1: MobileNetV2 Backbone** ⭐ HIGH PRIORITY
-- [ ] TODO - Replace ResBlocks with inverted bottleneck blocks
-- [ ] TODO - Pattern: `x → Conv1x1(expand 4x) → DepthwiseConv3x3 → Conv1x1(project) → + x`
-- [ ] TODO - Keep 64-96 channels, 20-30 blocks
+- [x] DONE - MobileNetV2Block: expand → depthwise → project pattern
+- [x] DONE - ReLU6 activation, linear bottleneck (no final ReLU)
+- [x] DONE - CLI: `--backbone mobilenetv2 --mobilenet-expansion 4`
+- [x] DONE - 38% parameter reduction (2.5M → 1.5M params)
 - Source: [Cazenave MobileNet, 2020] - beats larger ResNets in playing strength
 - Complexity: Medium (rewrite ResBlock class)
 
