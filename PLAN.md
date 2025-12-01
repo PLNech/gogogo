@@ -545,8 +545,9 @@ Based on comprehensive literature review. Sources in ARCH.md.
 ### Phase A: Quick Wins (1-2 days each) 🟢
 
 **A.1: NN Evaluation Cache**
-- [ ] TODO - Cache `model(state)` keyed by board hash
-- [ ] TODO - Reuse across MCTS playouts and tree reuse between moves
+- [x] DONE - Zobrist hashing for Board (fast 64-bit position hash)
+- [x] DONE - NNCache class with LRU eviction (100K entries default)
+- [x] DONE - Integrated into MCTS search (cache hits skip batch eval)
 - Source: [Speculative MCTS, NeurIPS 2024] - up to 5.8× speedup
 - Complexity: Low (dict + hash function)
 
