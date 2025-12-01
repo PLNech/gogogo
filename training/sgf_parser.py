@@ -46,7 +46,8 @@ def parse_game_result(content: str) -> Optional[float]:
 
 def parse_sgf_file(sgf_path: str, target_size: int = 19, tactical_features: bool = False,
                    include_value: bool = False, include_ownership: bool = False,
-                   include_opponent_move: bool = False) -> Optional[List[Tuple]]:
+                   include_opponent_move: bool = False,
+                   include_game_weight: bool = False) -> Optional[List[Tuple]]:
     """Parse SGF file and extract training samples.
 
     Returns list of tuples (fields depend on options):
@@ -54,6 +55,7 @@ def parse_sgf_file(sgf_path: str, target_size: int = 19, tactical_features: bool
         - With value: adds game_result
         - With ownership: adds ownership_map (same for all positions in game)
         - With opponent_move: adds (opp_row, opp_col) - opponent's response
+        - With game_weight: adds 1/game_length (for WED sampling)
 
     Args:
         tactical_features: If True, include neuro-symbolic tactical planes (27 total)
@@ -62,6 +64,8 @@ def parse_sgf_file(sgf_path: str, target_size: int = 19, tactical_features: bool
                           (KataGo's key insight: 361x more signal per game)
         include_opponent_move: If True, include opponent's next move for auxiliary target
                               (KataGo: 1.30x speedup from predicting opponent's response)
+        include_game_weight: If True, include 1/game_length for WED sampling
+                            (Cazenave 2020: each game counts equally regardless of length)
     """
     try:
         with open(sgf_path, 'r', encoding='utf-8', errors='ignore') as f:
@@ -139,6 +143,10 @@ def parse_sgf_file(sgf_path: str, target_size: int = 19, tactical_features: bool
     samples = []
     n_positions = len(positions_before_move)
 
+    # WED: Weight by Episode Duration - each game counts equally
+    # Weight = 1/game_length so all games contribute equally to training
+    game_weight = 1.0 / n_positions if include_game_weight else None
+
     for i, (board_tensor, row, col, current_player) in enumerate(positions_before_move):
         sample = [board_tensor, row, col]
 
@@ -164,6 +172,9 @@ def parse_sgf_file(sgf_path: str, target_size: int = 19, tactical_features: bool
                 # Last position - skip it when opponent move is required
                 continue
 
+        if include_game_weight:
+            sample.append(game_weight)
+
         samples.append(tuple(sample))
 
     return samples
@@ -188,7 +199,7 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
                      use_cache: bool = True, tactical_features: bool = False,
                      max_positions: int = None, include_value: bool = False,
                      include_tactical_mask: bool = False, include_ownership: bool = False,
-                     include_opponent_move: bool = False):
+                     include_opponent_move: bool = False, include_game_weight: bool = False):
     """Load all SGF files from directory and create training dataset.
 
     Args:
@@ -200,6 +211,8 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
                           (KataGo's key insight: 361x more signal per game)
         include_opponent_move: If True, also return opponent's next move for auxiliary target
                               (KataGo: 1.30x speedup)
+        include_game_weight: If True, also return sample weights for WED sampling
+                            (Cazenave 2020: each game counts equally regardless of length)
 
     Returns:
         states: (N, planes, size, size) board states
@@ -208,6 +221,7 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
         tactical_mask: (N,) boolean mask (only if include_tactical_mask=True)
         ownership: (N, size, size) ownership maps (only if include_ownership=True)
         opponent_moves: (N, 2) opponent move coordinates (only if include_opponent_move=True)
+        sample_weights: (N,) sample weights for WED (only if include_game_weight=True)
     """
     # Check cache first
     cache_dir = Path('dataset_cache')
@@ -218,7 +232,8 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
     mask_suffix = "_mask" if include_tactical_mask else ""
     ownership_suffix = "_ownership" if include_ownership else ""
     opponent_suffix = "_opponent" if include_opponent_move else ""
-    cache_key = f"size{target_size}_max{max_games or 'all'}{tactical_suffix}{pos_suffix}{value_suffix}{mask_suffix}{ownership_suffix}{opponent_suffix}"
+    wed_suffix = "_wed" if include_game_weight else ""
+    cache_key = f"size{target_size}_max{max_games or 'all'}{tactical_suffix}{pos_suffix}{value_suffix}{mask_suffix}{ownership_suffix}{opponent_suffix}{wed_suffix}"
     cache_file = cache_dir / f"{cache_key}.npz"
 
     if use_cache and cache_file.exists():
@@ -233,6 +248,8 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
             result.append(data['ownership'])
         if include_opponent_move:
             result.append(data['opponent_moves'])
+        if include_game_weight:
+            result.append(data['sample_weights'])
         return tuple(result) if len(result) > 2 else (result[0], result[1])
 
     sgf_files = list(Path(data_dir).rglob('*.sgf'))
@@ -246,20 +263,22 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
     all_tactical = [] if include_tactical_mask else None
     all_ownership = [] if include_ownership else None
     all_opponent_moves = [] if include_opponent_move else None
+    all_sample_weights = [] if include_game_weight else None
     position_limit_reached = False
 
     feature_type = "tactical (27 planes)" if tactical_features else "basic (17 planes)"
     value_str = " + value targets" if include_value else ""
     ownership_str = " + ownership" if include_ownership else ""
     opponent_str = " + opponent move" if include_opponent_move else ""
+    wed_str = " + WED weights" if include_game_weight else ""
     n_workers = min(cpu_count(), 16)  # Use up to 16 workers
     limit_str = f", max {max_positions} positions" if max_positions else ""
-    print(f"Loading {len(sgf_files)} SGF files with {feature_type}{value_str}{ownership_str}{opponent_str} using {n_workers} workers{limit_str}...")
+    print(f"Loading {len(sgf_files)} SGF files with {feature_type}{value_str}{ownership_str}{opponent_str}{wed_str} using {n_workers} workers{limit_str}...")
 
     # Create partial function with fixed arguments
     parse_fn = partial(parse_sgf_file, target_size=target_size, tactical_features=tactical_features,
                       include_value=include_value, include_ownership=include_ownership,
-                      include_opponent_move=include_opponent_move)
+                      include_opponent_move=include_opponent_move, include_game_weight=include_game_weight)
     sgf_paths = [str(p) for p in sgf_files]
 
     # Parallel loading with position limit
@@ -268,7 +287,7 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
             if samples is not None:
                 for sample in samples:
                     # Unpack sample tuple based on what was requested
-                    # Order: (board_tensor, row, col, [value], [ownership], [opp_row, opp_col])
+                    # Order: (board_tensor, row, col, [value], [ownership], [opp_row, opp_col], [weight])
                     idx = 0
                     board_tensor = sample[idx]; idx += 1
                     row = sample[idx]; idx += 1
@@ -286,6 +305,10 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
                         opp_row = sample[idx]; idx += 1
                         opp_col = sample[idx]; idx += 1
                         all_opponent_moves.append([opp_row, opp_col])
+
+                    if include_game_weight:
+                        weight = sample[idx]; idx += 1
+                        all_sample_weights.append(weight)
 
                     all_states.append(board_tensor)
                     all_moves.append([row, col])
@@ -322,6 +345,7 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
     tactical_mask = np.array(all_tactical, dtype=np.bool_) if include_tactical_mask else None
     ownership = np.array(all_ownership, dtype=np.float16) if include_ownership else None
     opponent_moves = np.array(all_opponent_moves, dtype=np.int64) if include_opponent_move else None
+    sample_weights = np.array(all_sample_weights, dtype=np.float32) if include_game_weight else None
 
     if include_tactical_mask:
         n_tactical = tactical_mask.sum()
@@ -333,6 +357,9 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
 
     if include_opponent_move:
         print(f"Opponent moves: {opponent_moves.shape}")
+
+    if include_game_weight:
+        print(f"WED sample weights: min={sample_weights.min():.4f}, max={sample_weights.max():.4f}, mean={sample_weights.mean():.4f}")
 
     # Save to cache
     if use_cache:
@@ -346,6 +373,8 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
             save_dict['ownership'] = ownership
         if include_opponent_move:
             save_dict['opponent_moves'] = opponent_moves
+        if include_game_weight:
+            save_dict['sample_weights'] = sample_weights
         np.savez_compressed(cache_file, **save_dict)
 
     # Return results based on what was requested
@@ -358,6 +387,8 @@ def load_sgf_dataset(data_dir: str, target_size: int = 19, max_games: int = None
         result.append(ownership)
     if include_opponent_move:
         result.append(opponent_moves)
+    if include_game_weight:
+        result.append(sample_weights)
     return tuple(result) if len(result) > 2 else (result[0], result[1])
 
 

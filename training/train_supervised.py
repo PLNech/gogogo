@@ -4,7 +4,7 @@ import argparse
 import os
 import torch
 import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader, Sampler
+from torch.utils.data import Dataset, DataLoader, Sampler, WeightedRandomSampler
 from torch.utils.tensorboard import SummaryWriter
 from torch.amp import autocast, GradScaler  # Mixed precision (torch 2.0+)
 import numpy as np
@@ -341,6 +341,8 @@ def main():
                         help='Weight for opponent policy loss (KataGo uses 0.15)')
     parser.add_argument('--bce-value', action='store_true',
                         help='Use BCE loss for value head (Cazenave 2020: more robust on small networks)')
+    parser.add_argument('--wed', action='store_true',
+                        help='Weight by Episode Duration - each game counts equally (Cazenave 2020)')
     args = parser.parse_args()
 
     # Config
@@ -384,6 +386,8 @@ def main():
         print(f"Opponent move prediction: ENABLED (weight={args.opponent_weight})")
     if args.bce_value:
         print(f"BCE value loss: ENABLED (Cazenave 2020)")
+    if args.wed:
+        print(f"WED sampling: ENABLED (each game counts equally)")
 
     # Load dataset
     print(f"\nLoading pro games from {args.data_dir}...")
@@ -401,15 +405,17 @@ def main():
         include_value=args.train_value,
         include_tactical_mask=include_tactical_mask,
         include_ownership=args.ownership,
-        include_opponent_move=args.opponent_move
+        include_opponent_move=args.opponent_move,
+        include_game_weight=args.wed
     )
 
     # Unpack results based on what was requested
-    # Order: states, moves, [values], [tactical_mask], [ownership], [opponent_moves]
+    # Order: states, moves, [values], [tactical_mask], [ownership], [opponent_moves], [sample_weights]
     idx = 0
     states = load_result[idx]; idx += 1
     moves = load_result[idx]; idx += 1
     values = None
+    sample_weights = None
     if args.train_value:
         values = load_result[idx]; idx += 1
     if include_tactical_mask:
@@ -418,6 +424,8 @@ def main():
         ownership = load_result[idx]; idx += 1
     if args.opponent_move:
         opponent_moves = load_result[idx]; idx += 1
+    if args.wed:
+        sample_weights = load_result[idx]; idx += 1
 
     if len(states) == 0:
         print("No games found!")
@@ -447,6 +455,12 @@ def main():
     else:
         train_opponent, val_opponent = None, None
 
+    # Split sample weights if using WED sampling
+    if sample_weights is not None:
+        train_weights = sample_weights[:val_split]
+    else:
+        train_weights = None
+
     # Split tactical mask if using curriculum
     train_tactical_mask = None
     if tactical_mask is not None:
@@ -464,12 +478,31 @@ def main():
 
     # Create curriculum sampler if enabled
     curriculum_sampler = None
+    wed_sampler = None
     if args.curriculum and train_tactical_mask is not None:
+        if args.wed:
+            print("WARNING: WED and curriculum cannot be combined. Using curriculum only.")
         curriculum_sampler = CurriculumSampler(train_tactical_mask, epoch_size=len(train_dataset))
         train_loader = DataLoader(
             train_dataset,
             batch_size=config.batch_size,
             sampler=curriculum_sampler,  # Use curriculum sampler instead of shuffle
+            num_workers=num_workers,
+            pin_memory=(config.device == 'cuda'),
+            persistent_workers=True
+        )
+    elif args.wed and train_weights is not None:
+        # WED: Weight by Episode Duration - each game counts equally
+        # Convert weights to torch tensor for WeightedRandomSampler
+        wed_sampler = WeightedRandomSampler(
+            weights=torch.from_numpy(train_weights),
+            num_samples=len(train_dataset),
+            replacement=True
+        )
+        train_loader = DataLoader(
+            train_dataset,
+            batch_size=config.batch_size,
+            sampler=wed_sampler,  # Use WED sampler instead of shuffle
             num_workers=num_workers,
             pin_memory=(config.device == 'cuda'),
             persistent_workers=True
