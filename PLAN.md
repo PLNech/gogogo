@@ -573,9 +573,10 @@ Based on comprehensive literature review. Sources in ARCH.md.
 - Complexity: Medium (rewrite ResBlock class)
 
 **B.2: Score Distribution Head**
-- [ ] TODO - Add head predicting P(final_score = k) for k in [-50, +50]
-- [ ] TODO - Cross-entropy loss against actual score
-- Source: [KataGo 2019] - we skipped this, should add
+- [x] DONE - Add head predicting P(final_score = k) for k in [-50, +50]
+- [x] DONE - Cross-entropy loss against actual score (mask invalid scores from resigns)
+- [x] DONE - CLI: `--score-dist --score-weight 0.02`
+- Source: [KataGo 2019] - ~21% of games have numerical scores
 - Complexity: Low (one conv head + softmax over 101 bins)
 
 **B.3: LATE Simulation Scheduling**
