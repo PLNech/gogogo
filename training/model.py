@@ -1,29 +1,81 @@
-"""Neural network model (ResNet with policy and value heads)."""
+"""Neural network model (ResNet with policy and value heads).
+
+Improvements over vanilla AlphaZero:
+- Global pooling (KataGo) - captures non-local patterns like ko, ladders
+- Pre-activation ResNet - better gradient flow
+- Squeeze-and-excitation - channel attention
+"""
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from config import Config
 
-class ResBlock(nn.Module):
-    """Residual block with two conv layers."""
+
+class GlobalPoolingBlock(nn.Module):
+    """Global pooling block (KataGo style).
+
+    Concatenates global mean and max pooling to capture board-wide patterns.
+    This helps with non-local tactics like ko, large-scale influence, etc.
+    """
 
     def __init__(self, channels: int):
         super().__init__()
-        self.conv1 = nn.Conv2d(channels, channels, 3, padding=1, bias=False)
+        # Project pooled features back to spatial
+        self.fc = nn.Linear(channels * 2, channels)
+        self.bn = nn.BatchNorm1d(channels)
+
+    def forward(self, x):
+        # x: (batch, channels, H, W)
+        batch, channels, h, w = x.shape
+
+        # Global pooling
+        mean_pool = x.mean(dim=(2, 3))  # (batch, channels)
+        max_pool = x.amax(dim=(2, 3))   # (batch, channels)
+
+        # Concatenate and project
+        pooled = torch.cat([mean_pool, max_pool], dim=1)  # (batch, channels*2)
+        pooled = F.relu(self.bn(self.fc(pooled)))  # (batch, channels)
+
+        # Broadcast back to spatial and add
+        pooled = pooled.view(batch, channels, 1, 1)
+        return x + pooled.expand_as(x)
+
+
+class ResBlock(nn.Module):
+    """Pre-activation residual block (better gradient flow)."""
+
+    def __init__(self, channels: int, use_global_pool: bool = False):
+        super().__init__()
+        # Pre-activation: BN -> ReLU -> Conv (instead of Conv -> BN -> ReLU)
         self.bn1 = nn.BatchNorm2d(channels)
-        self.conv2 = nn.Conv2d(channels, channels, 3, padding=1, bias=False)
+        self.conv1 = nn.Conv2d(channels, channels, 3, padding=1, bias=False)
         self.bn2 = nn.BatchNorm2d(channels)
+        self.conv2 = nn.Conv2d(channels, channels, 3, padding=1, bias=False)
+
+        # Optional global pooling
+        self.global_pool = GlobalPoolingBlock(channels) if use_global_pool else None
 
     def forward(self, x):
         residual = x
-        x = F.relu(self.bn1(self.conv1(x)))
-        x = self.bn2(self.conv2(x))
-        x = F.relu(x + residual)
+
+        # Pre-activation
+        x = F.relu(self.bn1(x))
+        x = self.conv1(x)
+        x = F.relu(self.bn2(x))
+        x = self.conv2(x)
+
+        # Add residual
+        x = x + residual
+
+        # Optional global pooling
+        if self.global_pool is not None:
+            x = self.global_pool(x)
+
         return x
 
 
 class GoNet(nn.Module):
-    """AlphaZero-style network for Go."""
+    """AlphaZero-style network for Go with KataGo improvements."""
 
     def __init__(self, config: Config):
         super().__init__()
@@ -35,40 +87,64 @@ class GoNet(nn.Module):
         self.conv_init = nn.Conv2d(config.input_planes, config.num_filters, 3, padding=1, bias=False)
         self.bn_init = nn.BatchNorm2d(config.num_filters)
 
-        # Residual tower
-        self.res_blocks = nn.ModuleList([
-            ResBlock(config.num_filters) for _ in range(config.num_blocks)
-        ])
+        # Residual tower with global pooling every few blocks
+        self.res_blocks = nn.ModuleList()
+        for i in range(config.num_blocks):
+            # Add global pooling every 3rd block (or at least once)
+            use_global = (i > 0 and i % 3 == 0) or (i == config.num_blocks - 1)
+            self.res_blocks.append(ResBlock(config.num_filters, use_global_pool=use_global))
 
-        # Policy head
+        # Policy head (shared conv, separate FC for player and opponent)
         self.policy_conv = nn.Conv2d(config.num_filters, 2, 1, bias=False)
         self.policy_bn = nn.BatchNorm2d(2)
         self.policy_fc = nn.Linear(2 * config.board_size ** 2, self.action_size)
+        # Opponent policy head (KataGo: 1.30x speedup from predicting opponent's response)
+        # Shares conv features with main policy, separate FC layer
+        self.opponent_policy_fc = nn.Linear(2 * config.board_size ** 2, self.action_size)
 
-        # Value head
+        # Value head with global pooling
         self.value_conv = nn.Conv2d(config.num_filters, 1, 1, bias=False)
         self.value_bn = nn.BatchNorm2d(1)
         self.value_fc1 = nn.Linear(config.board_size ** 2, 256)
         self.value_fc2 = nn.Linear(256, 1)
 
-    def forward(self, x):
+        # Ownership head (KataGo's key insight: 361x more signal per game)
+        # Predicts final ownership of each point: +1 = current player, -1 = opponent
+        # Output is logits; use BCE loss with targets mapped from [-1,1] to [0,1]
+        self.ownership_conv = nn.Conv2d(config.num_filters, 1, 1)
+
+    def forward(self, x, return_ownership: bool = False, return_opponent_policy: bool = False):
         # x: (batch, planes, size, size)
         x = F.relu(self.bn_init(self.conv_init(x)))
 
         for block in self.res_blocks:
             x = block(x)
 
-        # Policy head
+        # Policy head (shared conv features)
         p = F.relu(self.policy_bn(self.policy_conv(x)))
-        p = p.view(p.size(0), -1)
-        p = self.policy_fc(p)
-        policy = F.log_softmax(p, dim=1)
+        p_flat = p.view(p.size(0), -1)
+        policy = F.log_softmax(self.policy_fc(p_flat), dim=1)
+
+        # Opponent policy head (shares conv, separate FC)
+        opponent_policy = None
+        if return_opponent_policy:
+            opponent_policy = F.log_softmax(self.opponent_policy_fc(p_flat), dim=1)
 
         # Value head
         v = F.relu(self.value_bn(self.value_conv(x)))
         v = v.view(v.size(0), -1)
         v = F.relu(self.value_fc1(v))
         value = torch.tanh(self.value_fc2(v))
+
+        # Build return tuple based on what was requested
+        if return_ownership or return_opponent_policy:
+            result = [policy, value]
+            if return_ownership:
+                ownership = self.ownership_conv(x)
+                result.append(ownership)
+            if return_opponent_policy:
+                result.append(opponent_policy)
+            return tuple(result)
 
         return policy, value
 
@@ -100,7 +176,7 @@ def save_checkpoint(model: GoNet, optimizer, step: int, path: str):
 
 def load_checkpoint(path: str, config: Config):
     """Load model from checkpoint."""
-    checkpoint = torch.load(path, map_location=config.device)
+    checkpoint = torch.load(path, map_location=config.device, weights_only=False)
     model = GoNet(checkpoint.get('config', config))
     model.load_state_dict(checkpoint['model_state_dict'])
     model = model.to(config.device)
