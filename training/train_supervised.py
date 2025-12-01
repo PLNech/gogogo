@@ -140,7 +140,7 @@ class ProGameDataset(Dataset):
 
 
 def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip: float = 1.0,
-               value_targets=None, value_weight: float = 1.0,
+               value_targets=None, value_weight: float = 1.0, use_bce_value: bool = False,
                ownership_targets=None, board_size: int = 19,
                opponent_actions=None, opponent_weight: float = 0.15):
     """Single supervised training step with mixed precision and gradient clipping.
@@ -148,6 +148,8 @@ def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip
     Args:
         value_targets: Optional value targets for value head training
         value_weight: Weight for value loss (default 1.0, KataGo uses 1.5)
+        use_bce_value: If True, use BCE loss instead of MSE for value head
+                      (Cazenave 2020: more robust on small networks)
         ownership_targets: Optional (batch, H, W) ownership maps in [-1, 1]
         board_size: Board size for ownership loss weighting (KataGo uses 1.5/b²)
         opponent_actions: Optional opponent move targets (KataGo: 1.30x speedup)
@@ -188,9 +190,18 @@ def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip
 
             policy_loss = F.nll_loss(log_policies, actions.squeeze())
 
-            # Value loss (MSE) if targets provided
+            # Value loss if targets provided
+            # BCE is more robust on small networks (Cazenave 2020)
             if value_targets is not None:
-                value_loss = F.mse_loss(values.squeeze(), value_targets)
+                if use_bce_value:
+                    # Map from [-1,1] to [0,1] for BCE
+                    # Disable autocast for BCE (not autocast-safe)
+                    with autocast(device_type='cuda', enabled=False):
+                        value_prob = (values.squeeze().float() + 1) / 2  # tanh output → [0,1]
+                        target_prob = (value_targets.float() + 1) / 2    # target → [0,1]
+                        value_loss = F.binary_cross_entropy(value_prob, target_prob)
+                else:
+                    value_loss = F.mse_loss(values.squeeze(), value_targets)
             else:
                 value_loss = torch.tensor(0.0, device=device)
 
@@ -239,7 +250,12 @@ def train_step(model, optimizer, states, actions, device, scaler=None, grad_clip
         policy_loss = F.nll_loss(log_policies, actions.squeeze())
 
         if value_targets is not None:
-            value_loss = F.mse_loss(values.squeeze(), value_targets)
+            if use_bce_value:
+                value_prob = (values.squeeze() + 1) / 2
+                target_prob = (value_targets + 1) / 2
+                value_loss = F.binary_cross_entropy(value_prob, target_prob)
+            else:
+                value_loss = F.mse_loss(values.squeeze(), value_targets)
         else:
             value_loss = torch.tensor(0.0, device=device)
 
@@ -323,6 +339,8 @@ def main():
                         help='Train opponent move prediction (KataGo: 1.30x speedup)')
     parser.add_argument('--opponent-weight', type=float, default=0.15,
                         help='Weight for opponent policy loss (KataGo uses 0.15)')
+    parser.add_argument('--bce-value', action='store_true',
+                        help='Use BCE loss for value head (Cazenave 2020: more robust on small networks)')
     args = parser.parse_args()
 
     # Config
@@ -364,6 +382,8 @@ def main():
         print(f"Ownership training: ENABLED (KataGo's highest-impact technique)")
     if args.opponent_move:
         print(f"Opponent move prediction: ENABLED (weight={args.opponent_weight})")
+    if args.bce_value:
+        print(f"BCE value loss: ENABLED (Cazenave 2020)")
 
     # Load dataset
     print(f"\nLoading pro games from {args.data_dir}...")
@@ -563,6 +583,7 @@ def main():
                 losses = train_step(model, optimizer, states, actions, config.device,
                                    scaler=scaler, value_targets=value_targets,
                                    value_weight=args.value_weight,
+                                   use_bce_value=args.bce_value,
                                    ownership_targets=ownership_targets,
                                    board_size=config.board_size,
                                    opponent_actions=opponent_actions,
