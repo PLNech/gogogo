@@ -3,10 +3,88 @@ import numpy as np
 import torch
 import math
 import time
+from collections import OrderedDict
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 from board import Board
 from config import Config
+
+
+class NNCache:
+    """LRU cache for neural network evaluations.
+
+    Caches (policy, value) results keyed by Zobrist hash.
+    Provides up to 5.8× speedup by avoiding redundant NN calls.
+
+    Source: [Speculative MCTS, NeurIPS 2024]
+
+    Usage:
+        - Within MCTS: same position visited multiple times
+        - Between moves: tree reuse means many cached evaluations
+    """
+
+    def __init__(self, max_size: int = 100000):
+        """Initialize cache.
+
+        Args:
+            max_size: Maximum number of entries (default 100K ~= 50MB)
+        """
+        self.max_size = max_size
+        self.cache: OrderedDict[int, Tuple[np.ndarray, float]] = OrderedDict()
+        self.hits = 0
+        self.misses = 0
+
+    def get(self, board_hash: int) -> Optional[Tuple[np.ndarray, float]]:
+        """Get cached (policy, value) for position.
+
+        Args:
+            board_hash: Zobrist hash of position
+
+        Returns:
+            (policy, value) tuple if cached, None otherwise
+        """
+        if board_hash in self.cache:
+            self.hits += 1
+            # Move to end (most recently used)
+            self.cache.move_to_end(board_hash)
+            return self.cache[board_hash]
+        self.misses += 1
+        return None
+
+    def put(self, board_hash: int, policy: np.ndarray, value: float):
+        """Cache (policy, value) for position.
+
+        Args:
+            board_hash: Zobrist hash of position
+            policy: Policy distribution from NN
+            value: Value estimate from NN
+        """
+        if board_hash in self.cache:
+            # Update existing and move to end
+            self.cache.move_to_end(board_hash)
+            self.cache[board_hash] = (policy, value)
+        else:
+            # Add new entry
+            self.cache[board_hash] = (policy, value)
+            # Evict oldest if over capacity
+            while len(self.cache) > self.max_size:
+                self.cache.popitem(last=False)
+
+    def clear(self):
+        """Clear the cache."""
+        self.cache.clear()
+        self.hits = 0
+        self.misses = 0
+
+    @property
+    def hit_rate(self) -> float:
+        """Return cache hit rate."""
+        total = self.hits + self.misses
+        return self.hits / total if total > 0 else 0.0
+
+    def stats(self) -> str:
+        """Return cache statistics string."""
+        return f"NNCache: {len(self.cache)}/{self.max_size} entries, {self.hit_rate:.1%} hit rate ({self.hits} hits, {self.misses} misses)"
 
 
 class MCTSNode:
@@ -74,15 +152,28 @@ class PendingEval:
     node: MCTSNode
     board: Board
     search_path: List[MCTSNode]
+    board_hash: int  # Zobrist hash for cache lookup
 
 
 class MCTS:
     """MCTS with batched neural network evaluation for GPU efficiency."""
 
-    def __init__(self, model, config: Config, batch_size: int = 8):
+    def __init__(self, model, config: Config, batch_size: int = 8,
+                 cache_size: int = 100000, use_cache: bool = True):
+        """Initialize MCTS.
+
+        Args:
+            model: Neural network model
+            config: Configuration
+            batch_size: Batch size for NN evaluation
+            cache_size: Max entries in NN evaluation cache (default 100K)
+            use_cache: Whether to use NN cache (default True)
+        """
         self.model = model
         self.config = config
         self.batch_size = batch_size
+        self.use_cache = use_cache
+        self.cache = NNCache(max_size=cache_size) if use_cache else None
 
     def _batch_predict(self, tensors: List[np.ndarray]) -> Tuple[np.ndarray, np.ndarray]:
         """Batch predict multiple positions at once."""
@@ -101,9 +192,17 @@ class MCTS:
         start_time = time.time()
         root = MCTSNode()
 
-        # Expand root
-        policy, value = self._batch_predict([board.to_tensor()])
-        root.expand(board, policy[0])
+        # Expand root (check cache first)
+        root_hash = board.zobrist_hash()
+        cached = self.cache.get(root_hash) if self.cache else None
+        if cached:
+            policy, value = cached
+            root.expand(board, policy)
+        else:
+            policy, value = self._batch_predict([board.to_tensor()])
+            root.expand(board, policy[0])
+            if self.cache:
+                self.cache.put(root_hash, policy[0], value[0])
 
         simulations_done = 0
         while simulations_done < self.config.mcts_simulations:
@@ -142,20 +241,39 @@ class MCTS:
                         value = -value
                     simulations_done += 1
                 else:
-                    # Add to batch for evaluation
-                    pending.append(PendingEval(
-                        tensor=scratch_board.to_tensor(),
-                        node=node,
-                        board=scratch_board,
-                        search_path=search_path
-                    ))
+                    # Check cache before adding to pending batch
+                    pos_hash = scratch_board.zobrist_hash()
+                    cached = self.cache.get(pos_hash) if self.cache else None
 
-            # Batch evaluate all pending leaves
+                    if cached:
+                        # Cache hit! Expand and backprop immediately
+                        policy, value = cached
+                        node.expand(scratch_board, policy)
+
+                        for n in reversed(search_path):
+                            n.update(value)
+                            value = -value
+                        simulations_done += 1
+                    else:
+                        # Cache miss - add to batch for NN evaluation
+                        pending.append(PendingEval(
+                            tensor=scratch_board.to_tensor(),
+                            node=node,
+                            board=scratch_board,
+                            search_path=search_path,
+                            board_hash=pos_hash
+                        ))
+
+            # Batch evaluate all pending leaves (cache misses only)
             if pending:
                 tensors = [p.tensor for p in pending]
                 policies, values = self._batch_predict(tensors)
 
                 for i, p in enumerate(pending):
+                    # Store in cache
+                    if self.cache:
+                        self.cache.put(p.board_hash, policies[i], values[i])
+
                     # Expand node
                     p.node.expand(p.board, policies[i])
 
@@ -169,7 +287,8 @@ class MCTS:
 
         if verbose:
             elapsed = time.time() - start_time
-            print(f"      MCTS: {simulations_done} sims in {elapsed:.2f}s ({simulations_done/elapsed:.0f} sims/s)")
+            cache_str = f", {self.cache.stats()}" if self.cache else ""
+            print(f"      MCTS: {simulations_done} sims in {elapsed:.2f}s ({simulations_done/elapsed:.0f} sims/s){cache_str}")
 
         # Return visit distribution
         action_size = board.size ** 2 + 1

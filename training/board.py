@@ -2,6 +2,17 @@
 import numpy as np
 from typing import List, Tuple, Optional
 
+# Zobrist hashing for fast board state hashing (NN cache key)
+# Pre-computed random 64-bit numbers for each (position, color) combination
+# Using fixed seed for reproducibility across sessions
+_ZOBRIST_RNG = np.random.RandomState(42)
+_MAX_BOARD_SIZE = 19
+_ZOBRIST_TABLE = _ZOBRIST_RNG.randint(
+    0, 2**63, size=(2, _MAX_BOARD_SIZE, _MAX_BOARD_SIZE), dtype=np.uint64
+)
+_ZOBRIST_TURN = _ZOBRIST_RNG.randint(0, 2**63, dtype=np.uint64)  # For current player
+
+
 class Board:
     """Go board with tensor conversion for neural network."""
 
@@ -202,20 +213,96 @@ class Board:
         komi = 6.5 if self.size >= 9 else 0.5
         return black - white - komi
 
-    def to_tensor(self) -> np.ndarray:
+    def ownership_map(self) -> np.ndarray:
+        """
+        Compute per-point ownership using Tromp-Taylor (area) scoring.
+
+        Returns: (size, size) array with values:
+            +1 = black owns (stone or territory)
+            -1 = white owns (stone or territory)
+             0 = neutral (dame, seki)
+
+        Used as auxiliary target for neural network training.
+        See KataGo paper §4.1 for why ownership prediction helps.
+        """
+        ownership = np.zeros((self.size, self.size), dtype=np.float32)
+
+        # Stones are owned by their color
+        ownership[self.board == 1] = 1.0   # Black stones
+        ownership[self.board == -1] = -1.0  # White stones
+
+        # Track visited empty points to avoid recomputing regions
+        visited_empty = np.zeros((self.size, self.size), dtype=bool)
+
+        # Determine territory for empty points
+        for r in range(self.size):
+            for c in range(self.size):
+                if self.board[r, c] == 0 and not visited_empty[r, c]:
+                    # BFS to find the entire empty region and what it touches
+                    region = []
+                    stack = [(r, c)]
+                    touches_black = False
+                    touches_white = False
+
+                    while stack:
+                        rr, cc = stack.pop()
+                        if rr < 0 or rr >= self.size or cc < 0 or cc >= self.size:
+                            continue
+                        if visited_empty[rr, cc]:
+                            continue
+
+                        if self.board[rr, cc] == 1:
+                            touches_black = True
+                            continue
+                        if self.board[rr, cc] == -1:
+                            touches_white = True
+                            continue
+
+                        # Empty point
+                        visited_empty[rr, cc] = True
+                        region.append((rr, cc))
+                        stack.extend([(rr-1, cc), (rr+1, cc), (rr, cc-1), (rr, cc+1)])
+
+                    # Assign ownership to the region
+                    if touches_black and not touches_white:
+                        for (rr, cc) in region:
+                            ownership[rr, cc] = 1.0  # Black territory
+                    elif touches_white and not touches_black:
+                        for (rr, cc) in region:
+                            ownership[rr, cc] = -1.0  # White territory
+                    # else: neutral (dame) - stays 0
+
+        return ownership
+
+    def to_tensor(self, use_tactical_features: bool = False) -> np.ndarray:
         """Convert board to neural network input tensor.
 
-        Returns: (17, size, size) tensor with planes:
+        Returns: (N, size, size) tensor with planes:
+        Basic (17 planes):
         - 0: current player's stones
         - 1: opponent's stones
         - 2-9: current player's history (last 8 moves)
         - 10-16: opponent's history (last 7 moves)
-        - Or simplified: just current position + whose turn
+
+        Tactical features (+10 planes = 27 total):
+        - 17: current player groups with 1 liberty (atari!)
+        - 18: current player groups with 2 liberties (danger)
+        - 19: current player groups with 3+ liberties (safe)
+        - 20: opponent groups with 1 liberty (can capture!)
+        - 21: opponent groups with 2 liberties (can atari)
+        - 22: opponent groups with 3+ liberties
+        - 23: capture moves (playing here captures opponent)
+        - 24: self-atari moves (playing here puts self in atari)
+        - 25: eye-like points for current player
+        - 26: edge distance (normalized)
         """
-        planes = np.zeros((17, self.size, self.size), dtype=np.float32)
+        n_planes = 27 if use_tactical_features else 17
+        planes = np.zeros((n_planes, self.size, self.size), dtype=np.float32)
 
         # Current position
-        if self.current_player == 1:
+        my_color = self.current_player
+        opp_color = -self.current_player
+        if my_color == 1:
             planes[0] = (self.board == 1).astype(np.float32)
             planes[1] = (self.board == -1).astype(np.float32)
         else:
@@ -226,15 +313,111 @@ class Board:
         history = list(reversed(self.history[-8:]))
         for i, hist in enumerate(history):
             if i < 8:  # planes 2-9 for current player
-                if self.current_player == 1:
+                if my_color == 1:
                     planes[2 + i] = (hist == 1).astype(np.float32)
                 else:
                     planes[2 + i] = (hist == -1).astype(np.float32)
             if i < 7:  # planes 10-16 for opponent
-                if self.current_player == 1:
+                if my_color == 1:
                     planes[10 + i] = (hist == -1).astype(np.float32)
                 else:
                     planes[10 + i] = (hist == 1).astype(np.float32)
+
+        if not use_tactical_features:
+            return planes
+
+        # === TACTICAL FEATURE PLANES ===
+        # Track which groups we've already processed
+        processed = set()
+
+        # Liberty planes for current player's groups
+        for r in range(self.size):
+            for c in range(self.size):
+                if self.board[r, c] == my_color and (r, c) not in processed:
+                    group = self.get_group(r, c)
+                    libs = self.count_liberties(group)
+                    processed.update(group)
+
+                    # Mark all stones in group with liberty count
+                    for gr, gc in group:
+                        if libs == 1:
+                            planes[17, gr, gc] = 1.0  # In atari!
+                        elif libs == 2:
+                            planes[18, gr, gc] = 1.0  # Danger
+                        else:
+                            planes[19, gr, gc] = 1.0  # Safe
+
+        # Liberty planes for opponent's groups
+        processed.clear()
+        for r in range(self.size):
+            for c in range(self.size):
+                if self.board[r, c] == opp_color and (r, c) not in processed:
+                    group = self.get_group(r, c)
+                    libs = self.count_liberties(group)
+                    processed.update(group)
+
+                    for gr, gc in group:
+                        if libs == 1:
+                            planes[20, gr, gc] = 1.0  # Can capture!
+                        elif libs == 2:
+                            planes[21, gr, gc] = 1.0  # Can atari
+                        else:
+                            planes[22, gr, gc] = 1.0  # Stable
+
+        # FAST capture detection: mark liberties of opponent groups in atari
+        # Instead of checking each empty position, find atari groups and mark their liberties
+        for r in range(self.size):
+            for c in range(self.size):
+                # If opponent stone in atari (from planes[20]), mark its liberties
+                if planes[20, r, c] == 1.0:  # Opponent group in atari
+                    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                        nr, nc = r + dr, c + dc
+                        if 0 <= nr < self.size and 0 <= nc < self.size:
+                            if self.board[nr, nc] == 0:
+                                planes[23, nr, nc] = 1.0  # Capture move!
+
+        # FAST self-atari detection: mark positions adjacent to own groups with 2 liberties
+        # If we play next to a 2-liberty group and fill one liberty, it becomes atari
+        # Skip full simulation - just mark risky positions
+        for r in range(self.size):
+            for c in range(self.size):
+                if planes[18, r, c] == 1.0:  # Own group with 2 liberties
+                    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                        nr, nc = r + dr, c + dc
+                        if 0 <= nr < self.size and 0 <= nc < self.size:
+                            if self.board[nr, nc] == 0:
+                                planes[24, nr, nc] = 1.0  # Potential self-atari
+
+        # Eye-like points (empty surrounded by friendly stones)
+        for r in range(self.size):
+            for c in range(self.size):
+                if self.board[r, c] != 0:
+                    continue
+
+                # Count adjacent friendly/opponent/edge
+                friendly = 0
+                opponent = 0
+                edge = 0
+                for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    nr, nc = r + dr, c + dc
+                    if nr < 0 or nr >= self.size or nc < 0 or nc >= self.size:
+                        edge += 1
+                    elif self.board[nr, nc] == my_color:
+                        friendly += 1
+                    elif self.board[nr, nc] == opp_color:
+                        opponent += 1
+
+                # Eye-like: surrounded by friendly (allow edge)
+                if friendly + edge >= 3 and opponent == 0:
+                    planes[25, r, c] = 1.0
+
+        # Edge distance (encourages spreading out, corners > edges > center)
+        # Vectorized for speed
+        rows = np.arange(self.size).reshape(-1, 1)
+        cols = np.arange(self.size).reshape(1, -1)
+        dist_r = np.minimum(rows, self.size - 1 - rows)
+        dist_c = np.minimum(cols, self.size - 1 - cols)
+        planes[26] = np.minimum(dist_r, dist_c) / (self.size / 2)
 
         return planes
 
@@ -246,3 +429,30 @@ class Board:
             rows.append(f"{r:2d} {row}")
         header = '   ' + ' '.join(str(c) for c in range(self.size))
         return header + '\n' + '\n'.join(rows)
+
+    def zobrist_hash(self) -> int:
+        """Compute Zobrist hash for current position.
+
+        Used as cache key for NN evaluation cache (MCTS speedup).
+        Includes: stone positions + current player to move.
+        O(board_size²) but very fast in practice.
+
+        Returns:
+            64-bit hash uniquely identifying this position
+        """
+        h = np.uint64(0)
+
+        # Hash stone positions
+        for r in range(self.size):
+            for c in range(self.size):
+                stone = self.board[r, c]
+                if stone == 1:  # Black
+                    h ^= _ZOBRIST_TABLE[0, r, c]
+                elif stone == -1:  # White
+                    h ^= _ZOBRIST_TABLE[1, r, c]
+
+        # Hash current player (important: same position, different turn = different hash)
+        if self.current_player == -1:  # White to play
+            h ^= _ZOBRIST_TURN
+
+        return int(h)
