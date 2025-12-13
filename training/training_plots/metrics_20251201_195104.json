@@ -1,0 +1,21 @@
+{
+  "config": {
+    "board_size": 19,
+    "num_blocks": 6,
+    "num_filters": 128,
+    "input_planes": 27,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "max_games": 50,
+    "max_positions": 500,
+    "total_positions": 500,
+    "epochs": 1
+  },
+  "train_losses": [],
+  "val_accuracies": [],
+  "learning_rates": null,
+  "total_batches": 0,
+  "best_accuracy": 0,
+  "final_loss": null,
+  "training_duration": "0:00:01.487939"
+}
