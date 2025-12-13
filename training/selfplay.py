@@ -47,15 +47,50 @@ def get_game_stats(board: Board) -> dict:
 class GameRecord:
     """Record of a single game for training."""
 
-    def __init__(self):
+    def __init__(self, board_size: int = 19):
+        self.board_size = board_size
         self.states: List[np.ndarray] = []  # Board tensors
         self.policies: List[np.ndarray] = []  # MCTS policies
         self.current_players: List[int] = []  # Who played each move
+        self.moves: List[Tuple[int, int]] = []  # Move coordinates
+        self.comments: List[str] = []  # Optional comments per move
 
-    def add(self, state: np.ndarray, policy: np.ndarray, player: int):
+    def add(self, state: np.ndarray, policy: np.ndarray, player: int,
+            move: Tuple[int, int] = None, comment: str = ""):
         self.states.append(state)
         self.policies.append(policy)
         self.current_players.append(player)
+        if move is not None:
+            self.moves.append(move)
+        self.comments.append(comment)
+
+    def to_sgf(self, result: str = "?", black_name: str = "GoGoGo",
+               white_name: str = "GoGoGo") -> str:
+        """Export game to SGF format."""
+        sgf = f"(;GM[1]FF[4]CA[UTF-8]SZ[{self.board_size}]\n"
+        sgf += f"PB[{black_name}]PW[{white_name}]RE[{result}]\n"
+
+        for i, (move, player) in enumerate(zip(self.moves, self.current_players)):
+            color = "B" if player == 1 else "W"
+            if move == (-1, -1):
+                sgf += f";{color}[]"  # Pass
+            else:
+                row, col = move
+                # SGF uses a-s for 19x19, lowercase
+                sgf_col = chr(ord('a') + col)
+                sgf_row = chr(ord('a') + row)
+                sgf += f";{color}[{sgf_col}{sgf_row}]"
+
+            # Add comment if present
+            if i < len(self.comments) and self.comments[i]:
+                sgf += f"C[{self.comments[i]}]"
+
+            # Newline every 10 moves for readability
+            if (i + 1) % 10 == 0:
+                sgf += "\n"
+
+        sgf += ")\n"
+        return sgf
 
     def finalize(self, winner: int) -> List[Tuple[np.ndarray, np.ndarray, float]]:
         """Convert to training samples with final game result."""
@@ -99,7 +134,7 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
     else:
         mcts = MCTS(model, config, batch_size=batch_size)
 
-    record = GameRecord()
+    record = GameRecord(board_size=config.board_size)
 
     move_count = 0
     max_moves = config.board_size ** 2 * 2  # Reasonable limit
@@ -118,17 +153,19 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
 
         policy = mcts.search(board, verbose=False)  # Batched MCTS is already efficient
 
-        # Record state before move
-        record.add(
-            board.to_tensor(),
-            policy,
-            board.current_player
-        )
-
-        # Select and play move
+        # Select move first so we can record it
         temp = config.temperature if move_count < config.temp_threshold else 0.0
         action = mcts.select_action(board, temp)
 
+        # Record state before move (with the move that will be played)
+        record.add(
+            board.to_tensor(),
+            policy,
+            board.current_player,
+            move=action
+        )
+
+        # Play the move
         if action == (-1, -1):
             board.pass_move()
         else:
@@ -140,19 +177,29 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
     score = board.score()
     if score > 0:
         winner = 1  # Black wins
+        result = f"B+{score:.1f}"
     elif score < 0:
         winner = -1  # White wins
+        result = f"W+{-score:.1f}"
     else:
         winner = 0  # Draw
+        result = "0"
 
     if verbose:
-        print(f"  [Game {game_idx+1}] Finished after {move_count} moves. Winner: {'Black' if winner == 1 else 'White' if winner == -1 else 'Draw'}")
+        print(f"  [Game {game_idx+1}] Finished after {move_count} moves. "
+              f"Result: {result}")
 
-    return record.finalize(winner)
+    # Store result and record for potential SGF export
+    record.winner = winner
+    record.result = result
+    record.score = score
+
+    return record.finalize(winner), record
 
 
 def generate_games(model, config: Config, num_games: int, verbose: bool = True,
-                   use_hybrid: bool = False, tactical_weight: float = 0.3) -> List[Tuple[np.ndarray, np.ndarray, float]]:
+                   use_hybrid: bool = False, tactical_weight: float = 0.3,
+                   save_sgf: str = None) -> List[Tuple[np.ndarray, np.ndarray, float]]:
     """Generate multiple self-play games.
 
     Args:
@@ -162,19 +209,31 @@ def generate_games(model, config: Config, num_games: int, verbose: bool = True,
         verbose: Print progress
         use_hybrid: If True, use HybridMCTS with tactical enhancements
         tactical_weight: Weight for tactical adjustments (0-1)
+        save_sgf: If provided, save games to this directory as SGF files
 
     Returns:
         List of (state, policy, value) tuples for training
     """
+    import os
     all_samples = []
+    records = []
+
+    if save_sgf:
+        os.makedirs(save_sgf, exist_ok=True)
 
     for i in range(num_games):
-        samples = play_game(model, config, game_idx=i, verbose=verbose,
-                           use_hybrid=use_hybrid, tactical_weight=tactical_weight)
+        samples, record = play_game(model, config, game_idx=i, verbose=verbose,
+                                    use_hybrid=use_hybrid, tactical_weight=tactical_weight)
         all_samples.extend(samples)
-        print(f"Game {i+1}/{num_games}: {len(samples)} positions")
+        records.append(record)
+        print(f"Game {i+1}/{num_games}: {len(samples)} positions, {record.result}")
 
-    return all_samples
+        if save_sgf:
+            sgf_path = os.path.join(save_sgf, f"game_{i+1:04d}.sgf")
+            with open(sgf_path, 'w') as f:
+                f.write(record.to_sgf(result=record.result))
+
+    return all_samples, records
 
 
 class ReplayBuffer:
