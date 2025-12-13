@@ -950,7 +950,23 @@ class TacticalAnalyzer:
                 if ladder_result is True:
                     boost *= 0.01  # Massive penalty - creates dead group
 
+        # Apply 8 Basic Instincts from Sensei's Library
+        instinct_boost = self._get_instinct_boost(board, move)
+        if instinct_boost > 1.0:
+            boost *= instinct_boost
+
         return boost
+
+    def _get_instinct_boost(self, board: Board, move: Tuple[int, int]) -> float:
+        """Get boost from the 8 basic instincts.
+
+        Lazy loads InstinctAnalyzer to avoid circular imports.
+        """
+        if not hasattr(self, '_instinct_analyzer'):
+            from instincts import InstinctAnalyzer
+            self._instinct_analyzer = InstinctAnalyzer()
+
+        return self._instinct_analyzer.get_instinct_boost(board, move)
 
     def _check_connect_boost(
         self,
