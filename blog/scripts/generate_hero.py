@@ -113,8 +113,10 @@ def draw_stone(ax, grid_x, grid_y, color, n_vertical=37, n_horizontal=13):
     x = margin + (1 - 2*margin) * grid_x / (n_vertical - 1)
     y = margin + (1 - 2*margin) * grid_y / (n_horizontal - 1)
 
-    # Stone size - should look round
-    stone_radius = 0.028
+    # Stone size - to appear round in 3:1 image, height must be width/aspect
+    # Using width in normalized coords, height must be smaller
+    stone_width = 0.025  # Width in normalized x coords
+    stone_height = stone_width / aspect  # Height in normalized y coords (smaller to appear round)
 
     # Main stone body
     if color == 'black':
@@ -128,15 +130,15 @@ def draw_stone(ax, grid_x, grid_y, color, n_vertical=37, n_horizontal=13):
 
     # Stone shadow (subtle)
     shadow = patches.Ellipse(
-        (x + 0.003, y - 0.008 * aspect),
-        stone_radius * 2.1, stone_radius * 2.1 * aspect,
+        (x + 0.002, y - 0.003),
+        stone_width * 1.05, stone_height * 1.05,
         facecolor='#000000', alpha=0.2, zorder=2
     )
     ax.add_patch(shadow)
 
     # Main stone
     stone = patches.Ellipse(
-        (x, y), stone_radius * 2, stone_radius * 2 * aspect,
+        (x, y), stone_width, stone_height,
         facecolor=base_color, edgecolor=edge_color,
         linewidth=0.5, zorder=3
     )
@@ -144,8 +146,8 @@ def draw_stone(ax, grid_x, grid_y, color, n_vertical=37, n_horizontal=13):
 
     # Highlight for 3D effect
     highlight = patches.Ellipse(
-        (x - stone_radius * 0.3, y + stone_radius * 0.4 * aspect),
-        stone_radius * 0.6, stone_radius * 0.6 * aspect,
+        (x - stone_width * 0.15, y + stone_height * 0.2),
+        stone_width * 0.3, stone_height * 0.3,
         facecolor=highlight_color, alpha=0.6, zorder=4
     )
     ax.add_patch(highlight)
