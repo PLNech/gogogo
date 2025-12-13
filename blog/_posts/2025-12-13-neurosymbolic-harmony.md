@@ -138,13 +138,9 @@ Simple. Effective.
 
 ## A Game Watched
 
-```
-Move 25: Capture 2 stones       boost ×12.0
-Move 41: Snapback detected      boost ×161.7
-Move 45: 7-stone capture        boost ×24.8
+{% include goboard.html id="showcase" size=9 sgf="(;GM[1]FF[4]CA[UTF-8]SZ[9]PB[GoGoGo]PW[GoGoGo]RE[W+3.5];B[cb];W[dc];B[ed];W[eb];B[dd];W[fc];B[fe];W[ec];B[ee];W[ce];B[gd];W[db];B[df];W[aa];B[fa];W[ba];B[gb];W[hc];B[bb];W[ea];B[de];W[dg];B[hd];W[bg];B[cg];W[he];B[fb];W[cd];B[ab];W[ge];B[eg];W[ei];B[ch];W[gc];B[ff];W[ia];B[ca];W[aa];B[cc];W[ic])" caption="Watch a game from our hybrid neural-symbolic engine. Use the controls below to step through." %}
 
-Final: Black +50.5
-```
+White wins by 3.5 points.
 
 The hybrid plays with intention.
 
