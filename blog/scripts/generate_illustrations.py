@@ -204,12 +204,15 @@ def generate_mcts_tree():
     ax.text(2.5, 0.5, '3. SIMULATE', fontsize=11, color=COLORS['highlight_yellow'],
            fontweight='bold')
 
-    # Backprop arrows
-    ax.annotate('', xy=(5, 6.5), xytext=(2, 5.5),
-               arrowprops=dict(arrowstyle='->', color=COLORS['highlight_bad'],
-                              lw=2, ls='--', connectionstyle='arc3,rad=0.2'))
-    ax.text(3.5, 6.5, '4. BACKPROP', fontsize=11, color=COLORS['highlight_bad'],
-           fontweight='bold')
+    # Backprop arrows - flow UP from expanded node through tree to root
+    # expand (2,1) -> c11 (1,3) -> c1 (2,5) -> root (5,7)
+    backprop_path = [(2, 1.5), (1, 2.5), (1, 3.5), (2, 4.5), (2, 5.5), (5, 6.5)]
+    for i in range(len(backprop_path) - 1):
+        ax.annotate('', xy=backprop_path[i+1], xytext=backprop_path[i],
+                   arrowprops=dict(arrowstyle='->', color=COLORS['highlight_bad'],
+                                  lw=2, ls='--'))
+    ax.text(0.2, 4.2, '4. BACKPROP', fontsize=11, color=COLORS['highlight_bad'],
+           fontweight='bold', rotation=90)
 
     ax.set_title('Monte Carlo Tree Search\nSelect → Expand → Simulate → Backpropagate',
                 fontsize=14, color=COLORS['text'], pad=10)
@@ -318,38 +321,88 @@ def generate_ladder():
 
 
 def generate_ownership_map():
-    """Generate ownership visualization."""
-    fig, ax = plt.subplots(1, 1, figsize=(6, 6), facecolor=COLORS['bg'])
-    setup_board_axes(ax, size=9)
+    """Generate KataGo-style ownership visualization with colorful heatmap."""
+    from matplotlib.colors import LinearSegmentedColormap
+    from scipy.ndimage import gaussian_filter
 
-    # Black territory (top-left)
-    black_territory = [(0, 6), (0, 7), (0, 8), (1, 6), (1, 7), (1, 8), (2, 7), (2, 8)]
-    highlight_area(ax, black_territory, COLORS['black'], 0.3)
+    fig, ax = plt.subplots(1, 1, figsize=(8, 8), facecolor=COLORS['bg'])
 
-    # White territory (bottom-right)
-    white_territory = [(6, 0), (6, 1), (7, 0), (7, 1), (7, 2), (8, 0), (8, 1), (8, 2)]
-    highlight_area(ax, white_territory, COLORS['highlight_blue'], 0.3)
+    size = 9
 
-    # Stones forming boundaries
-    black_stones = [(2, 6), (3, 6), (3, 7), (3, 8)]
-    white_stones = [(5, 0), (5, 1), (5, 2), (6, 2)]
-    for x, y in black_stones:
-        draw_stone(ax, x, y, 'black')
-    for x, y in white_stones:
-        draw_stone(ax, x, y, 'white')
+    # Create ownership values: -1 (Black) to +1 (White)
+    np.random.seed(42)
+    ownership = np.zeros((size, size))
 
-    # Center stones (contested)
-    draw_stone(ax, 4, 4, 'black')
-    draw_stone(ax, 4, 5, 'white')
-    draw_stone(ax, 5, 4, 'white')
-    draw_stone(ax, 5, 5, 'black')
+    # Black territory (top-left corner) - strong negative
+    ownership[6:9, 0:3] = -0.9 + np.random.random((3, 3)) * 0.15
+    ownership[5:7, 0:2] = -0.7 + np.random.random((2, 2)) * 0.2
 
-    # Legend
-    ax.text(0.5, -1.2, '■ Black territory', fontsize=10, color=COLORS['black'])
-    ax.text(5, -1.2, '■ White territory', fontsize=10, color=COLORS['highlight_blue'])
+    # White territory (bottom-right) - strong positive
+    ownership[0:3, 6:9] = 0.85 + np.random.random((3, 3)) * 0.1
+    ownership[0:2, 5:7] = 0.7 + np.random.random((2, 2)) * 0.2
 
-    ax.set_title('Ownership: Who Controls Each Point?\n361 predictions per position',
-                fontsize=12, color=COLORS['text'], pad=10)
+    # White influence (right side)
+    ownership[3:6, 7:9] = 0.5 + np.random.random((3, 2)) * 0.3
+
+    # Black influence (left side)
+    ownership[4:7, 0:2] = -0.5 + np.random.random((3, 2)) * 0.3
+
+    # Contested center - near zero with noise
+    ownership[3:6, 3:6] = np.random.random((3, 3)) * 0.4 - 0.2
+
+    # Smooth it out
+    ownership = gaussian_filter(ownership, sigma=0.8)
+
+    # KataGo-style colormap: Blue (Black) -> White (neutral) -> Yellow/Orange (White)
+    colors_list = ['#1a237e', '#3949ab', '#7986cb', '#e8e8e8',
+                   '#ffcc80', '#ffa726', '#ef6c00']
+    katago_cmap = LinearSegmentedColormap.from_list('katago', colors_list, N=256)
+
+    # Draw board background
+    ax.set_facecolor('#dcb35c')  # Wood color
+
+    # Draw ownership heatmap
+    im = ax.imshow(ownership, cmap=katago_cmap, vmin=-1, vmax=1,
+                   extent=[-0.5, size-0.5, -0.5, size-0.5],
+                   origin='lower', alpha=0.75, zorder=1)
+
+    # Grid lines
+    for i in range(size):
+        ax.axhline(y=i, color='#4a4036', linewidth=0.5, alpha=0.5, zorder=2)
+        ax.axvline(x=i, color='#4a4036', linewidth=0.5, alpha=0.5, zorder=2)
+
+    # Star points
+    star_points = [(2, 2), (2, 6), (4, 4), (6, 2), (6, 6)]
+    for x, y in star_points:
+        circle = patches.Circle((x, y), 0.08, color='#4a4036', zorder=3)
+        ax.add_patch(circle)
+
+    # Place stones
+    black_positions = [(0, 7), (1, 7), (0, 8), (1, 8), (2, 6), (3, 5), (4, 4)]
+    white_positions = [(7, 0), (7, 1), (8, 0), (8, 1), (6, 2), (5, 3), (5, 4)]
+
+    for x, y in black_positions:
+        circle = patches.Circle((x, y), 0.4, facecolor='#1a1a1a',
+                                edgecolor='#333', linewidth=1, zorder=4)
+        ax.add_patch(circle)
+    for x, y in white_positions:
+        circle = patches.Circle((x, y), 0.4, facecolor='#f5f5f5',
+                                edgecolor='#666', linewidth=1, zorder=4)
+        ax.add_patch(circle)
+
+    ax.set_xlim(-0.5, size - 0.5)
+    ax.set_ylim(-0.5, size - 0.5)
+    ax.set_aspect('equal')
+    ax.axis('off')
+
+    # Colorbar
+    cbar = plt.colorbar(im, ax=ax, shrink=0.8, aspect=20)
+    cbar.set_ticks([-1, 0, 1])
+    cbar.set_ticklabels(['Black', 'Neutral', 'White'])
+    cbar.ax.tick_params(labelsize=10)
+
+    ax.set_title('Ownership Predictions\n361 signals per position (vs 1 bit for win/loss)',
+                fontsize=13, color=COLORS['text'], pad=15)
 
     plt.tight_layout()
     plt.savefig(IMAGES_DIR / 'ownership-map.png', dpi=150, facecolor=COLORS['bg'],

@@ -147,3 +147,150 @@
     border-right: 1px solid #e0dcd4;
     margin-right: 1rem;
 }
+
+/* Dark Mode - Monokai-inspired */
+[data-theme="dark"] .highlight {
+    background: #1e1c1a;
+    border-color: #3d3830;
+}
+
+[data-theme="dark"] .highlight code {
+    color: #f8f8f2;
+}
+
+/* Comments */
+[data-theme="dark"] .highlight .c,
+[data-theme="dark"] .highlight .c1,
+[data-theme="dark"] .highlight .cm,
+[data-theme="dark"] .highlight .cs {
+    color: #75715e;
+}
+
+/* Keywords */
+[data-theme="dark"] .highlight .k,
+[data-theme="dark"] .highlight .kd,
+[data-theme="dark"] .highlight .kn,
+[data-theme="dark"] .highlight .kp,
+[data-theme="dark"] .highlight .kr,
+[data-theme="dark"] .highlight .kc {
+    color: #f92672;
+    font-weight: bold;
+}
+
+[data-theme="dark"] .highlight .kt {
+    color: #66d9ef;
+    font-style: italic;
+}
+
+/* Strings */
+[data-theme="dark"] .highlight .s,
+[data-theme="dark"] .highlight .s1,
+[data-theme="dark"] .highlight .s2,
+[data-theme="dark"] .highlight .sb,
+[data-theme="dark"] .highlight .sc,
+[data-theme="dark"] .highlight .sd,
+[data-theme="dark"] .highlight .se,
+[data-theme="dark"] .highlight .sh,
+[data-theme="dark"] .highlight .si,
+[data-theme="dark"] .highlight .sx,
+[data-theme="dark"] .highlight .sr {
+    color: #e6db74;
+}
+
+/* Numbers */
+[data-theme="dark"] .highlight .m,
+[data-theme="dark"] .highlight .mf,
+[data-theme="dark"] .highlight .mh,
+[data-theme="dark"] .highlight .mi,
+[data-theme="dark"] .highlight .mo,
+[data-theme="dark"] .highlight .mb,
+[data-theme="dark"] .highlight .mx {
+    color: #ae81ff;
+}
+
+/* Names/Identifiers */
+[data-theme="dark"] .highlight .n,
+[data-theme="dark"] .highlight .ni,
+[data-theme="dark"] .highlight .nl,
+[data-theme="dark"] .highlight .nn,
+[data-theme="dark"] .highlight .nx,
+[data-theme="dark"] .highlight .py,
+[data-theme="dark"] .highlight .bp {
+    color: #f8f8f2;
+}
+
+/* Function names */
+[data-theme="dark"] .highlight .nf,
+[data-theme="dark"] .highlight .nc,
+[data-theme="dark"] .highlight .nd {
+    color: #a6e22e;
+}
+
+/* Attributes */
+[data-theme="dark"] .highlight .na {
+    color: #a6e22e;
+}
+
+/* Builtins */
+[data-theme="dark"] .highlight .nb {
+    color: #66d9ef;
+}
+
+/* Constants */
+[data-theme="dark"] .highlight .no {
+    color: #66d9ef;
+}
+
+/* Tags (HTML/XML) */
+[data-theme="dark"] .highlight .nt {
+    color: #f92672;
+}
+
+/* Variables */
+[data-theme="dark"] .highlight .nv,
+[data-theme="dark"] .highlight .vc,
+[data-theme="dark"] .highlight .vg,
+[data-theme="dark"] .highlight .vi {
+    color: #f8f8f2;
+}
+
+/* Operators */
+[data-theme="dark"] .highlight .o,
+[data-theme="dark"] .highlight .ow {
+    color: #f92672;
+}
+
+/* Punctuation */
+[data-theme="dark"] .highlight .p {
+    color: #f8f8f2;
+}
+
+/* Error */
+[data-theme="dark"] .highlight .err {
+    color: #f8f8f2;
+    background: #f92672;
+}
+
+/* Diff */
+[data-theme="dark"] .highlight .gd {
+    color: #f92672;
+    background: #3c1e1e;
+}
+
+[data-theme="dark"] .highlight .gi {
+    color: #a6e22e;
+    background: #1e3c1e;
+}
+
+[data-theme="dark"] .highlight .gh {
+    color: #f8f8f2;
+}
+
+[data-theme="dark"] .highlight .gu {
+    color: #75715e;
+}
+
+[data-theme="dark"] .highlight .lineno {
+    color: #75715e;
+    border-right-color: #3d3830;
+}

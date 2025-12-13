@@ -26,9 +26,9 @@ The network saw patterns. It could not read.
 | Tactic | Neural Accuracy | Required |
 |--------|-----------------|----------|
 | Simple capture | ~70% | 99% |
-| Ladder | ~60% | exact |
-| Snapback | ~40% | exact |
-| Ko | ~50% | exact |
+| [Ladder]({{ '/glossary#ladder' | relative_url }}) | ~60% | exact |
+| [Snapback]({{ '/glossary#snapback' | relative_url }}) | ~40% | exact |
+| [Ko]({{ '/glossary#ko' | relative_url }}) | ~50% | exact |
 
 Patterns approximate. Tactics require proof.
 
@@ -56,23 +56,19 @@ The network proposes. The analyzer verifies.
 
 The classic problem:
 
-```
-  . B B B .
-  B . X . B    ← White throws in at X
-  . B B B .
-```
+{% include goboard.html id="snapback" size=5 black="bb,cb,db,bc,dc,bd,cd,dd" mark="cc" caption="White throws in at the marked point. What happens?" %}
 
-White plays X. Captured immediately.
+White plays center. Captured immediately.
 
-But after capture, Black has one liberty—at X.
+But after capture, Black has one liberty—at center.
 
 White recaptures. *Snapback*.
 
 ---
 
-The old algorithm checked everything. O(n²).
+The old algorithm checked everything. [O(n²)]({{ '/glossary#big-o-notation' | relative_url }}).
 
-The new algorithm: **Atari-First**.
+The new algorithm: **[Atari]({{ '/glossary#atari' | relative_url }})-First**.
 
 ```python
 def detect_snapback(board, move):

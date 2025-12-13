@@ -56,7 +56,7 @@ It played like a drunk stumbling through a garden, occasionally stepping on flow
 
 ## MCTS Arrives
 
-Monte Carlo Tree Search.
+[Monte Carlo Tree Search]({{ '/glossary#mcts' | relative_url }}).
 
 The algorithm that changed computer Go.
 
@@ -72,7 +72,7 @@ The tree grows. The AI begins to *search*.
 
 $$UCB = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N}{n_i}}$$
 
-Exploitation vs exploration.
+The [Upper Confidence Bound]({{ '/glossary#ucb' | relative_url }}). Exploitation vs exploration.
 
 The eternal balance.
 

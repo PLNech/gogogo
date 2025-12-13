@@ -11,7 +11,7 @@ excerpt: "KataGo's secrets. Ownership heads. The 50x speedup that changed everyt
 
 ---
 
-We read the KataGo paper.
+We read the [KataGo]({{ '/glossary#katago' | relative_url }}) paper.
 
 Then we read it again.
 
@@ -53,9 +53,17 @@ Compute democratized.
 
 ![Ownership Map]({{ '/images/ownership-map.png' | relative_url }})
 
-Every stone. Every territory. Every dame point.
+The [ownership head]({{ '/glossary#ownership-head' | relative_url }}). Every stone. Every territory. Every [dame]({{ '/glossary#dame' | relative_url }}) point.
 
 The network learns *where* it was wrong, not just *that* it was wrong.
+
+> "With only a final binary result, the neural net can only 'guess' at what aspect of the board position caused the loss. By contrast, with an ownership target, the neural net receives direct feedback on which area of the board was mispredicted."
+>
+> — KataGo Paper §4.1
+
+![KataGo Ownership Visualization]({{ '/images/katago-ownership.png' | relative_url }})
+
+Blue for Black. Orange for White. The gradient shows certainty.
 
 ```python
 def ownership_loss(predicted, target):
@@ -65,6 +73,18 @@ def ownership_loss(predicted, target):
 ```
 
 The gradient flows precisely where understanding was lacking.
+
+---
+
+## The Credit Assignment Insight
+
+The paper offers a heuristic:
+
+> Whenever a desired target can be expressed as a sum of separate subevents, predicting those subevents is likely to help. Gradients from a mispredicted sub-event provide sharper, more localized feedback than from the overall event.
+
+Win/loss = one bit. Ownership = 361 bits.
+
+Sharper gradients. Faster learning. Better [credit assignment]({{ '/glossary#credit-assignment' | relative_url }}).
 
 ---
 

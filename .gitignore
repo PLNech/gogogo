@@ -85,3 +85,8 @@ Thumbs.db
 *.tmp
 *.temp
 .cache/
+
+# Jekyll build output
+blog/_site/
+blog/.jekyll-cache/
+blog/.sass-cache/

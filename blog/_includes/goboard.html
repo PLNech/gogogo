@@ -1,0 +1,97 @@
+<!-- Interactive Go Board using WGo.js -->
+<div class="goboard-container">
+    <div id="board-{{ include.id | default: 'default' }}" class="goboard"></div>
+    {% if include.caption %}
+    <p class="goboard-caption">{{ include.caption }}</p>
+    {% endif %}
+</div>
+
+<script>
+(function() {
+    var boardId = "board-{{ include.id | default: 'default' }}";
+    var size = {{ include.size | default: 9 }};
+    var sgf = `{{ include.sgf }}`;
+
+    // Wait for WGo to load
+    function initBoard() {
+        if (typeof WGo === 'undefined') {
+            setTimeout(initBoard, 100);
+            return;
+        }
+
+        var elem = document.getElementById(boardId);
+        if (!elem) return;
+
+        {% if include.sgf %}
+        // SGF player mode
+        var player = new WGo.BasicPlayer(elem, {
+            sgf: sgf,
+            board: {
+                size: size,
+                stoneHandler: WGo.Board.drawHandlers.NORMAL,
+                background: "#e8d4a8"
+            },
+            layout: {
+                top: [],
+                bottom: ["Control"]
+            }
+        });
+        {% else %}
+        // Static diagram mode
+        var board = new WGo.Board(elem, {
+            size: size,
+            width: Math.min(400, elem.parentElement.offsetWidth - 20),
+            stoneHandler: WGo.Board.drawHandlers.NORMAL,
+            background: "#e8d4a8"
+        });
+
+        {% if include.black %}
+        var blackStones = "{{ include.black }}".split(",");
+        blackStones.forEach(function(coord) {
+            if (coord.trim()) {
+                var pos = parseCoord(coord.trim(), size);
+                if (pos) board.addObject({x: pos.x, y: pos.y, c: WGo.B});
+            }
+        });
+        {% endif %}
+
+        {% if include.white %}
+        var whiteStones = "{{ include.white }}".split(",");
+        whiteStones.forEach(function(coord) {
+            if (coord.trim()) {
+                var pos = parseCoord(coord.trim(), size);
+                if (pos) board.addObject({x: pos.x, y: pos.y, c: WGo.W});
+            }
+        });
+        {% endif %}
+
+        {% if include.mark %}
+        var marks = "{{ include.mark }}".split(",");
+        marks.forEach(function(coord) {
+            if (coord.trim()) {
+                var pos = parseCoord(coord.trim(), size);
+                if (pos) board.addObject({x: pos.x, y: pos.y, type: "CR"});
+            }
+        });
+        {% endif %}
+        {% endif %}
+    }
+
+    function parseCoord(coord, size) {
+        // Convert SGF coordinate like "cc" to x,y
+        if (coord.length !== 2) return null;
+        var x = coord.charCodeAt(0) - 97;
+        var y = coord.charCodeAt(1) - 97;
+        if (x >= 0 && x < size && y >= 0 && y < size) {
+            return {x: x, y: y};
+        }
+        return null;
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBoard);
+    } else {
+        initBoard();
+    }
+})();
+</script>

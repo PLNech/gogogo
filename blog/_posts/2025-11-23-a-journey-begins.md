@@ -35,11 +35,11 @@ The way a master sees shape. The way a student sees light.
 
 Go is deceptively simple.
 
-Two colors. One rule: surround to capture.
+Two colors. One rule: surround to capture. A stone without [liberties]({{ '/glossary#liberty' | relative_url }}) is removed.
 
 Yet from this simplicity emerges complexity that humbles.
 
-It took decades for computers to play at amateur dan level. Then AlphaGo happened.
+It took decades for computers to play at amateur dan level. Then [AlphaGo]({{ '/glossary#alphago--alphazero' | relative_url }}) happened.
 
 But AlphaGo had thousands of TPUs.
 

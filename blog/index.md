@@ -17,12 +17,20 @@ title: Home
 
 <ul class="post-list">
 {% for post in site.posts reversed %}
+{% assign slug = post.slug | default: post.title | slugify %}
 <li>
-    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %d, %Y" }}</time>
-    {% if post.excerpt %}
-    <p class="excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
-    {% endif %}
+    <div class="post-thumb-container">
+        <img class="post-thumb" src="{{ '/assets/hero/' | append: slug | append: '.png' | relative_url }}"
+             onerror="this.src='{{ '/assets/hero/' | append: slug | append: '.jpg' | relative_url }}'"
+             alt="{{ post.title }}">
+    </div>
+    <div class="post-content-preview">
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %d, %Y" }}</time>
+        {% if post.excerpt %}
+        <p class="excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+        {% endif %}
+    </div>
 </li>
 {% endfor %}
 </ul>

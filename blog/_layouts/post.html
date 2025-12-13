@@ -3,6 +3,11 @@ layout: default
 ---
 
 <article class="post">
+    {% assign slug = page.slug | default: page.title | slugify %}
+    <img class="hero-image" src="{{ '/assets/hero/' | append: slug | append: '.png' | relative_url }}"
+         onerror="this.src='{{ '/assets/hero/' | append: slug | append: '.jpg' | relative_url }}'"
+         alt="{{ page.title }}">
+
     <header class="post-header">
         <h1>{{ page.title }}</h1>
         <time datetime="{{ page.date | date_to_xmlschema }}">
