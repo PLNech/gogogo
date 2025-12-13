@@ -101,8 +101,9 @@ export function evaluateMove(board: Board, pos: Position, player: Stone, totalSt
   score += captureBonus * 12.0 // Very high weight for captures
 
   // OFFENSIVE TACTICAL LOOKAHEAD: Can I capture opponent groups in 1-2 moves?
-  const attackOpportunity = evaluateAttackOpportunity(testBoard, pos, player)
-  score += attackOpportunity // Scaled by group size - bigger groups = bigger reward
+  // TODO: evaluateAttackOpportunity not implemented - using simpler capture evaluation
+  // const attackOpportunity = evaluateAttackOpportunity(testBoard, pos, player)
+  // score += attackOpportunity
 
   // Atari escape (save own groups in atari)
   const escapeBonus = evaluateAtariEscape(board, pos, player)

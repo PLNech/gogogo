@@ -41,8 +41,15 @@ export function placeStone(
 
   const newBoard = { ...board, stones: newStones }
 
-  // Apply captures
+  // Apply captures (opponent groups first)
   const { board: boardAfterCaptures, captured } = captureStones(newBoard, row, col, stone)
+
+  // Suicide check: if placed stone's group has no liberties, it's illegal
+  // (unless it captured something - then it has liberties from the capture)
+  const placedGroup = getGroup(boardAfterCaptures, row, col)
+  if (countLiberties(boardAfterCaptures, placedGroup) === 0) {
+    return null // Suicide - illegal move
+  }
 
   // Ko rule: check if this move would return to the previous board state
   if (previousBoard && boardsEqual(boardAfterCaptures, previousBoard)) {
@@ -304,4 +311,206 @@ export function getAdjacentPositions(board: Board, row: number, col: number): Po
   return adjacents.filter(
     p => p.row >= 0 && p.row < board.size && p.col >= 0 && p.col < board.size
   )
+}
+
+/**
+ * Check if a position is a true eye for the given color.
+ * True eye: empty point where all adjacent positions are same color
+ * and at least 3/4 diagonals are controlled.
+ */
+export function hasEye(board: Board, row: number, col: number, color: Stone): boolean {
+  if (getStone(board, row, col) !== null) return false
+  if (color === null) return false
+
+  // Check all adjacent positions are same color
+  const adjacents = getAdjacentPositions(board, row, col)
+  for (const adj of adjacents) {
+    if (getStone(board, adj.row, adj.col) !== color) return false
+  }
+
+  // Check diagonals
+  const diagonals = [
+    { row: row - 1, col: col - 1 },
+    { row: row - 1, col: col + 1 },
+    { row: row + 1, col: col - 1 },
+    { row: row + 1, col: col + 1 }
+  ].filter(p => p.row >= 0 && p.row < board.size && p.col >= 0 && p.col < board.size)
+
+  let controlled = 0
+  for (const diag of diagonals) {
+    const stone = getStone(board, diag.row, diag.col)
+    if (stone === color || stone === null) controlled++
+  }
+
+  const minRequired = diagonals.length === 4 ? 3 : diagonals.length
+  return controlled >= minRequired
+}
+
+/**
+ * Count true eyes in a group
+ */
+export function countGroupEyes(board: Board, group: Position[]): number {
+  if (group.length === 0) return 0
+
+  const color = getStone(board, group[0]!.row, group[0]!.col)
+  if (color === null) return 0
+
+  // Find all empty adjacent positions
+  const eyeCandidates = new Set<string>()
+  for (const pos of group) {
+    const adjacents = getAdjacentPositions(board, pos.row, pos.col)
+    for (const adj of adjacents) {
+      if (getStone(board, adj.row, adj.col) === null) {
+        eyeCandidates.add(`${adj.row},${adj.col}`)
+      }
+    }
+  }
+
+  let eyes = 0
+  for (const key of eyeCandidates) {
+    const [row, col] = key.split(',').map(Number) as [number, number]
+    if (hasEye(board, row, col, color)) eyes++
+  }
+
+  return eyes
+}
+
+/**
+ * Determine if a group is alive (has 2+ eyes or enough space to make them)
+ */
+export function isGroupAlive(board: Board, group: Position[]): boolean {
+  if (group.length === 0) return false
+
+  const color = getStone(board, group[0]!.row, group[0]!.col)
+  if (color === null) return false
+
+  const eyes = countGroupEyes(board, group)
+  const liberties = countLiberties(board, group)
+
+  // Two eyes = unconditionally alive
+  if (eyes >= 2) return true
+
+  // Large group with many liberties likely alive
+  if (group.length >= 6 && liberties >= 4) return true
+
+  // One eye with few liberties = dead
+  if (eyes === 1 && liberties <= 2) return false
+
+  // No eyes - check if heavily surrounded
+  if (eyes === 0) {
+    const opponent = color === 'black' ? 'white' : 'black'
+
+    // Get liberty positions
+    const libertyPositions: Position[] = []
+    for (const pos of group) {
+      const adjacents = getAdjacentPositions(board, pos.row, pos.col)
+      for (const adj of adjacents) {
+        if (getStone(board, adj.row, adj.col) === null) {
+          libertyPositions.push(adj)
+        }
+      }
+    }
+
+    // Count opponent stones around liberties
+    let opponentSurrounding = 0
+    for (const lib of libertyPositions) {
+      const adjacents = getAdjacentPositions(board, lib.row, lib.col)
+      for (const adj of adjacents) {
+        if (getStone(board, adj.row, adj.col) === opponent) {
+          opponentSurrounding++
+        }
+      }
+    }
+
+    // Heavily surrounded with no eyes = dead
+    if (opponentSurrounding >= libertyPositions.length * 2 && liberties <= 3) {
+      return false
+    }
+  }
+
+  // Default: assume alive (conservative)
+  return true
+}
+
+/**
+ * Remove dead stones from the board.
+ * Returns a new board with dead stones removed and counts of removed stones.
+ */
+export function removeDeadStones(board: Board): {
+  board: Board
+  blackRemoved: number
+  whiteRemoved: number
+} {
+  let newBoard = board
+  let blackRemoved = 0
+  let whiteRemoved = 0
+
+  const visited = new Set<string>()
+
+  for (let row = 0; row < board.size; row++) {
+    for (let col = 0; col < board.size; col++) {
+      const key = `${row},${col}`
+      if (visited.has(key)) continue
+
+      const stone = getStone(newBoard, row, col)
+      if (stone === null) continue
+
+      const group = getGroup(newBoard, row, col)
+      for (const pos of group) {
+        visited.add(`${pos.row},${pos.col}`)
+      }
+
+      if (!isGroupAlive(newBoard, group)) {
+        if (stone === 'black') {
+          blackRemoved += group.length
+        } else {
+          whiteRemoved += group.length
+        }
+        newBoard = removeStones(newBoard, group)
+      }
+    }
+  }
+
+  return { board: newBoard, blackRemoved, whiteRemoved }
+}
+
+/**
+ * Score a board with automatic dead stone removal
+ */
+export function scoreWithDeadRemoval(board: Board): {
+  blackScore: number
+  whiteScore: number
+  blackStones: number
+  whiteStones: number
+  blackTerritory: number
+  whiteTerritory: number
+  blackDead: number
+  whiteDead: number
+} {
+  const { board: cleanBoard, blackRemoved, whiteRemoved } = removeDeadStones(board)
+
+  // Count stones
+  let blackStones = 0
+  let whiteStones = 0
+  for (let row = 0; row < cleanBoard.size; row++) {
+    for (let col = 0; col < cleanBoard.size; col++) {
+      const stone = getStone(cleanBoard, row, col)
+      if (stone === 'black') blackStones++
+      if (stone === 'white') whiteStones++
+    }
+  }
+
+  // Count territory
+  const territory = countTerritory(cleanBoard)
+
+  return {
+    blackScore: blackStones + territory.black,
+    whiteScore: whiteStones + territory.white,
+    blackStones,
+    whiteStones,
+    blackTerritory: territory.black,
+    whiteTerritory: territory.white,
+    blackDead: blackRemoved,
+    whiteDead: whiteRemoved
+  }
 }
