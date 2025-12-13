@@ -78,7 +78,7 @@ class Board:
         return len(group)
 
     def is_valid_move(self, row: int, col: int) -> bool:
-        """Check if move is valid."""
+        """Check if move is valid (no suicide, no ko)."""
         if row < 0 or row >= self.size or col < 0 or col >= self.size:
             return False
         if self.board[row, col] != 0:
@@ -86,26 +86,25 @@ class Board:
         if self.ko_point == (row, col):
             return False
 
-        # Check for suicide
+        # Simulate the move to check for suicide
         test_board = self.copy()
         test_board.board[row, col] = self.current_player
 
-        # Check if we capture anything
-        captured = False
+        # First, capture any opponent groups with 0 liberties
         for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             nr, nc = row + dr, col + dc
             if 0 <= nr < self.size and 0 <= nc < self.size:
                 if test_board.board[nr, nc] == -self.current_player:
                     group = test_board.get_group(nr, nc)
                     if test_board.count_liberties(group) == 0:
-                        captured = True
-                        break
+                        # Remove captured stones on test board
+                        for gr, gc in group:
+                            test_board.board[gr, gc] = 0
 
-        if not captured:
-            # Check if our own group has liberties
-            group = test_board.get_group(row, col)
-            if test_board.count_liberties(group) == 0:
-                return False
+        # Now check if our own group has liberties
+        our_group = test_board.get_group(row, col)
+        if test_board.count_liberties(our_group) == 0:
+            return False  # Suicide - illegal
 
         return True
 
@@ -171,6 +170,153 @@ class Board:
                     moves.append((r, c))
         return moves
 
+    def has_eye(self, row: int, col: int, color: int) -> bool:
+        """Check if position is a true eye for the given color.
+
+        True eye: empty point where all adjacent positions are same color
+        (or edge) and at least 3 of 4 diagonals are controlled.
+        """
+        if self.board[row, col] != 0:
+            return False
+
+        # Check all adjacent positions
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nr, nc = row + dr, col + dc
+            if 0 <= nr < self.size and 0 <= nc < self.size:
+                if self.board[nr, nc] != color:
+                    return False
+
+        # Check diagonals (need 3/4, or all if on edge/corner)
+        diagonals = []
+        for dr, dc in [(-1, -1), (-1, 1), (1, -1), (1, 1)]:
+            nr, nc = row + dr, col + dc
+            if 0 <= nr < self.size and 0 <= nc < self.size:
+                diagonals.append((nr, nc))
+
+        controlled = 0
+        for nr, nc in diagonals:
+            if self.board[nr, nc] == color or self.board[nr, nc] == 0:
+                controlled += 1
+
+        # Need at least 3/4 (or all if corner/edge with fewer diagonals)
+        min_required = 3 if len(diagonals) == 4 else len(diagonals)
+        return controlled >= min_required
+
+    def count_eyes(self, group: List[Tuple[int, int]]) -> int:
+        """Count true eyes in a group."""
+        if not group:
+            return 0
+
+        color = self.board[group[0][0], group[0][1]]
+        if color == 0:
+            return 0
+
+        # Find all empty adjacent positions
+        eye_candidates = set()
+        for r, c in group:
+            for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < self.size and 0 <= nc < self.size:
+                    if self.board[nr, nc] == 0:
+                        eye_candidates.add((nr, nc))
+
+        # Count true eyes
+        eyes = 0
+        for r, c in eye_candidates:
+            if self.has_eye(r, c, color):
+                eyes += 1
+
+        return eyes
+
+    def is_group_alive(self, group: List[Tuple[int, int]]) -> bool:
+        """Determine if a group is unconditionally alive.
+
+        A group is alive if:
+        - It has 2+ true eyes, OR
+        - It's connected to living territory (simplified: many liberties)
+
+        A group is dead if:
+        - It has 0 eyes and is completely surrounded (0 liberties would be captured)
+        - It has 0-1 eyes and opponent controls all surrounding space
+        """
+        if not group:
+            return False
+
+        eyes = self.count_eyes(group)
+        liberties = self.count_liberties(group)
+
+        # Two eyes = unconditionally alive
+        if eyes >= 2:
+            return True
+
+        # Large group with many liberties is likely alive
+        if len(group) >= 6 and liberties >= 4:
+            return True
+
+        # Check if group is surrounded (simplified heuristic)
+        # If group has 1 eye and few liberties, check if it can make a second eye
+        if eyes == 1 and liberties <= 2:
+            return False  # Likely dead
+
+        if eyes == 0:
+            # No eyes - check if opponent surrounds all liberties
+            color = self.board[group[0][0], group[0][1]]
+            opponent = -color
+
+            # Get all liberty positions
+            liberty_positions = set()
+            for r, c in group:
+                for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < self.size and 0 <= nc < self.size:
+                        if self.board[nr, nc] == 0:
+                            liberty_positions.add((nr, nc))
+
+            # Check each liberty - if playing there wouldn't help survive
+            # This is a heuristic: if opponent controls the area, group is dead
+            opponent_surrounding = 0
+            for lr, lc in liberty_positions:
+                for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    nr, nc = lr + dr, lc + dc
+                    if 0 <= nr < self.size and 0 <= nc < self.size:
+                        if self.board[nr, nc] == opponent:
+                            opponent_surrounding += 1
+
+            # If heavily surrounded with no eyes, likely dead
+            if opponent_surrounding >= len(liberty_positions) * 2 and liberties <= 3:
+                return False
+
+        # Default: assume alive (conservative)
+        return True
+
+    def remove_dead_stones(self) -> Tuple[int, int]:
+        """Remove dead stones from board. Returns (black_removed, white_removed)."""
+        black_removed = 0
+        white_removed = 0
+
+        visited = set()
+
+        for r in range(self.size):
+            for c in range(self.size):
+                if (r, c) in visited:
+                    continue
+                if self.board[r, c] == 0:
+                    continue
+
+                group = self.get_group(r, c)
+                for pos in group:
+                    visited.add(pos)
+
+                if not self.is_group_alive(group):
+                    color = self.board[r, c]
+                    removed = self.remove_group(group)
+                    if color == 1:
+                        black_removed += removed
+                    else:
+                        white_removed += removed
+
+        return black_removed, white_removed
+
     def score(self) -> float:
         """Simple area scoring. Positive = black wins."""
         black = np.sum(self.board == 1)
@@ -212,6 +358,22 @@ class Board:
 
         komi = 6.5 if self.size >= 9 else 0.5
         return black - white - komi
+
+    def score_with_dead_removal(self) -> float:
+        """Score with automatic dead stone removal.
+
+        Creates a copy, removes dead stones, then scores.
+        More accurate than simple score() for endgame positions.
+        """
+        scoring_board = self.copy()
+        black_dead, white_dead = scoring_board.remove_dead_stones()
+
+        # Now score the cleaned board
+        base_score = scoring_board.score()
+
+        # In territory scoring, captured stones count double (removed + added to opponent)
+        # But since we use area scoring, just count the clean board
+        return base_score
 
     def ownership_map(self) -> np.ndarray:
         """

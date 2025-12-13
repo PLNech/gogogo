@@ -1,7 +1,7 @@
-"""Self-play game generation."""
+"""Self-play game generation with optional tactical enhancement."""
 import numpy as np
 import time
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from board import Board
 from mcts import MCTS
 from config import Config
@@ -71,10 +71,34 @@ class GameRecord:
         return samples
 
 
-def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False, batch_size: int = 8) -> List[Tuple[np.ndarray, np.ndarray, float]]:
-    """Play a single self-play game with batched MCTS."""
+def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
+               batch_size: int = 8, use_hybrid: bool = False,
+               tactical_weight: float = 0.3) -> List[Tuple[np.ndarray, np.ndarray, float]]:
+    """Play a single self-play game with batched MCTS.
+
+    Args:
+        model: Neural network model
+        config: Configuration
+        game_idx: Game index for logging
+        verbose: Print progress
+        batch_size: Batch size for MCTS
+        use_hybrid: If True, use HybridMCTS with tactical enhancements
+        tactical_weight: Weight for tactical adjustments (0-1)
+
+    Returns:
+        List of (state, policy, value) tuples for training
+    """
     board = Board(config.board_size)
-    mcts = MCTS(model, config, batch_size=batch_size)
+
+    if use_hybrid:
+        from hybrid_mcts import HybridMCTS
+        from tactics import TacticalAnalyzer
+        tactics = TacticalAnalyzer()
+        mcts = HybridMCTS(model, config, tactics, batch_size=batch_size,
+                         tactical_weight=tactical_weight)
+    else:
+        mcts = MCTS(model, config, batch_size=batch_size)
+
     record = GameRecord()
 
     move_count = 0
@@ -127,12 +151,26 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False, b
     return record.finalize(winner)
 
 
-def generate_games(model, config: Config, num_games: int, verbose: bool = True) -> List[Tuple[np.ndarray, np.ndarray, float]]:
-    """Generate multiple self-play games."""
+def generate_games(model, config: Config, num_games: int, verbose: bool = True,
+                   use_hybrid: bool = False, tactical_weight: float = 0.3) -> List[Tuple[np.ndarray, np.ndarray, float]]:
+    """Generate multiple self-play games.
+
+    Args:
+        model: Neural network model
+        config: Configuration
+        num_games: Number of games to generate
+        verbose: Print progress
+        use_hybrid: If True, use HybridMCTS with tactical enhancements
+        tactical_weight: Weight for tactical adjustments (0-1)
+
+    Returns:
+        List of (state, policy, value) tuples for training
+    """
     all_samples = []
 
     for i in range(num_games):
-        samples = play_game(model, config, game_idx=i, verbose=verbose)
+        samples = play_game(model, config, game_idx=i, verbose=verbose,
+                           use_hybrid=use_hybrid, tactical_weight=tactical_weight)
         all_samples.extend(samples)
         print(f"Game {i+1}/{num_games}: {len(samples)} positions")
 

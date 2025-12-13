@@ -10,6 +10,8 @@ python = "^3.11"
 torch = {version = "^2.5.0", source = "pytorch-cu121"}
 numpy = "^2.0"
 tensorboard = "^2.14"
+matplotlib = "^3.10.7"
+scipy = "^1.16.3"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0"

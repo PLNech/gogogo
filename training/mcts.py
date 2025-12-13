@@ -195,11 +195,12 @@ class MCTS:
         # Expand root (check cache first)
         root_hash = board.zobrist_hash()
         cached = self.cache.get(root_hash) if self.cache else None
+        use_tactical = getattr(self.config, 'tactical_features', False) or self.config.input_planes == 27
         if cached:
             policy, value = cached
             root.expand(board, policy)
         else:
-            policy, value = self._batch_predict([board.to_tensor()])
+            policy, value = self._batch_predict([board.to_tensor(use_tactical_features=use_tactical)])
             root.expand(board, policy[0])
             if self.cache:
                 self.cache.put(root_hash, policy[0], value[0])
@@ -257,7 +258,7 @@ class MCTS:
                     else:
                         # Cache miss - add to batch for NN evaluation
                         pending.append(PendingEval(
-                            tensor=scratch_board.to_tensor(),
+                            tensor=scratch_board.to_tensor(use_tactical_features=use_tactical),
                             node=node,
                             board=scratch_board,
                             search_path=search_path,
