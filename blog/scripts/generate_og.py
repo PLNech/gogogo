@@ -151,9 +151,7 @@ def generate_og_image(title: str, phase: str = None, output_path: Path = None, i
         ax_text.text(0.5, 0.45, 'Chronicle', fontsize=36,
                     color=COLORS['text'], ha='center', va='center',
                     fontfamily='serif', style='italic')
-        ax_text.text(0.5, 0.25, '一石万局', fontsize=24,
-                    color=COLORS['text_light'], ha='center', va='center')
-        ax_text.text(0.5, 0.15, 'One stone, ten thousand games', fontsize=14,
+        ax_text.text(0.5, 0.22, 'One stone, ten thousand games', fontsize=18,
                     color=COLORS['text_light'], ha='center', va='center',
                     style='italic')
     else:
