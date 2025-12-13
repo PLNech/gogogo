@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Neurosymbolic Harmony"
-date: 2024-12-13
+date: 2025-12-13
 phase: "Synthesis"
 excerpt: "Neural networks learn patterns. Symbolic systems calculate. Together: tactical precision."
 ---
@@ -46,23 +46,7 @@ Why choose?
 
 ## Hybrid Architecture
 
-```
-┌─────────────────────────────────┐
-│      Neural Network             │
-│   (pattern recognition)         │
-│                                 │
-│   "This looks like a ladder"    │
-└──────────────┬──────────────────┘
-               │
-               ▼
-┌─────────────────────────────────┐
-│    Tactical Analyzer            │
-│   (symbolic verification)       │
-│                                 │
-│   "Let me check: B1, W2, B3..." │
-│   "Yes, ladder works."          │
-└─────────────────────────────────┘
-```
+![Hybrid Architecture]({{ '/images/hybrid-architecture.png' | relative_url }})
 
 The network proposes. The analyzer verifies.
 
@@ -111,49 +95,17 @@ Ladders are deterministic.
 
 The defender runs diagonally. The attacker chases.
 
-If a breaker stone exists on that diagonal: escape.
+![Ladder Pattern]({{ '/images/ladder-pattern.png' | relative_url }})
 
-If edge reached: capture.
+If a breaker stone exists on that diagonal: escape. If edge reached: capture.
 
-```python
-def ladder_works(board, group):
-    direction = escape_direction(group)
-    for pos in diagonal_scan(group, direction):
-        if board[pos] == defender:
-            return False  # Broken
-        if pos.is_edge():
-            return True   # Captured
-```
-
-One diagonal scan. O(board_size).
-
-No recursion needed.
+One diagonal scan. O(board_size). No recursion needed.
 
 ---
 
 ## Results
 
-Before tactical analyzer:
-
-```
-Capture:   2/3
-Escape:    1/2
-Ladder:    0/2
-Snapback:  0/1
-───────────────
-Total:     5/10
-```
-
-After:
-
-```
-Capture:   3/3  ✓
-Escape:    2/2  ✓
-Ladder:    1/2  ↑
-Snapback:  1/1  ✓
-───────────────
-Total:     8/10
-```
+![Tactical Results]({{ '/images/tactical-results.png' | relative_url }})
 
 **+60% relative improvement.**
 

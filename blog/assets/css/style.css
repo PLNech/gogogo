@@ -293,6 +293,20 @@ footer p {
     max-width: none;
 }
 
+footer .attribution {
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    line-height: 1.6;
+}
+
+footer .attribution a {
+    color: var(--text-light);
+}
+
+footer .attribution a:hover {
+    color: var(--text);
+}
+
 /* Tables */
 table {
     width: 100%;

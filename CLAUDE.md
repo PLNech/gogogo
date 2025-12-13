@@ -19,6 +19,12 @@ GoGoGo is an idle/incremental game centered around the ancient game of Go (Baduk
 - **State Layer** (`src/state/`): State management bridges, minimal logic
 - **UI Layer** (`src/ui/`): React components only, NO business logic
 
+**NEVER write throwaway Python scripts for testing:**
+- ALL tactical/position tests MUST be proper pytest unit tests
+- Tests go in `test_*.py` files that can be run with `poetry run pytest`
+- Debug scripts are forbidden - convert exploration into reusable tests
+- If you need to verify behavior, write a test case for it
+
 ### Senior Staff Architect Standards
 - **Lean MVP First**: Build minimum viable features, validate, then iterate
 - **YAGNI (You Aren't Gonna Need It)**: No speculative features or over-engineering
@@ -122,37 +128,128 @@ src/core/ai/        # TypeScript inference (browser)
 7. Export to TFJS periodically for browser testing
 ```
 
+### MANDATORY: Training Visualization & Validation
+
+**CRITICAL RULE**: Every training run MUST produce rich visualizations:
+
+1. **Pre-training Visualization**:
+   - Loss curves (policy, value, ownership, opponent, score)
+   - Learning rate schedule
+   - Accuracy progression
+   - Training/validation split metrics
+   - Save to `training_plots/` directory
+
+2. **Self-play Visualization**:
+   - Win rate vs previous checkpoints
+   - Game length distribution
+   - Score distribution
+   - MCTS statistics (simulations, cache hit rate)
+
+3. **Game Quality Validation**:
+   - Watch 3-5 games manually after each training phase
+   - Check opening (corners/edges before center)
+   - Check midgame (groups have 2+ liberties, no pointless self-atari)
+   - Check endgame (small yose moves, proper passing)
+   - Document any issues found
+
+4. **Existing Visualizer**: `training/visualize.py` with `TrainingVisualizer` class
+   - Use `viz.log_batch()` for per-batch metrics
+   - Use `viz.log_epoch()` for per-epoch metrics
+   - Call `viz.generate_all_plots()` at end of training
+
 **Existing Heuristics → Features:**
 - `src/core/ai/policy.ts` heuristics can inform feature engineering
 - Not used directly in neural network - superseded by learned features
 
-### MANDATORY: Blog Post for Every Deliverable
-**CRITICAL RULE**: Each phase deliverable MUST include a blog post entry
+### MANDATORY: Blog - Document As We Build
 
-**Blog Post Requirements**:
-1. **FORMAT**: MARKDOWN (.md) files ONLY - NEVER HTML
-   - File format: `blog/posts/YYYY-MM-DD-title.md`
-   - Use proper Markdown syntax (headers, code blocks, quotes)
-2. **LENGTH**: SHORT. CONCISE. POETIC.
-   - More white space, less text
-   - Short paragraphs (1-3 sentences max)
-   - Let code breathe
-   - No long explanations - show, don't tell
-3. **Tone**: Subtle, evasive, go-inspired, evocative, spare prose
-4. **Structure**:
-   - Philosophical opening (go proverb or haiku)
-   - Brief system explanation
-   - 1-2 key code samples (small, focused)
-   - Brief closing reflection
-5. **Purpose**: Grounds delivery in functional requirements completion
+**Philosophy**: Chronicle the journey. Be transparent about failures. Show the work.
 
-**Blog Infrastructure**:
-- Minimal GitHub Pages blog
-- Posts are Markdown: `blog/posts/YYYY-MM-DD-title.md`
-- Landing page links to posts
-- Simple, elegant theme that honors Go's aesthetic
+> 下手の考え休むに似たり — *A weak player's thinking resembles resting*
 
-**DATES**: Always use current/recent dates relative to project context
+We are humble Go developers. We document mistakes. We share learnings.
+
+**Core Principles**:
+1. **Document failures openly** - The wall problem, sparse features, wrong directions
+2. **Show, don't tell** - Illustrations over explanations, images worth 1000 words
+3. **Poetic brevity** - Short sentences. White space. Let concepts breathe.
+4. **Go-inspired aesthetic** - Paper texture, warm tones, traditional beauty
+
+---
+
+**Blog Structure** (Jekyll):
+```
+blog/
+├── _config.yml          # Site config
+├── _layouts/            # default.html, post.html
+├── _posts/              # YYYY-MM-DD-slug.md
+├── assets/
+│   ├── css/style.css    # Main styles
+│   ├── css/syntax.css   # Code highlighting
+│   └── og/              # Open Graph images
+├── images/              # Post illustrations
+├── scripts/             # Generation tools
+│   ├── generate_og.py         # OG image generator
+│   └── generate_illustrations.py  # Post illustrations
+├── glossary.md          # Go/AI term definitions
+└── index.md             # Landing page
+```
+
+---
+
+**Post Format** (`_posts/YYYY-MM-DD-slug.md`):
+```yaml
+---
+layout: post
+title: "Post Title"
+date: YYYY-MM-DD
+phase: "Phase Name"  # Genesis, Foundation, Struggle, Research, Synthesis
+excerpt: "Short description for previews."
+---
+```
+
+**Post Structure**:
+1. Go proverb epigraph (Japanese + translation)
+2. Core narrative (short paragraphs, many breaks)
+3. Illustrations (generated, bandwidth-optimized)
+4. Code samples (minimal, essential only)
+5. Closing reflection (proverb or insight)
+
+---
+
+**Illustration Process**:
+```bash
+# Generate all blog illustrations
+cd training && poetry run python ../blog/scripts/generate_illustrations.py
+
+# Generate OG images
+poetry run python ../blog/scripts/generate_og.py
+```
+
+**Image Guidelines**:
+- Format: PNG, optimized (<150KB per image)
+- Style: Warm paper aesthetic, Go board visualizations
+- Content: Board positions, architecture diagrams, training curves
+- Include for: Every concept explained, every problem described
+
+---
+
+**Math Rendering** (KaTeX):
+- Inline: `$formula$`
+- Display: `$$formula$$` or `\[formula\]`
+
+**Glossary** (`/glossary`):
+- First use of Go/AI terms should be defined
+- Glossary page lists all terms with Sensei's/Wikipedia links
+
+**Commit after each post**:
+```bash
+git add blog/
+git commit -m "docs: Add 'Post Title' blog post"
+git push github master
+```
+
+**DATES**: Always use 2025 dates (current year)
 
 **Phase 1: Simplify & Stabilize**
 1. **Audit existing AI code**
@@ -376,6 +473,14 @@ git push
 - Update PLAN.md as features are completed or priorities shift
 - PLAN.md ensures the complete vision is documented and nothing is forgotten
 
+## ARCH.md Architecture Documentation (MANDATORY)
+- **MUST maintain `training/ARCH.md`** for all neural network architecture decisions
+- Every architectural choice MUST be grounded in research with citation (arxiv, paper, blog)
+- Document: network architecture, reward modeling, training procedure, feature engineering
+- Format: Decision → Rationale → Source (with URL)
+- This prevents cargo-culting and ensures we understand WHY each choice was made
+- Update ARCH.md whenever architecture changes or new research informs decisions
+
 ## Content Integration Strategy
 1. **Phase 1**: Download and parse representative SGF samples
 2. **Phase 2**: Implement content loaders (tsumego, joseki, games)
@@ -477,3 +582,4 @@ git push
 ---
 
 **Remember**: MVP first. Build the engine, validate with tests, then add UI. No feature creep. Clean separation. Fast iteration.
+- use subagents whenever a sidequest is worth encapsulating to not pollute your main context. Be ruthless: you're above most subtasks.

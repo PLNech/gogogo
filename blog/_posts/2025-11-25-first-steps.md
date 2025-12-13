@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "First Steps"
-date: 2024-11-25
+date: 2025-11-25
 phase: "Foundation"
 excerpt: "The naive approach. Simple heuristics. A teacher that barely crawls."
 ---
@@ -60,13 +60,7 @@ Monte Carlo Tree Search.
 
 The algorithm that changed computer Go.
 
-```
-repeat 1000 times:
-  select promising node
-  expand one child
-  simulate random playout
-  backpropagate result
-```
+![MCTS Tree]({{ '/images/mcts-tree.png' | relative_url }})
 
 Each simulation a tiny universe. Each backpropagation a lesson learned.
 
@@ -95,6 +89,8 @@ A small victory. A first step on a long path.
 But when we watched it play, something was wrong.
 
 It built walls. Strange, useless walls.
+
+![Wall Problem]({{ '/images/wall-problem.png' | relative_url }})
 
 Stones placed in straight lines. Territory hemorrhaging everywhere.
 

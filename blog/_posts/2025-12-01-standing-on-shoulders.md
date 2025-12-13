@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Standing on Shoulders"
-date: 2024-12-01
+date: 2025-12-01
 phase: "Research"
 excerpt: "KataGo's secrets. Ownership heads. The 50x speedup that changed everything."
 ---
@@ -51,7 +51,7 @@ Compute democratized.
 
 ## Ownership: The Breakthrough
 
-*Every point on the board: who owns it at game end?*
+![Ownership Map]({{ '/images/ownership-map.png' | relative_url }})
 
 Every stone. Every territory. Every dame point.
 
@@ -135,7 +135,7 @@ The sparse feature problem—solved.
 
 ## First Results
 
-Policy accuracy: 21% → **38%**
+![Accuracy Comparison]({{ '/images/accuracy-comparison.png' | relative_url }})
 
 The network sees again.
 

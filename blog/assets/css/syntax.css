@@ -1,0 +1,149 @@
+/* Syntax Highlighting - Minimal Monochrome */
+/* Matches Go aesthetic: black, white, grey */
+
+.highlight {
+    background: #f8f6f2;
+    border: 1px solid #e0dcd4;
+    border-radius: 2px;
+    margin: 2rem 0;
+    overflow-x: auto;
+}
+
+.highlight pre {
+    margin: 0;
+    padding: 1.5rem;
+    background: transparent;
+    border: none;
+}
+
+.highlight code {
+    font-family: 'SF Mono', 'Monaco', 'Consolas', 'Liberation Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+/* Comments */
+.highlight .c,
+.highlight .c1,
+.highlight .cm,
+.highlight .cs {
+    color: #7a7267;
+    font-style: italic;
+}
+
+/* Keywords */
+.highlight .k,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt,
+.highlight .kc {
+    color: #1a1a1a;
+    font-weight: bold;
+}
+
+/* Strings */
+.highlight .s,
+.highlight .s1,
+.highlight .s2,
+.highlight .sb,
+.highlight .sc,
+.highlight .sd,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .sr {
+    color: #4a4540;
+}
+
+/* Numbers */
+.highlight .m,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo,
+.highlight .mb,
+.highlight .mx {
+    color: #5c574f;
+}
+
+/* Names/Identifiers */
+.highlight .n,
+.highlight .na,
+.highlight .nb,
+.highlight .nc,
+.highlight .nd,
+.highlight .ne,
+.highlight .nf,
+.highlight .ni,
+.highlight .nl,
+.highlight .nn,
+.highlight .no,
+.highlight .nt,
+.highlight .nv,
+.highlight .nx,
+.highlight .py,
+.highlight .bp,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi {
+    color: #2d2a26;
+}
+
+/* Function names */
+.highlight .nf {
+    font-weight: 600;
+}
+
+/* Class names */
+.highlight .nc {
+    font-weight: bold;
+}
+
+/* Operators */
+.highlight .o,
+.highlight .ow {
+    color: #3d3833;
+}
+
+/* Punctuation */
+.highlight .p {
+    color: #4a4540;
+}
+
+/* Error */
+.highlight .err {
+    color: #8b0000;
+    background: #fff0f0;
+}
+
+/* Generic */
+.highlight .gd {
+    color: #8b0000;
+    background: #ffeaea;
+}
+
+.highlight .gi {
+    color: #006400;
+    background: #e6ffe6;
+}
+
+.highlight .gh {
+    color: #1a1a1a;
+    font-weight: bold;
+}
+
+.highlight .gu {
+    color: #7a7267;
+}
+
+/* Line numbers */
+.highlight .lineno {
+    color: #a09a90;
+    user-select: none;
+    padding-right: 1rem;
+    border-right: 1px solid #e0dcd4;
+    margin-right: 1rem;
+}

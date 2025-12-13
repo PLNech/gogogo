@@ -4,7 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/syntax.css' | relative_url }}">
+
+    <!-- KaTeX for math rendering (lightweight) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+            onload="renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ]
+            });"></script>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    {% if page.og_image %}
+    <meta property="og:image" content="{{ page.og_image | absolute_url }}">
+    {% else %}
+    <meta property="og:image" content="{{ '/assets/og/main.png' | absolute_url }}">
+    {% endif %}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
     <div class="container">
@@ -21,7 +51,10 @@
                 碁は対話<br>
                 <em>Go is conversation</em>
             </div>
-            <p>Built with simplicity. Served with intention.</p>
+            <p class="attribution">
+                下手の考え休むに似たり — <em>A weak player's thinking resembles resting</em><br>
+                <a href="https://me.nech.pl">PLN</a> · <a href="{{ '/glossary' | relative_url }}">Glossary</a>
+            </p>
         </footer>
     </div>
 </body>
