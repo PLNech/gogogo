@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="{{ '/' | relative_url }}" class="home-link">{{ site.title }}</a>
+        </header>
+
+        <main>
+            {{ content }}
+        </main>
+
+        <footer>
+            <div class="quote">
+                碁は対話<br>
+                <em>Go is conversation</em>
+            </div>
+            <p>Built with simplicity. Served with intention.</p>
+        </footer>
+    </div>
+</body>
+</html>

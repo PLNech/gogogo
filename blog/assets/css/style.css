@@ -1,0 +1,338 @@
+/* GoGoGo Chronicle - Minimal Go Aesthetic */
+/* Paper texture, big fonts, spare prose */
+
+:root {
+    --bg: #faf8f5;
+    --bg-paper: #f5f2ed;
+    --text: #2d2a26;
+    --text-light: #6b6560;
+    --accent: #1a1a1a;
+    --border: #d4cfc6;
+    --code-bg: #f0ede6;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 20px;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+/* Header */
+header {
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--accent);
+}
+
+.home-link {
+    font-size: 2rem;
+    font-weight: normal;
+    text-decoration: none;
+    color: var(--text);
+    letter-spacing: 0.05em;
+}
+
+/* Main content */
+main {
+    min-height: 60vh;
+}
+
+/* Typography - Big, Bold, Sparse */
+h1 {
+    font-size: 2.5rem;
+    font-weight: normal;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1.5rem;
+    max-width: 65ch;
+}
+
+/* Blockquotes - Go proverbs */
+blockquote {
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    background: var(--bg-paper);
+    border-left: 4px solid var(--accent);
+    font-style: italic;
+    color: var(--text-light);
+}
+
+blockquote p {
+    margin-bottom: 0.5rem;
+}
+
+blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+/* Code blocks */
+pre {
+    background: var(--code-bg);
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+}
+
+code {
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    font-size: 0.85rem;
+}
+
+p code {
+    background: var(--code-bg);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+}
+
+/* Images - boards and graphs */
+img {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+}
+
+figure {
+    margin: 2.5rem 0;
+}
+
+figcaption {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+/* Lists */
+ul, ol {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+/* Links */
+a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+
+a:hover {
+    text-decoration-thickness: 2px;
+}
+
+/* Index page - post list */
+.intro {
+    margin-bottom: 3rem;
+}
+
+.intro .quote {
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 2rem 0;
+    color: var(--text-light);
+}
+
+.intro .quote em {
+    display: block;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.posts-section {
+    margin-bottom: 3rem;
+}
+
+.posts-section h2 {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: none;
+    margin-bottom: 1rem;
+}
+
+.post-list {
+    list-style: none;
+    padding: 0;
+}
+
+.post-list li {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: var(--bg-paper);
+    border-left: 4px solid var(--accent);
+}
+
+.post-list a {
+    font-size: 1.3rem;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.post-list a:hover {
+    text-decoration: underline;
+}
+
+.post-list time {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.post-list .excerpt {
+    margin-top: 0.5rem;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* Post page */
+.post-header {
+    margin-bottom: 3rem;
+}
+
+.post-header time {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.post-header .phase {
+    display: inline-block;
+    margin-left: 1rem;
+    padding: 0.2rem 0.6rem;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.post-content {
+    margin-bottom: 4rem;
+}
+
+.post-nav {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.post-nav a {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+/* Footer */
+footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+footer .quote {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+footer .quote em {
+    display: block;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+footer p {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    max-width: none;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+th {
+    font-weight: bold;
+    background: var(--bg-paper);
+}
+
+/* Horizontal rule */
+hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 3rem 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    html {
+        font-size: 18px;
+    }
+
+    .container {
+        padding: 2rem 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .intro .quote {
+        font-size: 1.2rem;
+    }
+}

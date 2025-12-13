@@ -1,0 +1,42 @@
+# GoGoGo Chronicle
+# A poetic journey through Go and AI
+
+title: GoGoGo Chronicle
+description: >-
+  A journey through AI and Go.
+  Building intelligence through play.
+  Making oneself stronger by teaching machines to see.
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# URL settings (GitHub Pages)
+baseurl: "/gogogo"
+url: "https://plnech.github.io"
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /posts/:title/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+# Exclude from build
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+
+# Theme settings
+sass:
+  style: compressed
