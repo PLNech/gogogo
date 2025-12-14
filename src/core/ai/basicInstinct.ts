@@ -126,10 +126,10 @@ export function detectHeadOfTwo(board: Board, pos: Position, player: 'black' | '
   ]
 
   for (const [first, second] of directions) {
-    const r1 = pos.row + first.row
-    const c1 = pos.col + first.col
-    const r2 = pos.row + second.row
-    const c2 = pos.col + second.col
+    const r1 = pos.row + first!.row
+    const c1 = pos.col + first!.col
+    const r2 = pos.row + second!.row
+    const c2 = pos.col + second!.col
 
     if (r1 < 0 || r1 >= board.size || c1 < 0 || c1 >= board.size) continue
     if (r2 < 0 || r2 >= board.size || c2 < 0 || c2 >= board.size) continue

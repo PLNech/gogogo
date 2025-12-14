@@ -28,7 +28,7 @@ function App() {
   // Sync URL with tab state
   useEffect(() => {
     const path = tab === 'game' ? '/' : `/${tab}`
-    const fullPath = import.meta.env.BASE_URL + path.slice(1)
+    const fullPath = (import.meta.env?.BASE_URL || '/') + path.slice(1)
     if (window.location.pathname !== fullPath) {
       window.history.pushState(null, '', fullPath + window.location.search)
     }

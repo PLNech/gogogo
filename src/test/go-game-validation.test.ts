@@ -57,7 +57,7 @@ describe('Go Game Engine Validation', () => {
     // Place a stone
     const newBoard1x1 = placeStone(board1x1, 0, 0, 'black')
     expect(newBoard1x1).not.toBeNull()
-    expect(newBoard1x1!.stones[0][0]).toBe('black')
+    expect(newBoard1x1!.stones[0]?.[0]).toBe('black')
 
     // Test 3x3 board
     const board3x3 = createBoard(3)
@@ -66,7 +66,7 @@ describe('Go Game Engine Validation', () => {
     // Place a stone
     const newBoard3x3 = placeStone(board3x3, 1, 1, 'white')
     expect(newBoard3x3).not.toBeNull()
-    expect(newBoard3x3!.stones[1][1]).toBe('white')
+    expect(newBoard3x3!.stones[1]?.[1]).toBe('white')
 
     // Try to place on occupied spot
     const occupiedBoard = placeStone(newBoard3x3!, 1, 1, 'black')

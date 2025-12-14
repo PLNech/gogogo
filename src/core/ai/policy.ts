@@ -62,6 +62,8 @@ export function computeMovePriors(board: Board, player: Stone): Map<string, numb
  * Returns raw score (higher = better)
  */
 export function evaluateMove(board: Board, pos: Position, player: Stone, totalStones: number = 0): number {
+  if (player !== 'black' && player !== 'white') return 0.001
+
   let score = 1.0 // Base score
 
   // Check if move is legal (basic check - not self-capture)
@@ -69,6 +71,9 @@ export function evaluateMove(board: Board, pos: Position, player: Stone, totalSt
   if (testBoard === null) {
     return 0.001 // Illegal move, minimal score
   }
+
+  const stone = getStone(testBoard, pos.row, pos.col)
+  if (!stone) return 0.001
 
   const group = getGroup(testBoard, pos.row, pos.col)
   const liberties = countLiberties(testBoard, group)
@@ -106,21 +111,23 @@ export function evaluateMove(board: Board, pos: Position, player: Stone, totalSt
   // score += attackOpportunity
 
   // Atari escape (save own groups in atari)
-  const escapeBonus = evaluateAtariEscape(board, pos, player)
-  if (escapeBonus > 0) {
-    // CRITICAL: Use tactical lookahead to verify the escape actually saves the group
-    const testBoard2 = placeStone(board, pos.row, pos.col, player)
-    if (testBoard2) {
-      const resultGroup = getGroup(testBoard2, pos.row, pos.col)
+  if (stone === 'black' || stone === 'white') {
+    const escapeBonus = evaluateAtariEscape(board, pos, stone)
+    if (escapeBonus > 0) {
+      // CRITICAL: Use tactical lookahead to verify the escape actually saves the group
+      const testBoard2 = placeStone(board, pos.row, pos.col, stone)
+      if (testBoard2) {
+        const resultGroup = getGroup(testBoard2, pos.row, pos.col)
 
-      // Use 2-ply lookahead: can this group survive opponent's response?
-      const willDie = canOpponentCaptureInTwoMoves(testBoard2, resultGroup, player)
+        // Use 2-ply lookahead: can this group survive opponent's response?
+        const willDie = canOpponentCaptureInTwoMoves(testBoard2, resultGroup, stone)
 
-      if (!willDie) {
-        score += escapeBonus * 8.0 // Genuine escape - reward it
-      } else {
-        // "Escape" leads to dead group - heavily penalize
-        score -= 30.0 // STRONG penalty for futile moves
+        if (!willDie) {
+          score += escapeBonus * 8.0 // Genuine escape - reward it
+        } else {
+          // "Escape" leads to dead group - heavily penalize
+          score -= 30.0 // STRONG penalty for futile moves
+        }
       }
     }
   }
@@ -265,7 +272,7 @@ export function evaluateAtariEscape(board: Board, pos: Position, player: Stone):
     }
 
     const adjStone = getStone(board, adjPos.row, adjPos.col)
-    if (adjStone === player) {
+    if (adjStone === player && (player === 'black' || player === 'white')) {
       const friendlyGroup = getGroup(board, adjPos.row, adjPos.col)
       const liberties = countLiberties(board, friendlyGroup)
 
@@ -335,7 +342,8 @@ export function evaluateConnection(board: Board, pos: Position, player: Stone): 
 }
 
 export function evaluateAtariAttack(board: Board, pos: Position, player: Stone): number {
-  const opponent: Stone = player === 'black' ? 'white' : 'black'
+  if (player !== 'black' && player !== 'white') return 0
+  const opponent: 'black' | 'white' = player === 'black' ? 'white' : 'black'
   const testBoard = placeStone(board, pos.row, pos.col, player)
   if (!testBoard) return 0
 
@@ -483,7 +491,7 @@ function canOpponentCaptureInTwoMoves(board: Board, group: Position[], player: S
   }
 
   // 2-ply: Can opponent capture after player's defensive move?
-  if (liberties === 1) {
+  if (liberties === 1 && (player === 'black' || player === 'white')) {
     // Player tries to defend by playing on the single liberty
     const libKey = Array.from(libertyPositions)[0]!
     const [row, col] = libKey.split(',').map(Number)

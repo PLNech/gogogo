@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/gogogo/', // GitHub Pages base path
+  base: '/gogogo/play/', // GitHub Pages base path (served at /gogogo/play/)
   test: {
     globals: true,
     environment: 'jsdom',

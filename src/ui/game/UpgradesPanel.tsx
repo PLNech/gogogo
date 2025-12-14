@@ -8,7 +8,6 @@ export function UpgradesPanel() {
   const purchased = useUpgradeStore((state) => state.purchased)
   const availableIds = useMemo(() => getAvailableUpgrades(purchased), [purchased])
   const purchaseUpgrade = useUpgradeStore((state) => state.purchaseUpgrade)
-  const stones = useCurrencyStore((state) => state.stones)
   const canAfford = useCurrencyStore((state) => state.canAfford)
 
   if (availableIds.length === 0) {

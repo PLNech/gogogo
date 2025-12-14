@@ -27,7 +27,7 @@ export interface MCTSResult {
  * Simple MCTS implementation for Go AI
  */
 export class GoMCTS {
-  private root: MCTSNode
+  private root!: MCTSNode
   private config: AIConfig
   private maxIterations: number
   private maxTimeMs: number
@@ -145,7 +145,7 @@ export class GoMCTS {
 
       // Choose a random move
       const randomIndex = Math.floor(Math.random() * emptyPositions.length)
-      const move = emptyPositions[randomIndex]
+      const move = emptyPositions[randomIndex]!
 
       const newBoard = placeStone(currentBoard, move.row, move.col, currentPlayer)
       if (!newBoard) {
@@ -156,7 +156,7 @@ export class GoMCTS {
       }
 
       // Apply captures
-      const { board: boardAfterCapture } = captureStones(newBoard, move.row, move.col, currentPlayer)
+      const { board: boardAfterCapture } = captureStones(newBoard, move!.row, move!.col, currentPlayer)
       currentBoard = boardAfterCapture
 
       currentPlayer = currentPlayer === 'black' ? 'white' : 'black'
@@ -273,7 +273,7 @@ export class GoMCTS {
     }
 
     // Pick a reasonable move based on existing heuristics
-    const bestPosition = emptyPositions[0] // Simple fallback
+    const bestPosition = emptyPositions[0]! // Simple fallback
 
     return {
       position: bestPosition,

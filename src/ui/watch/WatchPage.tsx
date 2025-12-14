@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { createBoard, placeStone, captureStones, countTerritory, getStone, getTerritoryMap } from '../../core/go/board'
-import { getAIMove, getAIDecision } from '../../core/ai/simpleAI'
+import { getAIMove } from '../../core/ai/simpleAI'
 import { AI_PRESETS } from '../../core/ai/types'
 import { useAIStatsStore } from '../../state/aiStatsStore'
-import { estimateScore } from '../../core/ai/evaluation'
 import type { Board } from '../../core/go/types'
 import type { AIConfig } from '../../core/ai/types'
 import type { MatchResult } from '../../state/aiStatsStore'
@@ -42,7 +41,7 @@ export function WatchPage() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [autoReplay, setAutoReplay] = useState(false)
   const [showStats, setShowStats] = useState(false)
-  const [showTerritory, setShowTerritory] = useState(true)
+  const [showTerritory] = useState(true)
   const [showAdvancedAI, setShowAdvancedAI] = useState(false)
   const [moveHistory, setMoveHistory] = useState<MoveHistory[]>([])
   const [completedBoards, setCompletedBoards] = useState<Board[]>([])
@@ -56,8 +55,8 @@ export function WatchPage() {
   const [maxMovesEnabled, setMaxMovesEnabled] = useState(urlMaxMovesEnabled)
 
   // Custom AI params
-  const [blackConfig, setBlackConfig] = useState<AIConfig>(AI_PRESETS[2])
-  const [whiteConfig, setWhiteConfig] = useState<AIConfig>(AI_PRESETS[2])
+  const [blackConfig, setBlackConfig] = useState<AIConfig>(AI_PRESETS[2]!)
+  const [whiteConfig, setWhiteConfig] = useState<AIConfig>(AI_PRESETS[2]!)
 
   // Stats
   const addMatch = useAIStatsStore((state) => state.addMatch)
@@ -143,8 +142,8 @@ export function WatchPage() {
 
           // If the last move was by the other player and it was also a pass (no move position)
           // Then we have two consecutive passes and should end the game
-          if (lastMove.player === (currentPlayer === 'black' ? 'white' : 'black') &&
-              !lastMove.movePosition) {
+          if (lastMove?.player === (currentPlayer === 'black' ? 'white' : 'black') &&
+              !lastMove?.movePosition) {
             console.log('[DEBUG] Two consecutive passes detected - ending game');
             endGame();
             return;
@@ -154,6 +153,22 @@ export function WatchPage() {
         // If we reach here, it's just a single pass, not the end of game
         // Continue with the game by switching player
         console.log('[DEBUG] Single pass detected, continuing game');
+        // Record pass in history
+        const territory = countTerritory(board)
+        const blackScore = territory.black + captures.black
+        const whiteScore = territory.white + captures.white
+        const scoreDiff = blackScore - whiteScore
+        const blackWinProb = 1 / (1 + Math.exp(-scoreDiff / 10))
+
+        setMoveHistory(prev => [...prev, {
+          moveNumber: moveCount + 1,
+          player: currentPlayer,
+          blackScore,
+          whiteScore,
+          blackWinProb: blackWinProb * 100,
+          movePosition: null,
+        }])
+        setMoveCount(prev => prev + 1)
         setCurrentPlayer(currentPlayer === 'black' ? 'white' : 'black')
         return;
       }
@@ -211,7 +226,6 @@ export function WatchPage() {
         whiteScore,
         blackWinProb: blackWinProb * 100,
         movePosition: aiMovePos || null,
-        mctsData: aiDecision.mctsData
       }])
     }, moveSpeed)
 
@@ -612,46 +626,6 @@ export function WatchPage() {
             </div>
           )}
 
-          {/* AI Decision Visibility Section */}
-          {moveHistory.length > 0 && (
-            <div className="ai-decision-section">
-              <h3>AI Decision Making</h3>
-              <div className="decision-info">
-                <div className="decision-stats">
-                  <div><strong>Latest Move:</strong> {moveHistory[moveHistory.length - 1].movePosition ?
-                    `(${moveHistory[moveHistory.length - 1].movePosition.row}, ${moveHistory[moveHistory.length - 1].movePosition.col})` : 'Pass'}
-                  </div>
-                  <div><strong>MCTS Visits:</strong> {moveHistory[moveHistory.length - 1].mctsData?.visits || 0}</div>
-                  <div><strong>Win Rate:</strong> {(moveHistory[moveHistory.length - 1].mctsData?.winRate ?
-                    (moveHistory[moveHistory.length - 1].mctsData.winRate * 100).toFixed(1) : '0.0')}%</div>
-                </div>
-
-                {moveHistory[moveHistory.length - 1].mctsData?.bestMove && (
-                  <div className="best-move-indicator">
-                    <strong>Best Move:</strong> ({moveHistory[moveHistory.length - 1].mctsData.bestMove.row},
-                    {moveHistory[moveHistory.length - 1].mctsData.bestMove.col})
-                  </div>
-                )}
-              </div>
-
-              <div className="mcts-analysis">
-                <h4>MCTS Analysis</h4>
-                <div className="analysis-details">
-                  <div className="analysis-item">
-                    <strong>Search Depth:</strong> 500 iterations
-                  </div>
-                  <div className="analysis-item">
-                    <strong>Time Limit:</strong> 50ms
-                  </div>
-                  <div className="analysis-item">
-                    <strong>Confidence:</strong> {moveHistory[moveHistory.length - 1].mctsData?.winRate ?
-                      (moveHistory[moveHistory.length - 1].mctsData.winRate * 2).toFixed(2) : '0.00'}
-                      (normalized)
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {completedBoards.length > 0 && (
             <div className="completed-boards-section">

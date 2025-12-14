@@ -41,7 +41,7 @@ export function getAIMove(board: Board, player: 'black' | 'white', captures: { b
 }
 
 export function getAIDecision(board: Board, player: 'black' | 'white', captures: { black: number; white: number } = { black: 0, white: 0 }, config?: Partial<AIConfig>, moveCount: number = 0): AIDecision {
-  const fullConfig = { ...AI_PRESETS[2], ...config }
+  const fullConfig = { ...AI_PRESETS[2]!, ...config } as AIConfig
 
   // Estimate current score
   const currentScore = estimateScore(board, captures, player)

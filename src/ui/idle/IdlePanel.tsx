@@ -16,7 +16,6 @@ export function IdlePanel() {
   const canAfford = useCurrencyStore(state => state.canAfford)
   const spendStones = useCurrencyStore(state => state.spendStones)
   const earnStones = useCurrencyStore(state => state.earnStones)
-  const totalEarned = useCurrencyStore(state => state.totalEarned)
 
   const gamesPlayed = useStatsStore(state => state.gamesPlayed)
   const wins = useStatsStore(state => state.wins)
@@ -53,7 +52,7 @@ export function IdlePanel() {
   const availableSources = getAvailableIdleSources(sources, {
     gamesPlayed,
     wins,
-    totalEarned
+    totalEarned: 0 // totalEarned is not yet tracked in currency store
   })
 
   const purchasedSources = Array.from(sources).map(id => IDLE_SOURCES[id]!).filter(Boolean)

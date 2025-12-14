@@ -1,4 +1,4 @@
-name: Deploy Jekyll with GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -21,14 +21,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # Build the Vite React app (game playground)
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Vite app
+        run: npm run build
+
+      # Build Jekyll blog
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./blog
           destination: ./_site
+
+      # Merge: Copy Vite build into _site/play/
+      - name: Merge Vite app into site
+        run: |
+          mkdir -p ./_site/play
+          cp -r ./dist/* ./_site/play/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
