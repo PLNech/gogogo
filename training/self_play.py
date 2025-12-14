@@ -60,20 +60,33 @@ class SelfPlayTrainer:
                  num_parallel: int = 16):
         self.config = config
         self.num_parallel = num_parallel
+        self.use_tactical_features = False  # Will be set based on loaded model
 
         # Initialize or load model
         if checkpoint_path:
             self.model, self.step = load_checkpoint(checkpoint_path, config)
             print(f"Loaded checkpoint from {checkpoint_path} (step {self.step})")
+
+            # Auto-detect tactical features from model config
+            model_config = self.model.config
+            if hasattr(model_config, 'tactical_features') and model_config.tactical_features:
+                self.use_tactical_features = True
+                print(f"Auto-detected tactical features (input_planes={model_config.input_planes})")
+            elif hasattr(model_config, 'input_planes') and model_config.input_planes > 17:
+                self.use_tactical_features = True
+                print(f"Auto-detected tactical features (input_planes={model_config.input_planes})")
+
             # Adjust for board size mismatch
             if self.model.config.board_size != config.board_size:
                 print(f"Warning: Model is {self.model.config.board_size}x{self.model.config.board_size}, "
                       f"creating new {config.board_size}x{config.board_size} model")
                 self.model = GoNet(config).to(config.device)
                 self.step = 0
+                self.use_tactical_features = config.tactical_features
         else:
             self.model = GoNet(config).to(config.device)
             self.step = 0
+            self.use_tactical_features = config.tactical_features
 
         self.model.to(config.device)
         self.optimizer = torch.optim.Adam(
@@ -100,7 +113,7 @@ class SelfPlayTrainer:
 
         self.model.eval()
         with torch.no_grad():
-            tensors = np.stack([b.to_tensor() for b in boards])
+            tensors = np.stack([b.to_tensor(use_tactical_features=self.use_tactical_features) for b in boards])
             x = torch.FloatTensor(tensors).to(self.config.device)
             outputs = self.model(x)
             policies = torch.exp(outputs[0]).cpu().numpy()
@@ -268,7 +281,7 @@ class SelfPlayTrainer:
 
                 # Store training sample (with tactical-enhanced policy)
                 game.samples.append(TrainingSample(
-                    board_tensor=game.board.to_tensor().copy(),
+                    board_tensor=game.board.to_tensor(use_tactical_features=self.use_tactical_features).copy(),
                     policy_target=policy.copy(),
                     value_target=0.0
                 ))

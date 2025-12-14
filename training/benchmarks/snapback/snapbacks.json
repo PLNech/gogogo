@@ -1,0 +1,48 @@
+[
+  {
+    "name": "Classic snapback",
+    "board_size": 9,
+    "black_stones": [[1, 1], [2, 1], [3, 1], [1, 2], [3, 2], [1, 3], [2, 3], [3, 3]],
+    "white_stones": [],
+    "to_play": "white",
+    "expected_moves": [[2, 2]],
+    "category": "snapback",
+    "difficulty": "medium",
+    "description": "White throws in at center to create snapback"
+  },
+  {
+    "name": "Recognize snapback threat",
+    "board_size": 9,
+    "black_stones": [[1, 1], [2, 1], [3, 1], [1, 2], [3, 2], [1, 3], [2, 3], [3, 3]],
+    "white_stones": [[2, 2]],
+    "to_play": "black",
+    "avoid_moves": [[2, 2]],
+    "expected_moves": [],
+    "category": "snapback",
+    "difficulty": "hard",
+    "description": "Black should NOT capture the throw-in"
+  },
+  {
+    "name": "Avoid snapback capture",
+    "board_size": 9,
+    "black_stones": [[4, 3], [4, 5], [3, 4], [5, 4]],
+    "white_stones": [[4, 4]],
+    "to_play": "white",
+    "expected_moves": [],
+    "avoid_moves": [[4, 4]],
+    "category": "snapback",
+    "difficulty": "hard",
+    "description": "This is NOT a snapback - white should not play here"
+  },
+  {
+    "name": "Corner snapback setup",
+    "board_size": 9,
+    "black_stones": [[0, 1], [1, 0], [1, 2], [2, 1]],
+    "white_stones": [[0, 0], [1, 1]],
+    "to_play": "black",
+    "expected_moves": [[0, 0]],
+    "category": "snapback",
+    "difficulty": "hard",
+    "description": "Capture corner leads to snapback opportunity"
+  }
+]

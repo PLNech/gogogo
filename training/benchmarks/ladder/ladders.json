@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Start simple ladder",
+    "board_size": 9,
+    "black_stones": [[4, 4], [4, 5]],
+    "white_stones": [[3, 5], [5, 5]],
+    "to_play": "black",
+    "expected_moves": [[4, 6]],
+    "category": "ladder",
+    "difficulty": "medium",
+    "description": "Black can start a working ladder"
+  },
+  {
+    "name": "Working ladder - chase",
+    "board_size": 9,
+    "black_stones": [[4, 4], [5, 5]],
+    "white_stones": [[4, 5]],
+    "to_play": "black",
+    "expected_moves": [[3, 5]],
+    "category": "ladder",
+    "difficulty": "medium",
+    "description": "Continue the ladder chase"
+  },
+  {
+    "name": "Broken ladder - don't start",
+    "board_size": 9,
+    "black_stones": [[4, 4], [4, 5]],
+    "white_stones": [[3, 5], [5, 5], [2, 7]],
+    "to_play": "black",
+    "expected_moves": [],
+    "avoid_moves": [[4, 6]],
+    "category": "ladder",
+    "difficulty": "hard",
+    "description": "Ladder breaker exists, don't start ladder"
+  },
+  {
+    "name": "Escape the ladder",
+    "board_size": 9,
+    "black_stones": [[4, 4], [5, 5], [3, 5]],
+    "white_stones": [[4, 5]],
+    "to_play": "white",
+    "expected_moves": [[4, 6], [3, 4]],
+    "category": "ladder",
+    "difficulty": "medium",
+    "description": "White must extend to escape"
+  },
+  {
+    "name": "Ladder breaker move",
+    "board_size": 9,
+    "black_stones": [[4, 4], [4, 5], [5, 6]],
+    "white_stones": [[3, 5], [5, 5]],
+    "to_play": "white",
+    "expected_moves": [[2, 7], [1, 8]],
+    "category": "ladder",
+    "difficulty": "hard",
+    "description": "White should play ladder breaker"
+  }
+]

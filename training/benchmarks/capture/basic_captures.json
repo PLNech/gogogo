@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Capture single stone",
+    "board_size": 9,
+    "black_stones": [[4, 3], [4, 5], [3, 4]],
+    "white_stones": [[4, 4]],
+    "to_play": "black",
+    "expected_moves": [[5, 4]],
+    "category": "capture",
+    "difficulty": "easy",
+    "description": "White stone has 1 liberty at (5,4), capture it"
+  },
+  {
+    "name": "Corner capture",
+    "board_size": 9,
+    "black_stones": [[0, 1], [1, 0]],
+    "white_stones": [[0, 0]],
+    "to_play": "black",
+    "expected_moves": [[1, 1]],
+    "category": "capture",
+    "difficulty": "easy",
+    "description": "White corner stone has no way out"
+  },
+  {
+    "name": "Edge capture",
+    "board_size": 9,
+    "black_stones": [[0, 3], [0, 5], [1, 4]],
+    "white_stones": [[0, 4]],
+    "to_play": "black",
+    "expected_moves": [[0, 4]],
+    "category": "capture",
+    "difficulty": "easy",
+    "description": "White edge stone surrounded"
+  },
+  {
+    "name": "Capture two stones",
+    "board_size": 9,
+    "black_stones": [[4, 2], [4, 5], [3, 3], [3, 4], [5, 3], [5, 4]],
+    "white_stones": [[4, 3], [4, 4]],
+    "to_play": "black",
+    "expected_moves": [[4, 3], [4, 4]],
+    "category": "capture",
+    "difficulty": "easy",
+    "description": "Two white stones in atari"
+  },
+  {
+    "name": "Save own stone",
+    "board_size": 9,
+    "black_stones": [[4, 4]],
+    "white_stones": [[4, 3], [4, 5], [3, 4]],
+    "to_play": "black",
+    "expected_moves": [[5, 4]],
+    "category": "capture",
+    "difficulty": "easy",
+    "description": "Black in atari, must extend"
+  },
+  {
+    "name": "Capture vs extend",
+    "board_size": 9,
+    "black_stones": [[4, 3], [4, 5], [3, 4]],
+    "white_stones": [[4, 4]],
+    "to_play": "black",
+    "expected_moves": [[5, 4]],
+    "category": "capture",
+    "difficulty": "medium",
+    "description": "Capturing is better than extending elsewhere"
+  },
+  {
+    "name": "Double atari capture",
+    "board_size": 9,
+    "black_stones": [[3, 3], [3, 5], [4, 2], [4, 6], [5, 3], [5, 5]],
+    "white_stones": [[4, 3], [4, 5]],
+    "to_play": "black",
+    "expected_moves": [[4, 4]],
+    "category": "capture",
+    "difficulty": "medium",
+    "description": "Playing at center captures both white groups"
+  },
+  {
+    "name": "Throw-in capture",
+    "board_size": 9,
+    "black_stones": [[3, 3], [3, 4], [4, 2], [4, 5], [5, 3], [5, 4]],
+    "white_stones": [[4, 3], [4, 4]],
+    "to_play": "black",
+    "expected_moves": [[4, 3], [4, 4]],
+    "category": "capture",
+    "difficulty": "medium",
+    "description": "Both captures work, test sees either"
+  }
+]
