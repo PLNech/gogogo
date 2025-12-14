@@ -22,6 +22,7 @@ import { evaluateShapes } from './shapes'
 import { evaluateBasicInstinct } from './basicInstinct'
 import { evaluateJoseki, evaluateChineseOpening } from './openings'
 import { detectLadder, isLadderBreaker } from './ladder'
+import { getNeuralAIDecision, isNeuralModelLoaded, loadNeuralModel } from './neural'
 
 export interface AIDecision {
   action: 'move' | 'pass'
@@ -38,6 +39,41 @@ export interface AIDecision {
 export function getAIMove(board: Board, player: 'black' | 'white', captures: { black: number; white: number } = { black: 0, white: 0 }, config?: Partial<AIConfig>, moveCount: number = 0): Position | null {
   const decision = getAIDecision(board, player, captures, config, moveCount)
   return decision.action === 'move' ? decision.position ?? null : null
+}
+
+/**
+ * Async version of getAIDecision that supports neural network AI.
+ * Use this when level 6 (neural) is selected.
+ */
+export async function getAIDecisionAsync(
+  board: Board,
+  player: 'black' | 'white',
+  captures: { black: number; white: number } = { black: 0, white: 0 },
+  config?: Partial<AIConfig>,
+  moveCount: number = 0
+): Promise<AIDecision> {
+  const fullConfig = { ...AI_PRESETS[2]!, ...config } as AIConfig
+
+  // Neural network AI path (level 6)
+  if (fullConfig.useNeural || fullConfig.level === 6) {
+    try {
+      // Load model if needed (lazy loading)
+      if (!isNeuralModelLoaded()) {
+        console.log('[AI] Loading neural model...')
+        await loadNeuralModel()
+      }
+
+      // Get neural decision
+      const temperature = fullConfig.randomness ?? 0.1
+      return await getNeuralAIDecision(board, player, temperature)
+    } catch (error) {
+      console.error('[AI] Neural inference failed, falling back to heuristic:', error)
+      // Fall through to heuristic
+    }
+  }
+
+  // Fall back to sync heuristic AI
+  return getAIDecision(board, player, captures, config, moveCount)
 }
 
 export function getAIDecision(board: Board, player: 'black' | 'white', captures: { black: number; white: number } = { black: 0, white: 0 }, config?: Partial<AIConfig>, moveCount: number = 0): AIDecision {

@@ -1,10 +1,11 @@
 export interface AIConfig {
-  level: 1 | 2 | 3 | 4 | 5 // Difficulty level
+  level: 1 | 2 | 3 | 4 | 5 | 6 // Difficulty level (6 = Neural Network)
   searchDepth: number // How many moves ahead to consider
   randomness: number // 0-1, how much randomness in move selection
   captureWeight: number // Multiplier for capture scoring
   territoryWeight: number // Multiplier for territory scoring
   influenceWeight: number // Multiplier for influence scoring
+  useNeural?: boolean // Use neural network for move selection
 }
 
 export const AI_PRESETS: Record<number, AIConfig> = {
@@ -47,5 +48,15 @@ export const AI_PRESETS: Record<number, AIConfig> = {
     captureWeight: 400, // MUCH more aggressive on captures
     territoryWeight: 35,
     influenceWeight: 30,
+  },
+  // Neural Network AI - trained on pro games
+  6: {
+    level: 6,
+    searchDepth: 0, // Uses neural network policy directly
+    randomness: 0.1, // Small temperature for variety
+    captureWeight: 0, // Not used
+    territoryWeight: 0, // Not used
+    influenceWeight: 0, // Not used
+    useNeural: true,
   },
 }
