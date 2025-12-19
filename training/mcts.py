@@ -246,6 +246,8 @@ class MCTS:
 
         # Blend: (1 - frac) * policy + frac * noise
         noisy_policy = (1 - frac) * policy + frac * noise
+        # Zero out illegal moves (policy may have non-zero values for illegal moves)
+        noisy_policy = noisy_policy * legal_mask
         # Renormalize
         total = noisy_policy.sum()
         if total > 0:
