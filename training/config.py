@@ -26,5 +26,19 @@ class Config:
     win_threshold: float = 0.55
     device: str = "cuda"
 
+    # KataGo A.4: Shaped Dirichlet noise at root
+    # Concentrates noise on higher-logit moves (find blind spots more efficiently)
+    # Source: KataGo Methods doc
+    root_dirichlet_alpha: float = 0.3  # Dirichlet alpha (lower = more peaked)
+    root_exploration_fraction: float = 0.25  # Fraction of policy that is noise
+    shaped_dirichlet: bool = True  # Use shaped (policy-weighted) noise vs uniform
+
+    # KataGo A.5: Root policy softmax temperature
+    # Counteracts MCTS sharpening on already-preferred moves
+    # Source: KataGo Methods doc
+    root_policy_temp: float = 1.1  # Temperature for root policy (>1 = more exploration)
+    root_policy_temp_early: float = 1.25  # Higher temp in opening (first N moves)
+    root_policy_temp_early_moves: int = 30  # Apply early temp for this many moves
+
 DEFAULT = Config()
 QUICK = Config(num_blocks=4, num_filters=64, mcts_simulations=50, games_per_iter=20, train_steps_per_iter=100)

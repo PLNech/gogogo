@@ -11,13 +11,80 @@ import { getStone } from '../go/board'
 import type { AIDecision } from './simpleAI'
 
 // Model configuration
-const MODEL_PATH = '/gogogo/play/models/go_9x9/model.onnx'
-const INPUT_PLANES = 17 // Basic feature planes (no tactical)
+const MODEL_BASE_PATH = '/gogogo/play/models/go_9x9'
+const MODEL_PATH = `${MODEL_BASE_PATH}/model.onnx`
+const METADATA_PATH = `${MODEL_BASE_PATH}/metadata.json`
 
-// Singleton session
+// Model metadata
+interface ModelMetadata {
+  name: string
+  version: string
+  board_size: number
+  input_planes: number
+  architecture: string
+  training?: {
+    method: string
+    games: number
+    hybrid?: boolean
+  }
+  notes?: string
+}
+
+// Singleton session and metadata
 let session: ort.InferenceSession | null = null
 let loadPromise: Promise<ort.InferenceSession> | null = null
-let modelBoardSize: number = 9
+let metadataPromise: Promise<ModelMetadata | null> | null = null
+let modelMetadata: ModelMetadata | null = null
+
+// Constants (updated from metadata when loaded)
+const INPUT_PLANES = 17
+const DEFAULT_BOARD_SIZE = 9
+
+/**
+ * Load model metadata.
+ * Returns null if metadata cannot be loaded.
+ */
+export async function loadModelMetadata(): Promise<ModelMetadata | null> {
+  if (modelMetadata) return modelMetadata
+
+  if (metadataPromise) return metadataPromise
+
+  metadataPromise = (async () => {
+    try {
+      console.log('[Neural] Loading metadata from', METADATA_PATH)
+      const response = await fetch(METADATA_PATH)
+      if (!response.ok) {
+        console.warn('[Neural] No metadata found, using defaults')
+        return null
+      }
+      const metadata = await response.json() as ModelMetadata
+      modelMetadata = metadata
+      console.log('[Neural] Metadata loaded:', metadata.name, `(${metadata.board_size}x${metadata.board_size})`)
+      return metadata
+    } catch (error) {
+      console.warn('[Neural] Failed to load metadata:', error)
+      return null
+    }
+  })()
+
+  return metadataPromise
+}
+
+/**
+ * Get the board size supported by the neural model.
+ */
+export async function getNeuralModelBoardSize(): Promise<number> {
+  const metadata = await loadModelMetadata()
+  return metadata?.board_size ?? DEFAULT_BOARD_SIZE
+}
+
+/**
+ * Check if neural model supports a given board size.
+ */
+export async function supportsNeuralBoardSize(size: number): Promise<boolean> {
+  const modelSize = await getNeuralModelBoardSize()
+  return size === modelSize
+}
 
 /**
  * Load the neural network model.
@@ -29,6 +96,9 @@ export async function loadNeuralModel(): Promise<ort.InferenceSession> {
   if (loadPromise) return loadPromise
 
   loadPromise = (async () => {
+    // Load metadata first (non-blocking if fails)
+    await loadModelMetadata()
+
     console.log('[Neural] Loading model from', MODEL_PATH)
 
     try {

@@ -572,6 +572,27 @@ Based on comprehensive literature review. Sources in ARCH.md.
 - Source: [Cazenave MobileNet, 2020] - more robust on small networks
 - Complexity: Very low (change loss function)
 
+### Phase A.4-A.6: More KataGo Quick Wins 🟢
+
+**A.4: Shaped Dirichlet Noise**
+- [ ] TODO - Concentrate exploration noise on higher-logit moves (not uniform)
+- [ ] TODO - Split alpha: half uniform, half weighted by policy
+- Source: [KataGo Methods](https://github.com/lightvector/KataGo/blob/master/docs/KataGoMethods.md)
+- Complexity: Low (modify noise generation in MCTS)
+
+**A.5: Root Policy Softmax Temperature**
+- [ ] TODO - Apply temperature >1.0 to policy before search (1.25 early, decay to 1.1)
+- [ ] TODO - Counteracts MCTS sharpening on already-preferred moves
+- Source: KataGo Methods
+- Complexity: Very low (one line change)
+
+**A.6: Auxiliary Soft Policy Target**
+- [ ] TODO - Additional policy head predicting softened policy (T=4)
+- [ ] TODO - Weight 8× relative to main policy during training
+- [ ] TODO - Forces discrimination of lower-probability moves
+- Source: KataGo Methods - improves policy learning
+- Complexity: Low (one extra head + loss term)
+
 ### Phase B: Medium Effort (1-2 weeks each) 🟡
 
 **B.1: MobileNetV2 Backbone** ⭐ HIGH PRIORITY
@@ -601,6 +622,26 @@ Based on comprehensive literature review. Sources in ARCH.md.
 - [ ] LATER - Start 30-50% of games from archived states
 - Source: [Go-Exploit, 2023] - more sample-efficient than standard AlphaZero
 - Complexity: Medium (archive buffer + selection logic)
+
+**B.5: Policy Surprise Weighting**
+- [ ] LATER - Overweight samples where MCTS found moves policy underestimated
+- [ ] LATER - Redistribute weights based on KL-divergence (prior vs target)
+- [ ] LATER - Helps discover overlooked strong moves
+- Source: [KataGo Methods](https://github.com/lightvector/KataGo/blob/master/docs/KataGoMethods.md)
+- Complexity: Medium (KL calculation + reweighting)
+
+**B.6: Short-term Value Targets**
+- [ ] LATER - Auxiliary heads predicting exponentially-averaged future MCTS values
+- [ ] LATER - Three time horizons (short/medium/long)
+- [ ] LATER - Lower-variance feedback improves convergence
+- Source: KataGo Methods
+- Complexity: Medium (3 extra heads + target computation)
+
+**B.7: Dynamic Variance-Scaled cPUCT**
+- [ ] LATER - Scale exploration coefficient by empirical utility variance at each node
+- [ ] LATER - High variance → more exploration; low variance → exploitation
+- Source: KataGo Methods
+- Complexity: Medium (online variance tracking)
 
 ### Phase B.5: Neurosymbolic Hybrid (MCTS + Neural) ⭐ NEW
 
@@ -815,6 +856,59 @@ training/
 ├── data/games/        # Raw SGF files (93K games)
 └── logs/              # TensorBoard logs
 ```
+
+---
+
+## 🔮 FUTURE: Board Size Generalization Research
+
+**Goal**: Train once, play on any board size (9x9, 13x13, 19x19+)
+
+**Current State**: Model trained on 9x9, cannot play other sizes.
+
+### Research Directions (Ranked by Promise)
+
+**1. Multi-Scale Training** ⭐⭐⭐ PROVEN
+- [ ] LATER - Train simultaneously on 7x7, 9x9, 13x13, 19x19
+- [ ] LATER - Dynamic policy head (output size varies with board)
+- [ ] LATER - Benchmark: does smaller-board training accelerate larger?
+- Source: [KataGo](https://github.com/lightvector/KataGo/blob/master/docs/KataGoMethods.md) - trains 7x7→19x19, generalizes to 30x30+
+- Evidence: "Mixed-size training is NOT slower—may be FASTER due to knowledge transfer"
+
+**2. Transfer Learning / Curriculum** ⭐⭐⭐ PROVEN
+- [ ] LATER - Train heavily on 9x9 (fast feedback)
+- [ ] LATER - Fine-tune on 13x13, then 19x19
+- [ ] LATER - Freeze early layers, retrain policy/value heads
+- Source: [AlphaGateau, NeurIPS 2024](https://arxiv.org/abs/2410.23753) - 5x5→8x8 chess works
+- Research Q: Can we measure transfer vs fresh training in small-scale experiment?
+
+**3. Graph Neural Networks** ⭐⭐⭐ EMERGING (Separate Baseline)
+- [ ] LATER - Treat board as graph (nodes=intersections, edges=adjacency)
+- [ ] LATER - GNN architecture (message passing, attention)
+- [ ] LATER - Compare parameter efficiency vs CNN
+- [ ] LATER - Test browser inference speed (ONNX GNN support?)
+- Source: [AlphaGateau, NeurIPS 2024](https://arxiv.org/abs/2410.23753) - 1.0M GNN beats 2.2M CNN
+- Evidence: "Order of magnitude faster learning, better generalization"
+- Risk: Browser inference may be slow, immature tooling
+
+**4. Coordinate Embeddings** ⭐⭐ MAYBE
+- [ ] LATER - Add explicit positional encoding (row/col as features)
+- [ ] LATER - Relative position features (distance to walls, corners)
+- [ ] LATER - Sinusoidal vs learned embeddings
+- Source: CoordConv paper, Transformer positional encodings
+- Note: KataGo succeeds without explicit coords—convolutions learn position implicitly
+
+**5. Padding/Cropping** ❌ SKIP
+- Not worth pursuing—loses global context, no SOTA uses it
+
+### Research Questions to Answer
+- [ ] DISCUSS - Can we run a small-scale experiment (1 day training) to compare multi-scale vs single-scale?
+- [ ] DISCUSS - Is self-play sufficient for curriculum, or do we need pro games at each size?
+- [ ] DISCUSS - GNN vs CNN: worth the implementation cost for generalization benefits?
+
+### Sources
+- [KataGo Methods](https://github.com/lightvector/KataGo/blob/master/docs/KataGoMethods.md)
+- [AlphaGateau - NeurIPS 2024](https://arxiv.org/abs/2410.23753)
+- [Curriculum Learning Survey](https://jmlr.org/papers/volume21/20-212/20-212.pdf)
 
 ---
 

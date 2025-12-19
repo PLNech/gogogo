@@ -175,6 +175,84 @@ class MCTS:
         self.use_cache = use_cache
         self.cache = NNCache(max_size=cache_size) if use_cache else None
 
+    def _apply_root_policy_temp(self, policy: np.ndarray, move_number: int = 0) -> np.ndarray:
+        """Apply softmax temperature to root policy (KataGo A.5).
+
+        Higher temperature (>1) flattens the distribution, counteracting
+        MCTS's tendency to sharpen already-preferred moves.
+
+        Source: KataGo Methods - "softmax temperature slightly above 1"
+        """
+        # Select temperature based on game phase
+        if move_number < self.config.root_policy_temp_early_moves:
+            temp = self.config.root_policy_temp_early
+        else:
+            temp = self.config.root_policy_temp
+
+        if temp == 1.0:
+            return policy
+
+        # Convert to logits, apply temperature, convert back
+        # policy is already softmax output, so we take log first
+        eps = 1e-8
+        log_policy = np.log(policy + eps)
+        scaled_logits = log_policy / temp
+        # Softmax
+        exp_logits = np.exp(scaled_logits - np.max(scaled_logits))
+        return exp_logits / (exp_logits.sum() + eps)
+
+    def _add_dirichlet_noise(self, policy: np.ndarray, legal_mask: np.ndarray) -> np.ndarray:
+        """Add shaped Dirichlet noise to root policy (KataGo A.4).
+
+        Shaped noise concentrates exploration on moves with higher policy,
+        finding blind spots more efficiently than uniform noise.
+
+        Source: KataGo Methods - "concentrates the other half of the alpha
+        on the smaller subset of moves"
+        """
+        alpha = self.config.root_dirichlet_alpha
+        frac = self.config.root_exploration_fraction
+
+        # Only add noise to legal moves
+        num_legal = legal_mask.sum()
+        if num_legal == 0:
+            return policy
+
+        if self.config.shaped_dirichlet:
+            # Shaped: concentrate noise on higher-policy moves
+            # Split alpha: half uniform, half weighted by policy
+            legal_policy = policy * legal_mask
+            policy_sum = legal_policy.sum()
+
+            if policy_sum > 0:
+                # Normalized policy for legal moves
+                norm_policy = legal_policy / policy_sum
+                # Alpha per move: half uniform + half policy-weighted
+                alpha_per_move = alpha * (0.5 / num_legal + 0.5 * norm_policy)
+            else:
+                alpha_per_move = np.full_like(policy, alpha / num_legal) * legal_mask
+
+            # Sample from Dirichlet with shaped alpha
+            # Only sample for legal moves
+            legal_indices = np.where(legal_mask > 0)[0]
+            legal_alphas = alpha_per_move[legal_indices]
+            noise = np.zeros_like(policy)
+            noise[legal_indices] = np.random.dirichlet(legal_alphas + 1e-8)
+        else:
+            # Uniform: standard Dirichlet noise
+            noise = np.zeros_like(policy)
+            legal_indices = np.where(legal_mask > 0)[0]
+            noise[legal_indices] = np.random.dirichlet([alpha] * len(legal_indices))
+
+        # Blend: (1 - frac) * policy + frac * noise
+        noisy_policy = (1 - frac) * policy + frac * noise
+        # Renormalize
+        total = noisy_policy.sum()
+        if total > 0:
+            noisy_policy = noisy_policy / total
+
+        return noisy_policy
+
     def _batch_predict(self, tensors: List[np.ndarray]) -> Tuple[np.ndarray, np.ndarray]:
         """Batch predict multiple positions at once."""
         if len(tensors) == 0:
@@ -187,8 +265,16 @@ class MCTS:
             policies, values = self.model(x)
             return torch.exp(policies).cpu().numpy(), values.cpu().numpy().flatten()
 
-    def search(self, board: Board, verbose: bool = False) -> np.ndarray:
-        """Run batched MCTS and return visit count distribution."""
+    def search(self, board: Board, verbose: bool = False, move_number: int = 0,
+               add_noise: bool = True) -> np.ndarray:
+        """Run batched MCTS and return visit count distribution.
+
+        Args:
+            board: Current board state
+            verbose: Print timing info
+            move_number: Current move number (for temperature scheduling)
+            add_noise: Whether to add Dirichlet noise at root (for training)
+        """
         start_time = time.time()
         root = MCTSNode()
 
@@ -198,12 +284,29 @@ class MCTS:
         use_tactical = getattr(self.config, 'tactical_features', False) or self.config.input_planes == 27
         if cached:
             policy, value = cached
-            root.expand(board, policy)
         else:
             policy, value = self._batch_predict([board.to_tensor(use_tactical_features=use_tactical)])
-            root.expand(board, policy[0])
+            policy = policy[0]
+            value = value[0]
             if self.cache:
-                self.cache.put(root_hash, policy[0], value[0])
+                self.cache.put(root_hash, policy, value)
+
+        # KataGo A.5: Apply root policy temperature
+        policy = self._apply_root_policy_temp(policy, move_number)
+
+        # KataGo A.4: Add shaped Dirichlet noise at root (for exploration during training)
+        if add_noise:
+            # Build legal move mask
+            action_size = board.size ** 2 + 1
+            legal_mask = np.zeros(action_size, dtype=np.float32)
+            for move in board.get_legal_moves():
+                action_idx = move[0] * board.size + move[1]
+                legal_mask[action_idx] = 1.0
+            legal_mask[board.size ** 2] = 1.0  # Pass is always legal
+
+            policy = self._add_dirichlet_noise(policy, legal_mask)
+
+        root.expand(board, policy)
 
         simulations_done = 0
         while simulations_done < self.config.mcts_simulations:

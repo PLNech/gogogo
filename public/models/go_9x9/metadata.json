@@ -1,0 +1,15 @@
+{
+  "name": "GoGoGo Neural v0.1",
+  "version": "0.1.0",
+  "board_size": 9,
+  "input_planes": 17,
+  "architecture": "ResNet-6blocks-128filters",
+  "training": {
+    "method": "self-play",
+    "games": 100,
+    "hybrid": true,
+    "tactical_weight": 0.3
+  },
+  "exported": "2024-12-14",
+  "notes": "Early model, weak but functional. 17.6% benchmark accuracy."
+}

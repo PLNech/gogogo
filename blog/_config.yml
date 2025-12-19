@@ -11,6 +11,9 @@ description: >-
 markdown: kramdown
 highlighter: rouge
 
+# Future posts - only show posts with date <= today
+future: false
+
 # URL settings (GitHub Pages)
 baseurl: "/gogogo"
 url: "https://plnech.github.io"

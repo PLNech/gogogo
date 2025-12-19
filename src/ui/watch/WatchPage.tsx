@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { createBoard, placeStone, captureStones, countTerritory, getStone, getTerritoryMap } from '../../core/go/board'
-import { getAIMove } from '../../core/ai/simpleAI'
+import { getAIMove, getAIDecisionAsync } from '../../core/ai/simpleAI'
 import { AI_PRESETS } from '../../core/ai/types'
+import { getNeuralModelBoardSize } from '../../core/ai/neural'
 import { useAIStatsStore } from '../../state/aiStatsStore'
 import type { Board } from '../../core/go/types'
 import type { AIConfig } from '../../core/ai/types'
@@ -26,8 +27,8 @@ export function WatchPage() {
   // Parse URL params with defaults
   const searchParams = new URLSearchParams(window.location.search)
   const urlBoardSize = Number(searchParams.get('size')) || 9
-  const urlBlackLevel = (Number(searchParams.get('black')) || 2) as 1 | 2 | 3 | 4 | 5
-  const urlWhiteLevel = (Number(searchParams.get('white')) || 2) as 1 | 2 | 3 | 4 | 5
+  const urlBlackLevel = (Number(searchParams.get('black')) || 2) as 1 | 2 | 3 | 4 | 5 | 6
+  const urlWhiteLevel = (Number(searchParams.get('white')) || 2) as 1 | 2 | 3 | 4 | 5 | 6
   const urlMoveSpeed = Number(searchParams.get('speed')) || 500
   const urlMaxMoves = Number(searchParams.get('maxMoves')) || 50
   const urlMaxMovesEnabled = searchParams.get('maxMovesEnabled') !== 'false' // default true
@@ -48,8 +49,8 @@ export function WatchPage() {
 
   // AI Configuration - Initialize from URL
   const [boardSize, setBoardSize] = useState(urlBoardSize)
-  const [blackLevel, setBlackLevel] = useState<1 | 2 | 3 | 4 | 5>(urlBlackLevel)
-  const [whiteLevel, setWhiteLevel] = useState<1 | 2 | 3 | 4 | 5>(urlWhiteLevel)
+  const [blackLevel, setBlackLevel] = useState<1 | 2 | 3 | 4 | 5 | 6>(urlBlackLevel)
+  const [whiteLevel, setWhiteLevel] = useState<1 | 2 | 3 | 4 | 5 | 6>(urlWhiteLevel)
   const [moveSpeed, setMoveSpeed] = useState(urlMoveSpeed)
   const [maxMoves, setMaxMoves] = useState(urlMaxMoves)
   const [maxMovesEnabled, setMaxMovesEnabled] = useState(urlMaxMovesEnabled)
@@ -57,6 +58,20 @@ export function WatchPage() {
   // Custom AI params
   const [blackConfig, setBlackConfig] = useState<AIConfig>(AI_PRESETS[2]!)
   const [whiteConfig, setWhiteConfig] = useState<AIConfig>(AI_PRESETS[2]!)
+
+  // Neural model constraints
+  const [neuralBoardSize, setNeuralBoardSize] = useState<number | null>(null)
+  const neuralAvailable = neuralBoardSize !== null && boardSize === neuralBoardSize
+
+  // Load neural model board size on mount
+  useEffect(() => {
+    getNeuralModelBoardSize().then(size => {
+      setNeuralBoardSize(size)
+      console.log('[Watch] Neural model supports board size:', size)
+    }).catch(() => {
+      console.warn('[Watch] Neural model not available')
+    })
+  }, [])
 
   // Stats
   const addMatch = useAIStatsStore((state) => state.addMatch)
@@ -100,7 +115,7 @@ export function WatchPage() {
       return
     }
 
-    timeoutRef.current = setTimeout(() => {
+    timeoutRef.current = setTimeout(async () => {
       // Check max moves (if enabled)
       if (maxMovesEnabled && moveCount >= maxMoves) {
         console.log('[DEBUG] Max moves reached:', moveCount, '>', maxMoves);
@@ -109,14 +124,27 @@ export function WatchPage() {
       }
 
       const config = currentPlayer === 'black' ? blackConfig : whiteConfig
-      const aiMovePos = getAIMove(board, currentPlayer, captures, config, moveCount)
+
+      // Use async path for neural AI (level 6)
+      let aiMovePos = null
+      if (config.useNeural || config.level === 6) {
+        try {
+          const decision = await getAIDecisionAsync(board, currentPlayer, captures, config, moveCount)
+          aiMovePos = decision.action === 'move' ? decision.position ?? null : null
+        } catch (error) {
+          console.error('[Neural] Inference failed:', error)
+        }
+      } else {
+        aiMovePos = getAIMove(board, currentPlayer, captures, config, moveCount)
+      }
 
       console.log(`[DEBUG] AI move for ${currentPlayer}:`, {
         moveCount,
         currentPlayer,
         aiMovePos,
         boardSize: board.size,
-        moveHistoryLength: moveHistory.length
+        moveHistoryLength: moveHistory.length,
+        isNeural: config.level === 6
       });
 
       if (!aiMovePos) {
@@ -304,6 +332,14 @@ export function WatchPage() {
     setMoveCount(0)
     setGameOver(false)
     setIsPlaying(false)
+
+    // If neural AI selected but new size doesn't support it, fall back to Level 5
+    if (blackLevel === 6 && size !== neuralBoardSize) {
+      setBlackLevel(5)
+    }
+    if (whiteLevel === 6 && size !== neuralBoardSize) {
+      setWhiteLevel(5)
+    }
   }
 
   // Auto-replay when game ends
@@ -409,12 +445,16 @@ export function WatchPage() {
             <h3>⚫ Black AI</h3>
             <div className="control-row">
               <label>Level:</label>
-              <select value={blackLevel} onChange={(e) => setBlackLevel(Number(e.target.value) as 1 | 2 | 3 | 4 | 5)}>
+              <select value={blackLevel} onChange={(e) => setBlackLevel(Number(e.target.value) as 1 | 2 | 3 | 4 | 5 | 6)}>
                 <option value={1}>1 - Novice (Random, no strategy)</option>
                 <option value={2}>2 - Beginner (Learns patterns)</option>
                 <option value={3}>3 - Intermediate (Joseki, opening)</option>
                 <option value={4}>4 - Advanced (Strategic depth)</option>
                 <option value={5}>5 - Expert (Master level)</option>
+                {neuralAvailable && <option value={6}>6 - Neural (Trained AI) ✨</option>}
+                {!neuralAvailable && neuralBoardSize && (
+                  <option value={6} disabled>6 - Neural ({neuralBoardSize}x{neuralBoardSize} only)</option>
+                )}
               </select>
             </div>
             <div className="ai-description">
@@ -423,6 +463,7 @@ export function WatchPage() {
               {blackLevel === 3 && "Knows joseki patterns, opening theory, and connection. Rarely makes mistakes."}
               {blackLevel === 4 && "Uses advanced opening patterns (Chinese fuseki). Strategic territorial play."}
               {blackLevel === 5 && "Master-level play with optimal strategy and long-term planning."}
+              {blackLevel === 6 && "Neural network trained on self-play. Still learning! (9x9 only)"}
             </div>
             <button onClick={() => setShowAdvancedAI(!showAdvancedAI)} className="control-button" style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
               {showAdvancedAI ? '▼ Hide Advanced' : '▶ Show Advanced Parameters'}
@@ -441,12 +482,16 @@ export function WatchPage() {
             <h3>⚪ White AI</h3>
             <div className="control-row">
               <label>Level:</label>
-              <select value={whiteLevel} onChange={(e) => setWhiteLevel(Number(e.target.value) as 1 | 2 | 3 | 4 | 5)}>
+              <select value={whiteLevel} onChange={(e) => setWhiteLevel(Number(e.target.value) as 1 | 2 | 3 | 4 | 5 | 6)}>
                 <option value={1}>1 - Novice (Random, no strategy)</option>
                 <option value={2}>2 - Beginner (Learns patterns)</option>
                 <option value={3}>3 - Intermediate (Joseki, opening)</option>
                 <option value={4}>4 - Advanced (Strategic depth)</option>
                 <option value={5}>5 - Expert (Master level)</option>
+                {neuralAvailable && <option value={6}>6 - Neural (Trained AI) ✨</option>}
+                {!neuralAvailable && neuralBoardSize && (
+                  <option value={6} disabled>6 - Neural ({neuralBoardSize}x{neuralBoardSize} only)</option>
+                )}
               </select>
             </div>
             <div className="ai-description">
@@ -455,6 +500,7 @@ export function WatchPage() {
               {whiteLevel === 3 && "Knows joseki patterns, opening theory, and connection. Rarely makes mistakes."}
               {whiteLevel === 4 && "Uses advanced opening patterns (Chinese fuseki). Strategic territorial play."}
               {whiteLevel === 5 && "Master-level play with optimal strategy and long-term planning."}
+              {whiteLevel === 6 && "Neural network trained on self-play. Still learning! (9x9 only)"}
             </div>
             {showAdvancedAI && (
               <div className="param-grid">
