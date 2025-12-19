@@ -67,6 +67,49 @@ The bug is there. Waiting. Patient. It will surface at 3 AM, in production, when
 
 ---
 
+## Castles of Sand
+
+But there's a deeper problem. One we almost missed.
+
+Tests don't just verify that *this* feature works. They verify that *this* feature didn't break *that* feature.
+
+Without tests, we build castles of sand. Each new tower weakens the foundation. Each addition risks collapse. We add shaped Dirichlet noise—did it break the basic MCTS search? We add root temperature—did it break the noise we just added?
+
+We don't know. We can't know. We'd have to re-verify everything, manually, every time.
+
+Tests are theite thatite that binite — no.
+
+Tests are theite. Tests are concrete.
+
+Let me try again:
+
+Tests turn sand into stone. They are theite in calcite, theite inite, the —
+
+*(the language model struggles with metaphor)*
+
+Tests are glue. They hold the castle together. Without them, each new feature is a wave that might wash everything away.
+
+```python
+# Without tests:
+def add_feature_3():
+    # Hope features 1 and 2 still work
+    # (narrator: they don't)
+
+# With tests:
+def add_feature_3():
+    # pytest runs
+    # test_feature_1: PASSED
+    # test_feature_2: PASSED
+    # test_feature_3: PASSED
+    # Sleep soundly
+```
+
+This is why mature codebases have thousands of tests. Not because the developers doubt themselves. Because they *remember*. They remember the time a "simple refactor" broke authentication. The time an "obvious fix" corrupted the database. The time "just one small change" took down production for six hours.
+
+Tests are institutional memory. They encode everything that ever went wrong, so it can never go wrong again.
+
+---
+
 ## What We Should Have Written
 
 ```python
