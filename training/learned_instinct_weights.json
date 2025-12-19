@@ -1,13 +1,13 @@
 {
   "weights": {
-    "extend_from_atari": 2.985396250080052,
-    "connect_vs_peep": 2.50928483996198,
-    "block_the_thrust": 2.019159188947801,
-    "hane_vs_tsuke": 1.545715862915766,
-    "hane_at_head_of_two": 1.4883547772560486,
-    "stretch_from_kosumi": 1.2013148230423316,
-    "block_the_angle": 1.2046077191933393,
-    "stretch_from_bump": 0.9461665386026802
+    "extend_from_atari": 2.992809528653705,
+    "connect_vs_peep": 2.483036258967957,
+    "block_the_thrust": 1.9968145670973392,
+    "hane_vs_tsuke": 1.5595496550729164,
+    "hane_at_head_of_two": 1.4671865903155392,
+    "stretch_from_kosumi": 1.1955222720352554,
+    "block_the_angle": 1.204365612941111,
+    "stretch_from_bump": 1.0007155149161753
   },
   "initial_weights": {
     "extend_from_atari": 3.0,
@@ -21,135 +21,135 @@
   },
   "stats": {
     "extend_from_atari": {
-      "fired": 813,
-      "followed": 35,
-      "followed_won": 16,
-      "followed_lost": 19,
-      "ignored_won": 371,
-      "ignored_lost": 407
+      "fired": 36985,
+      "followed": 1799,
+      "followed_won": 924,
+      "followed_lost": 875,
+      "ignored_won": 16243,
+      "ignored_lost": 18943
     },
     "connect_vs_peep": {
-      "fired": 1252,
-      "followed": 108,
-      "followed_won": 56,
-      "followed_lost": 52,
-      "ignored_won": 546,
-      "ignored_lost": 598
+      "fired": 54683,
+      "followed": 5060,
+      "followed_won": 2648,
+      "followed_lost": 2412,
+      "ignored_won": 24617,
+      "ignored_lost": 25006
     },
     "block_the_thrust": {
-      "fired": 784,
-      "followed": 36,
-      "followed_won": 20,
-      "followed_lost": 16,
-      "ignored_won": 361,
-      "ignored_lost": 387
+      "fired": 38171,
+      "followed": 2094,
+      "followed_won": 1118,
+      "followed_lost": 976,
+      "ignored_won": 17920,
+      "ignored_lost": 18157
     },
     "hane_vs_tsuke": {
-      "fired": 1685,
-      "followed": 204,
-      "followed_won": 123,
-      "followed_lost": 81,
-      "ignored_won": 724,
-      "ignored_lost": 757
+      "fired": 75201,
+      "followed": 9633,
+      "followed_won": 5776,
+      "followed_lost": 3857,
+      "ignored_won": 31351,
+      "ignored_lost": 34217
     },
     "hane_at_head_of_two": {
-      "fired": 1532,
-      "followed": 163,
-      "followed_won": 81,
-      "followed_lost": 82,
-      "ignored_won": 709,
-      "ignored_lost": 660
+      "fired": 68468,
+      "followed": 7468,
+      "followed_won": 3623,
+      "followed_lost": 3845,
+      "ignored_won": 30144,
+      "ignored_lost": 30856
     },
     "stretch_from_kosumi": {
-      "fired": 1753,
-      "followed": 425,
-      "followed_won": 220,
-      "followed_lost": 205,
-      "ignored_won": 677,
-      "ignored_lost": 651
+      "fired": 76397,
+      "followed": 19706,
+      "followed_won": 10009,
+      "followed_lost": 9697,
+      "ignored_won": 27636,
+      "ignored_lost": 29055
     },
     "block_the_angle": {
-      "fired": 1765,
-      "followed": 361,
-      "followed_won": 189,
-      "followed_lost": 172,
-      "ignored_won": 708,
-      "ignored_lost": 696
+      "fired": 76785,
+      "followed": 16465,
+      "followed_won": 8566,
+      "followed_lost": 7899,
+      "ignored_won": 29246,
+      "ignored_lost": 31074
     },
     "stretch_from_bump": {
-      "fired": 846,
-      "followed": 42,
-      "followed_won": 18,
-      "followed_lost": 24,
-      "ignored_won": 427,
-      "ignored_lost": 377
+      "fired": 39619,
+      "followed": 2262,
+      "followed_won": 1162,
+      "followed_lost": 1100,
+      "ignored_won": 18412,
+      "ignored_lost": 18945
     }
   },
-  "num_games": 50,
+  "num_games": 2000,
   "win_rates": {
     "extend_from_atari": {
-      "fired": 813,
-      "followed": 35,
-      "follow_rate": 0.04305043050430504,
-      "follow_winrate": 0.45714285714285713,
-      "ignore_winrate": 0.4768637532133676,
-      "follow_advantage": -0.019720896070510474
+      "fired": 36985,
+      "followed": 1799,
+      "follow_rate": 0.048641341084223334,
+      "follow_winrate": 0.5136186770428015,
+      "ignore_winrate": 0.46163246745864833,
+      "follow_advantage": 0.051986209584153176
     },
     "connect_vs_peep": {
-      "fired": 1252,
-      "followed": 108,
-      "follow_rate": 0.08626198083067092,
-      "follow_winrate": 0.5185185185185185,
-      "ignore_winrate": 0.4772727272727273,
-      "follow_advantage": 0.0412457912457912
+      "fired": 54683,
+      "followed": 5060,
+      "follow_rate": 0.09253332845674159,
+      "follow_winrate": 0.5233201581027668,
+      "ignore_winrate": 0.49608044656711603,
+      "follow_advantage": 0.027239711535650746
     },
     "block_the_thrust": {
-      "fired": 784,
-      "followed": 36,
-      "follow_rate": 0.04591836734693878,
-      "follow_winrate": 0.5555555555555556,
-      "ignore_winrate": 0.48262032085561496,
-      "follow_advantage": 0.07293523469994062
+      "fired": 38171,
+      "followed": 2094,
+      "follow_rate": 0.05485840035629143,
+      "follow_winrate": 0.5339063992359121,
+      "ignore_winrate": 0.49671535881586604,
+      "follow_advantage": 0.03719104042004606
     },
     "hane_vs_tsuke": {
-      "fired": 1685,
-      "followed": 204,
-      "follow_rate": 0.12106824925816023,
-      "follow_winrate": 0.6029411764705882,
-      "ignore_winrate": 0.4888588791357191,
-      "follow_advantage": 0.11408229733486908
+      "fired": 75201,
+      "followed": 9633,
+      "follow_rate": 0.12809670084174413,
+      "follow_winrate": 0.5996055226824457,
+      "ignore_winrate": 0.47814482674475356,
+      "follow_advantage": 0.12146069593769215
     },
     "hane_at_head_of_two": {
-      "fired": 1532,
-      "followed": 163,
-      "follow_rate": 0.10639686684073107,
-      "follow_winrate": 0.49693251533742333,
-      "ignore_winrate": 0.5178962746530315,
-      "follow_advantage": -0.02096375931560812
+      "fired": 68468,
+      "followed": 7468,
+      "follow_rate": 0.10907285155108956,
+      "follow_winrate": 0.4851365827530798,
+      "ignore_winrate": 0.4941639344262295,
+      "follow_advantage": -0.00902735167314972
     },
     "stretch_from_kosumi": {
-      "fired": 1753,
-      "followed": 425,
-      "follow_rate": 0.24244152880775813,
-      "follow_winrate": 0.5176470588235295,
-      "ignore_winrate": 0.509789156626506,
-      "follow_advantage": 0.007857902197023425
+      "fired": 76397,
+      "followed": 19706,
+      "follow_rate": 0.2579420657879236,
+      "follow_winrate": 0.5079163706485335,
+      "ignore_winrate": 0.48748478594485894,
+      "follow_advantage": 0.02043158470367451
     },
     "block_the_angle": {
-      "fired": 1765,
-      "followed": 361,
-      "follow_rate": 0.20453257790368273,
-      "follow_winrate": 0.5235457063711911,
-      "ignore_winrate": 0.5042735042735043,
-      "follow_advantage": 0.019272202097686875
+      "fired": 76785,
+      "followed": 16465,
+      "follow_rate": 0.21442990167350395,
+      "follow_winrate": 0.5202550865472214,
+      "ignore_winrate": 0.4848474801061008,
+      "follow_advantage": 0.03540760644112062
     },
     "stretch_from_bump": {
-      "fired": 846,
-      "followed": 42,
-      "follow_rate": 0.04964539007092199,
-      "follow_winrate": 0.42857142857142855,
-      "ignore_winrate": 0.5310945273631841,
-      "follow_advantage": -0.10252309879175553
+      "fired": 39619,
+      "followed": 2262,
+      "follow_rate": 0.057093818622378154,
+      "follow_winrate": 0.5137046861184792,
+      "ignore_winrate": 0.4928661295071874,
+      "follow_advantage": 0.020838556611291803
     }
   }
 }
