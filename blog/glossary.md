@@ -15,15 +15,55 @@ Terms from Go, AI, and the spaces between.
 
 ## Go Terms
 
+### The 8 Basic Instincts
+{: #basic-instincts}
+Fundamental responses that strong players execute without thinking.
+[Sensei's](https://senseis.xmp.net/?BasicInstinct)
+
 ### Atari
 {: #atari}
 A group with only one liberty remaining. One move from capture.
 [Sensei's](https://senseis.xmp.net/?Atari)
 
+### Block
+{: #block}
+Preventing the opponent from extending or connecting. Denying their path.
+[Sensei's](https://senseis.xmp.net/?Block)
+
+### Capture
+{: #capture}
+Taking opponent stones by filling their last liberty. The most basic tactical goal.
+[Sensei's](https://senseis.xmp.net/?Capture)
+
+### Connect
+{: #connect}
+Joining two friendly groups together. Strength through unity.
+[Sensei's](https://senseis.xmp.net/?Connect)
+
+### Cut
+{: #cut}
+Separating opponent stones into disconnected groups. Divide and conquer.
+[Sensei's](https://senseis.xmp.net/?Cut)
+
 ### Dame
 {: #dame}
 Neutral points that belong to neither player. Empty intersections surrounded by both colors.
 [Sensei's](https://senseis.xmp.net/?Dame)
+
+### Defend
+{: #defend}
+Protecting a weak point or cutting point. Reinforcing before the opponent exploits.
+[Sensei's](https://senseis.xmp.net/?Defend)
+
+### Escape
+{: #escape}
+Saving stones in atari by extending or connecting. Running to safety.
+[Sensei's](https://senseis.xmp.net/?Escape)
+
+### Extend
+{: #extend}
+Growing outward from existing stones. Gaining liberties and influence.
+[Sensei's](https://senseis.xmp.net/?Extend)
 
 ### Joseki
 {: #joseki}

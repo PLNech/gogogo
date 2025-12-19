@@ -15,7 +15,7 @@ We built 1449 tests today.
 
 Not clever tests. Not deep reading. Not life-and-death.
 
-Basic instincts:
+[Basic instincts](/glossary#basic-instincts):
 
 ```
 CAPTURE — take what's yours       ESCAPE — save what's dying
@@ -47,7 +47,9 @@ EXTEND — breathe                  BLOCK — deny
     . . .                             . . .
 ```
 
-Eight ways to see. A child learns them in their first game.
+Eight ways to see: [Capture](/glossary#capture), [Escape](/glossary#escape), [Connect](/glossary#connect), [Cut](/glossary#cut), [Atari](/glossary#atari), [Defend](/glossary#defend), [Extend](/glossary#extend), [Block](/glossary#block).
+
+A child learns them in their first game.
 
 ---
 
