@@ -44,33 +44,44 @@
         </div>
     </div>
 
-    <!-- Move slider -->
-    <div class="bg-white/50 rounded-lg p-4 border border-ink/10">
-        <div class="flex items-center gap-4">
-            <label class="text-sm text-ink/60">Move:</label>
-            <input type="range"
-                   id="move-slider"
-                   min="0"
-                   max="{{ game.total_moves - 1 }}"
-                   value="{{ game.total_moves - 1 }}"
-                   class="flex-1 accent-stone-black"
-                   hx-get="/game/{{ game_id }}/move/{value}"
-                   hx-target="#move-info"
-                   hx-trigger="input changed delay:100ms">
-            <span id="move-number" class="font-mono text-sm w-16 text-right">{{ game.total_moves - 1 }}</span>
+    <!-- Board and Controls -->
+    <div class="grid gap-6 lg:grid-cols-3">
+        <!-- Board visualization -->
+        <div class="lg:col-span-1 chart-container rounded-lg p-4">
+            <h3 class="text-sm font-semibold text-ink/70 mb-3 text-center">Board Position</h3>
+            {% include "partials/board.html" %}
         </div>
-        <div id="move-info" class="mt-4 text-sm">
-            {% include "partials/move_info.html" %}
+
+        <!-- Move slider and info -->
+        <div class="lg:col-span-2 space-y-4">
+            <div class="bg-white/50 rounded-lg p-4 border border-ink/10">
+                <div class="flex items-center gap-4">
+                    <label class="text-sm text-ink/60">Move:</label>
+                    <button id="prev-move" class="px-2 py-1 text-sm border border-ink/20 rounded hover:bg-white/50">←</button>
+                    <input type="range"
+                           id="move-slider"
+                           min="0"
+                           max="{{ game.total_moves - 1 }}"
+                           value="0"
+                           class="flex-1 accent-stone-black">
+                    <button id="next-move" class="px-2 py-1 text-sm border border-ink/20 rounded hover:bg-white/50">→</button>
+                    <span id="move-number" class="font-mono text-sm w-16 text-right">0</span>
+                </div>
+                <div id="move-info" class="mt-4 text-sm">
+                    {% set stats = game.move_stats[0] if game.move_stats else None %}
+                    {% include "partials/move_info.html" %}
+                </div>
+            </div>
+
+            <!-- Victory probability inline -->
+            <div class="chart-container rounded-lg p-4">
+                <div id="chart-victory" class="h-48"></div>
+            </div>
         </div>
     </div>
 
     <!-- Charts grid -->
     <div class="grid gap-6 lg:grid-cols-2">
-        <!-- Victory probability - full width -->
-        <div class="lg:col-span-2 chart-container rounded-lg p-4">
-            <div id="chart-victory" class="h-64"></div>
-        </div>
-
         <!-- Groups -->
         <div class="chart-container rounded-lg p-4">
             <div id="chart-groups" class="h-56"></div>
@@ -110,6 +121,10 @@
 
 {% block scripts %}
 <script>
+    const GAME_ID = '{{ game_id }}';
+    const BOARD_SIZE = {{ game.board_size }};
+    const TOTAL_MOVES = {{ game.total_moves }};
+
     // Chart data from server
     const chartsData = {{ charts_json|safe }};
 
@@ -126,34 +141,93 @@
     Plotly.newPlot('chart-liberties', chartsData.liberties.data, chartsData.liberties.layout, chartConfig);
     Plotly.newPlot('chart-entropy', chartsData.entropy.data, chartsData.entropy.layout, chartConfig);
 
-    // Slider updates move number display
-    const slider = document.getElementById('move-slider');
-    const moveNum = document.getElementById('move-number');
+    // Initialize board
+    initBoard(BOARD_SIZE);
 
-    slider.addEventListener('input', () => {
-        moveNum.textContent = slider.value;
+    // Load initial board state
+    async function loadBoardState(moveNum) {
+        try {
+            const response = await fetch(`/game/${GAME_ID}/board/${moveNum}`);
+            const data = await response.json();
+            updateBoard(data.board, data.last_move, data.territory);
+        } catch (e) {
+            console.error('Failed to load board state:', e);
+        }
+    }
 
-        // Add vertical line to all charts at current move
-        const moveX = parseInt(slider.value);
+    // Load move info via HTMX-style fetch
+    async function loadMoveInfo(moveNum) {
+        try {
+            const response = await fetch(`/game/${GAME_ID}/move/${moveNum}`);
+            const html = await response.text();
+            document.getElementById('move-info').innerHTML = html;
+        } catch (e) {
+            console.error('Failed to load move info:', e);
+        }
+    }
+
+    // Update everything for a move
+    async function goToMove(moveNum) {
+        moveNum = Math.max(0, Math.min(TOTAL_MOVES - 1, moveNum));
+        slider.value = moveNum;
+        moveNumDisplay.textContent = moveNum;
+
+        // Update board
+        await loadBoardState(moveNum);
+
+        // Update move info
+        await loadMoveInfo(moveNum);
+
+        // Update chart markers
         const charts = ['victory', 'groups', 'territory', 'captures', 'liberties', 'entropy'];
-
         charts.forEach(name => {
             const chartDiv = document.getElementById(`chart-${name}`);
-            Plotly.relayout(chartDiv, {
-                shapes: [{
-                    type: 'line',
-                    x0: moveX, x1: moveX,
-                    y0: 0, y1: 1,
-                    yref: 'paper',
-                    line: { color: 'rgba(200, 0, 0, 0.5)', width: 2, dash: 'dot' }
-                }]
-            });
+            if (chartDiv) {
+                Plotly.relayout(chartDiv, {
+                    shapes: [{
+                        type: 'line',
+                        x0: moveNum, x1: moveNum,
+                        y0: 0, y1: 1,
+                        yref: 'paper',
+                        line: { color: 'rgba(200, 0, 0, 0.5)', width: 2, dash: 'dot' }
+                    }]
+                });
+            }
         });
+    }
+
+    // Elements
+    const slider = document.getElementById('move-slider');
+    const moveNumDisplay = document.getElementById('move-number');
+    const prevBtn = document.getElementById('prev-move');
+    const nextBtn = document.getElementById('next-move');
+
+    // Event listeners
+    slider.addEventListener('input', () => goToMove(parseInt(slider.value)));
+    prevBtn.addEventListener('click', () => goToMove(parseInt(slider.value) - 1));
+    nextBtn.addEventListener('click', () => goToMove(parseInt(slider.value) + 1));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') goToMove(parseInt(slider.value) - 1);
+        if (e.key === 'ArrowRight') goToMove(parseInt(slider.value) + 1);
+        if (e.key === 'Home') goToMove(0);
+        if (e.key === 'End') goToMove(TOTAL_MOVES - 1);
     });
 
-    // Fix HTMX slider URL template
-    slider.addEventListener('htmx:configRequest', (e) => {
-        e.detail.path = `/game/{{ game_id }}/move/${slider.value}`;
+    // Click on charts to jump to move
+    ['victory', 'groups', 'territory', 'captures', 'liberties', 'entropy'].forEach(name => {
+        const chartDiv = document.getElementById(`chart-${name}`);
+        if (chartDiv) {
+            chartDiv.on('plotly_click', (data) => {
+                if (data.points && data.points[0]) {
+                    goToMove(Math.round(data.points[0].x));
+                }
+            });
+        }
     });
+
+    // Load initial state
+    goToMove(0);
 </script>
 {% endblock %}

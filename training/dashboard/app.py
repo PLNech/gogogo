@@ -122,6 +122,56 @@ async def get_chart(game_id: str, chart_name: str):
     return charts[chart_name]
 
 
+@app.get("/game/{game_id}/board/{move_num}", response_class=JSONResponse)
+async def get_board_at_move(game_id: str, move_num: int):
+    """Get board state at a specific move for visualization."""
+    record = load_game(game_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Game not found")
+
+    if move_num < 0 or move_num >= len(record.move_stats):
+        raise HTTPException(status_code=400, detail="Invalid move number")
+
+    # Reconstruct board state by replaying moves
+    size = record.board_size
+    board = [[0] * size for _ in range(size)]
+
+    for i in range(move_num + 1):
+        stats = record.move_stats[i]
+        move = stats.move
+        if move != (-1, -1):  # Not a pass
+            r, c = move
+            if 0 <= r < size and 0 <= c < size:
+                board[r][c] = stats.player
+
+    # Get last move for highlighting
+    last_move = record.move_stats[move_num].move
+    if last_move == (-1, -1):
+        last_move = None
+
+    # Simple territory estimate (empty points surrounded by one color)
+    # This is a rough heuristic, not accurate scoring
+    territory = [[0] * size for _ in range(size)]
+    for r in range(size):
+        for c in range(size):
+            if board[r][c] == 0:
+                # Check neighbors
+                neighbors = []
+                for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < size and 0 <= nc < size and board[nr][nc] != 0:
+                        neighbors.append(board[nr][nc])
+                if neighbors and all(n == neighbors[0] for n in neighbors):
+                    territory[r][c] = neighbors[0]
+
+    return {
+        "board": board,
+        "last_move": last_move,
+        "territory": territory,
+        "move_num": move_num,
+    }
+
+
 @app.get("/game/{game_id}/move/{move_num}", response_class=HTMLResponse)
 async def game_at_move(request: Request, game_id: str, move_num: int):
     """Get game state at a specific move (for slider)."""

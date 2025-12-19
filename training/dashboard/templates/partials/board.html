@@ -1,0 +1,202 @@
+<!-- Go board visualization -->
+<div class="relative" style="aspect-ratio: 1;">
+    <canvas id="board-canvas" class="w-full h-full"></canvas>
+</div>
+
+<script>
+class BoardRenderer {
+    constructor(canvasId, size = 9) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.size = size;
+        this.padding = 20;
+        this.resize();
+
+        // Colors matching our aesthetic
+        this.colors = {
+            board: '#DEB887',      // Warm wood
+            lines: '#4A4A4A',
+            black: '#1a1a1a',
+            white: '#F5F5DC',
+            whiteBorder: '#888',
+            lastMove: '#E63946',
+            territory: {
+                black: 'rgba(30, 30, 30, 0.3)',
+                white: 'rgba(200, 200, 200, 0.4)'
+            }
+        };
+    }
+
+    resize() {
+        const rect = this.canvas.parentElement.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        this.canvas.width = rect.width * dpr;
+        this.canvas.height = rect.height * dpr;
+        this.canvas.style.width = rect.width + 'px';
+        this.canvas.style.height = rect.height + 'px';
+        this.ctx.scale(dpr, dpr);
+        this.cellSize = (rect.width - 2 * this.padding) / (this.size - 1);
+    }
+
+    clear() {
+        const w = this.canvas.width / (window.devicePixelRatio || 1);
+        const h = this.canvas.height / (window.devicePixelRatio || 1);
+
+        // Board background
+        this.ctx.fillStyle = this.colors.board;
+        this.ctx.fillRect(0, 0, w, h);
+
+        // Grid lines
+        this.ctx.strokeStyle = this.colors.lines;
+        this.ctx.lineWidth = 1;
+
+        for (let i = 0; i < this.size; i++) {
+            const pos = this.padding + i * this.cellSize;
+
+            // Vertical
+            this.ctx.beginPath();
+            this.ctx.moveTo(pos, this.padding);
+            this.ctx.lineTo(pos, this.padding + (this.size - 1) * this.cellSize);
+            this.ctx.stroke();
+
+            // Horizontal
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.padding, pos);
+            this.ctx.lineTo(this.padding + (this.size - 1) * this.cellSize, pos);
+            this.ctx.stroke();
+        }
+
+        // Star points (hoshi)
+        this.drawStarPoints();
+    }
+
+    drawStarPoints() {
+        const points = this.getStarPoints();
+        this.ctx.fillStyle = this.colors.lines;
+
+        for (const [r, c] of points) {
+            const x = this.padding + c * this.cellSize;
+            const y = this.padding + r * this.cellSize;
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, 3, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+    }
+
+    getStarPoints() {
+        if (this.size === 9) {
+            return [[2, 2], [2, 6], [4, 4], [6, 2], [6, 6]];
+        } else if (this.size === 13) {
+            return [[3, 3], [3, 9], [6, 6], [9, 3], [9, 9]];
+        } else if (this.size === 19) {
+            return [
+                [3, 3], [3, 9], [3, 15],
+                [9, 3], [9, 9], [9, 15],
+                [15, 3], [15, 9], [15, 15]
+            ];
+        }
+        return [];
+    }
+
+    drawStone(row, col, color, isLast = false) {
+        const x = this.padding + col * this.cellSize;
+        const y = this.padding + row * this.cellSize;
+        const radius = this.cellSize * 0.45;
+
+        // Shadow
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        this.ctx.beginPath();
+        this.ctx.arc(x + 2, y + 2, radius, 0, Math.PI * 2);
+        this.ctx.fill();
+
+        // Stone
+        if (color === 1) { // Black
+            this.ctx.fillStyle = this.colors.black;
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+            this.ctx.fill();
+        } else { // White
+            this.ctx.fillStyle = this.colors.white;
+            this.ctx.strokeStyle = this.colors.whiteBorder;
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.stroke();
+        }
+
+        // Last move marker
+        if (isLast) {
+            this.ctx.fillStyle = this.colors.lastMove;
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, radius * 0.3, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+    }
+
+    drawTerritory(row, col, owner) {
+        const x = this.padding + col * this.cellSize;
+        const y = this.padding + row * this.cellSize;
+        const size = this.cellSize * 0.3;
+
+        this.ctx.fillStyle = owner === 1
+            ? this.colors.territory.black
+            : this.colors.territory.white;
+        this.ctx.fillRect(x - size/2, y - size/2, size, size);
+    }
+
+    render(boardState, lastMove = null, territory = null) {
+        this.clear();
+
+        // Territory shading first (under stones)
+        if (territory) {
+            for (let r = 0; r < this.size; r++) {
+                for (let c = 0; c < this.size; c++) {
+                    if (territory[r][c] !== 0 && boardState[r][c] === 0) {
+                        this.drawTerritory(r, c, territory[r][c]);
+                    }
+                }
+            }
+        }
+
+        // Stones
+        for (let r = 0; r < this.size; r++) {
+            for (let c = 0; c < this.size; c++) {
+                if (boardState[r][c] !== 0) {
+                    const isLast = lastMove && lastMove[0] === r && lastMove[1] === c;
+                    this.drawStone(r, c, boardState[r][c], isLast);
+                }
+            }
+        }
+    }
+}
+
+// Initialize when loaded
+let boardRenderer = null;
+
+function initBoard(size) {
+    boardRenderer = new BoardRenderer('board-canvas', size);
+    window.addEventListener('resize', () => {
+        if (boardRenderer) {
+            boardRenderer.resize();
+            // Re-render with current state if available
+            if (window.currentBoardState) {
+                boardRenderer.render(
+                    window.currentBoardState,
+                    window.currentLastMove,
+                    window.currentTerritory
+                );
+            }
+        }
+    });
+}
+
+function updateBoard(boardState, lastMove, territory) {
+    window.currentBoardState = boardState;
+    window.currentLastMove = lastMove;
+    window.currentTerritory = territory;
+    if (boardRenderer) {
+        boardRenderer.render(boardState, lastMove, territory);
+    }
+}
+</script>
