@@ -466,6 +466,41 @@ git push
 
 **This file is living documentation** - it should grow with the project
 
+### Learning: Tester c'est Douter (2025-12-19)
+
+**What happened**: Implemented KataGo A.4-A.6 techniques (shaped Dirichlet noise, root policy temperature, soft policy head) without writing tests. Got excited, shipped code, moved on.
+
+**The problem**:
+- Code compiles but we don't *know* it works
+- AI-generated code (mine) is pattern-matched, not reasoned—needs verification more, not less
+- Complexity in A.6 (soft policy) made us stop mid-implementation
+- Violated our own TDD principles in CLAUDE.md
+
+**The tension** (French engineering wisdom):
+- *"Tester c'est douter"* — to test is to doubt (implies lack of confidence)
+- But also: untested code is unverified code, potentially broken code waiting to fail
+
+**Resolution**: Testing is not doubt—it's proof. Doubt is human; proof is engineering.
+
+**Rule going forward**:
+- For training code: write pytest tests BEFORE or IMMEDIATELY AFTER implementation
+- If complexity makes you stop: that's the signal to write tests first
+- AI confidence ≠ correctness; statistical patterns ≠ logical proofs
+- Test file for MCTS: `training/tests/test_mcts.py`
+
+**Tests we owe**:
+```python
+# training/tests/test_mcts.py
+class TestShapedDirichlet:
+    def test_noise_is_normalized(self): ...
+    def test_shaped_concentrates_on_high_policy(self): ...
+    def test_legal_mask_respected(self): ...
+
+class TestRootPolicyTemp:
+    def test_temp_one_is_identity(self): ...
+    def test_higher_temp_flattens(self): ...
+```
+
 ## PLAN.md Tracking (MANDATORY)
 - **MUST maintain PLAN.md** with ALL features from complete game design (all 7 milestones)
 - Track each feature with status: **DONE** / **TODO** / **LATER** / **DISCUSS**
