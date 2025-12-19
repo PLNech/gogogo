@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Game {{ game_id[:8] }}{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Navigation -->
+    <div class="flex items-center justify-between">
+        <a href="/" class="text-ink/50 hover:text-ink transition">← All Games</a>
+        <div class="flex gap-4">
+            {% if prev_game %}
+            <a href="/game/{{ prev_game }}"
+               class="px-3 py-1 text-sm border border-ink/20 rounded hover:bg-white/50 transition"
+               hx-get="/game/{{ prev_game }}"
+               hx-target="body"
+               hx-push-url="true">
+                ← Older
+            </a>
+            {% endif %}
+            {% if next_game %}
+            <a href="/game/{{ next_game }}"
+               class="px-3 py-1 text-sm border border-ink/20 rounded hover:bg-white/50 transition"
+               hx-get="/game/{{ next_game }}"
+               hx-target="body"
+               hx-push-url="true">
+                Newer →
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Game header -->
+    <div class="flex items-center justify-between pb-4 border-b border-ink/10">
+        <div>
+            <h1 class="text-2xl font-semibold">Game Analysis</h1>
+            <p class="text-sm text-ink/50 font-mono mt-1">{{ game_id }}</p>
+        </div>
+        <div class="text-right">
+            <div class="text-3xl font-semibold
+                {% if 'B+' in game.result_string %}text-stone-black{% else %}text-ink/70{% endif %}">
+                {{ game.result_string }}
+            </div>
+            <div class="text-sm text-ink/50">{{ game.total_moves }} moves • {{ game.board_size }}×{{ game.board_size }}</div>
+        </div>
+    </div>
+
+    <!-- Move slider -->
+    <div class="bg-white/50 rounded-lg p-4 border border-ink/10">
+        <div class="flex items-center gap-4">
+            <label class="text-sm text-ink/60">Move:</label>
+            <input type="range"
+                   id="move-slider"
+                   min="0"
+                   max="{{ game.total_moves - 1 }}"
+                   value="{{ game.total_moves - 1 }}"
+                   class="flex-1 accent-stone-black"
+                   hx-get="/game/{{ game_id }}/move/{value}"
+                   hx-target="#move-info"
+                   hx-trigger="input changed delay:100ms">
+            <span id="move-number" class="font-mono text-sm w-16 text-right">{{ game.total_moves - 1 }}</span>
+        </div>
+        <div id="move-info" class="mt-4 text-sm">
+            {% include "partials/move_info.html" %}
+        </div>
+    </div>
+
+    <!-- Charts grid -->
+    <div class="grid gap-6 lg:grid-cols-2">
+        <!-- Victory probability - full width -->
+        <div class="lg:col-span-2 chart-container rounded-lg p-4">
+            <div id="chart-victory" class="h-64"></div>
+        </div>
+
+        <!-- Groups -->
+        <div class="chart-container rounded-lg p-4">
+            <div id="chart-groups" class="h-56"></div>
+        </div>
+
+        <!-- Territory -->
+        <div class="chart-container rounded-lg p-4">
+            <div id="chart-territory" class="h-56"></div>
+        </div>
+
+        <!-- Captures -->
+        <div class="chart-container rounded-lg p-4">
+            <div id="chart-captures" class="h-56"></div>
+        </div>
+
+        <!-- Liberties -->
+        <div class="chart-container rounded-lg p-4">
+            <div id="chart-liberties" class="h-56"></div>
+        </div>
+
+        <!-- Policy entropy -->
+        <div class="lg:col-span-2 chart-container rounded-lg p-4">
+            <div id="chart-entropy" class="h-48"></div>
+        </div>
+    </div>
+
+    <!-- Download -->
+    <div class="flex gap-4 justify-center pt-4">
+        <a href="/api/game/{{ game_id }}"
+           download="{{ game_id }}.json"
+           class="px-4 py-2 text-sm border border-ink/20 rounded hover:bg-white/50 transition">
+            Download JSON
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Chart data from server
+    const chartsData = {{ charts_json|safe }};
+
+    // Render all charts
+    const chartConfig = {
+        responsive: true,
+        displayModeBar: false,
+    };
+
+    Plotly.newPlot('chart-victory', chartsData.victory.data, chartsData.victory.layout, chartConfig);
+    Plotly.newPlot('chart-groups', chartsData.groups.data, chartsData.groups.layout, chartConfig);
+    Plotly.newPlot('chart-territory', chartsData.territory.data, chartsData.territory.layout, chartConfig);
+    Plotly.newPlot('chart-captures', chartsData.captures.data, chartsData.captures.layout, chartConfig);
+    Plotly.newPlot('chart-liberties', chartsData.liberties.data, chartsData.liberties.layout, chartConfig);
+    Plotly.newPlot('chart-entropy', chartsData.entropy.data, chartsData.entropy.layout, chartConfig);
+
+    // Slider updates move number display
+    const slider = document.getElementById('move-slider');
+    const moveNum = document.getElementById('move-number');
+
+    slider.addEventListener('input', () => {
+        moveNum.textContent = slider.value;
+
+        // Add vertical line to all charts at current move
+        const moveX = parseInt(slider.value);
+        const charts = ['victory', 'groups', 'territory', 'captures', 'liberties', 'entropy'];
+
+        charts.forEach(name => {
+            const chartDiv = document.getElementById(`chart-${name}`);
+            Plotly.relayout(chartDiv, {
+                shapes: [{
+                    type: 'line',
+                    x0: moveX, x1: moveX,
+                    y0: 0, y1: 1,
+                    yref: 'paper',
+                    line: { color: 'rgba(200, 0, 0, 0.5)', width: 2, dash: 'dot' }
+                }]
+            });
+        });
+    });
+
+    // Fix HTMX slider URL template
+    slider.addEventListener('htmx:configRequest', (e) => {
+        e.detail.path = `/game/{{ game_id }}/move/${slider.value}`;
+    });
+</script>
+{% endblock %}

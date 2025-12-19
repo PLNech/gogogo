@@ -14,6 +14,10 @@ matplotlib = "^3.10.7"
 scipy = "^1.16.3"
 onnx = "^1.20.0"
 onnxruntime = "^1.23.2"
+# Dashboard
+fastapi = "^0.115"
+uvicorn = {extras = ["standard"], version = "^0.34"}
+jinja2 = "^3.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0"

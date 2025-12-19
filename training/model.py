@@ -267,9 +267,16 @@ def save_checkpoint(model: GoNet, optimizer, step: int, path: str):
 
 
 def load_checkpoint(path: str, config: Config):
-    """Load model from checkpoint."""
+    """Load model from checkpoint.
+
+    Uses strict=False to handle missing keys from newly added layers.
+    New layers (e.g., soft_policy_fc from A.6) will be randomly initialized.
+    """
     checkpoint = torch.load(path, map_location=config.device, weights_only=False)
     model = GoNet(checkpoint.get('config', config))
-    model.load_state_dict(checkpoint['model_state_dict'])
+    # strict=False allows loading older checkpoints missing new layers
+    incompatible = model.load_state_dict(checkpoint['model_state_dict'], strict=False)
+    if incompatible.missing_keys:
+        print(f"  Note: Initialized new layers: {incompatible.missing_keys}")
     model = model.to(config.device)
     return model, checkpoint.get('step', 0)

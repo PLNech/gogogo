@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Compare {{ game_ids|length }} Games{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <a href="/compare" class="text-ink/50 hover:text-ink transition">← Select Different Games</a>
+    </div>
+
+    <div class="text-center space-y-2">
+        <h1 class="text-3xl font-semibold">Game Comparison</h1>
+        <p class="text-ink/60">{{ game_ids|length }} games overlaid</p>
+    </div>
+
+    <!-- Legend -->
+    <div class="flex flex-wrap justify-center gap-4">
+        {% for label in labels %}
+        <div class="flex items-center gap-2 text-sm">
+            <div class="w-4 h-1 rounded"
+                 style="background: {{ ['rgba(30,30,30,0.8)', 'rgba(70,130,180,0.8)', 'rgba(180,70,70,0.8)', 'rgba(70,180,70,0.8)', 'rgba(180,130,70,0.8)'][loop.index0 % 5] }}">
+            </div>
+            <span>{{ label }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Overlay chart -->
+    <div class="chart-container rounded-lg p-4">
+        <div id="chart-overlay" class="h-96"></div>
+    </div>
+
+    <!-- Individual game links -->
+    <div class="flex flex-wrap justify-center gap-4">
+        {% for game_id in game_ids %}
+        <a href="/game/{{ game_id }}"
+           class="px-4 py-2 text-sm border border-ink/20 rounded hover:bg-white/50 transition">
+            View {{ game_id[:8] }}...
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const overlayData = {{ overlay_chart|safe }};
+
+    Plotly.newPlot('chart-overlay', overlayData.data, overlayData.layout, {
+        responsive: true,
+        displayModeBar: false,
+    });
+</script>
+{% endblock %}

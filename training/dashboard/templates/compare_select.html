@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Games{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <div class="text-center space-y-2">
+        <h1 class="text-3xl font-semibold">Compare Games</h1>
+        <p class="text-ink/60">Select up to 5 games to overlay</p>
+    </div>
+
+    <form action="/compare" method="get" class="space-y-6">
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {% for game_id in games %}
+            <label class="flex items-center gap-3 p-3 bg-white/50 rounded-lg border border-ink/10 hover:border-ink/30 cursor-pointer transition">
+                <input type="checkbox"
+                       name="ids"
+                       value="{{ game_id }}"
+                       class="w-4 h-4 accent-stone-black">
+                <span class="font-mono text-sm truncate">{{ game_id }}</span>
+            </label>
+            {% endfor %}
+        </div>
+
+        <div class="text-center">
+            <button type="submit"
+                    class="px-6 py-2 bg-stone-black text-white rounded-lg hover:bg-ink/80 transition">
+                Compare Selected
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Limit selection to 5
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+            if (checked.length > 5) {
+                cb.checked = false;
+                alert('Maximum 5 games can be compared');
+            }
+        });
+    });
+
+    // Build comma-separated IDs for URL
+    document.querySelector('form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+        const ids = Array.from(checked).map(c => c.value).join(',');
+        if (ids) {
+            window.location.href = `/compare?ids=${ids}`;
+        }
+    });
+</script>
+{% endblock %}

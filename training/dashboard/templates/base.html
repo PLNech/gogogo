@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GoGoGo{% endblock %} | Game Dashboard</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: '#faf5eb',
+                        ink: '#1a1a1a',
+                        stone: {
+                            black: '#1e1e1e',
+                            white: '#f5f5dc',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Georgia', 'Cambria', 'serif'],
+                        mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #faf5eb 0%, #f5f0e6 100%);
+            min-height: 100vh;
+        }
+        .paper-texture {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+        .chart-container {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        /* Smooth HTMX transitions */
+        .htmx-swapping {
+            opacity: 0;
+            transition: opacity 0.2s ease-out;
+        }
+        .htmx-settling {
+            opacity: 1;
+            transition: opacity 0.2s ease-in;
+        }
+    </style>
+
+    {% block head %}{% endblock %}
+</head>
+<body class="paper-texture font-serif text-ink antialiased">
+    <!-- Header -->
+    <header class="border-b border-ink/10 bg-white/30 backdrop-blur-sm sticky top-0 z-50">
+        <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="/" class="text-xl font-semibold tracking-tight hover:opacity-70 transition">
+                碁 GoGoGo
+            </a>
+            <div class="flex gap-6 text-sm">
+                <a href="/" class="hover:underline underline-offset-4">Games</a>
+                <a href="/compare" class="hover:underline underline-offset-4">Compare</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-ink/10 mt-16 py-8 text-center text-sm text-ink/50">
+        <p>Training insights for <a href="https://github.com/your/gogogo" class="underline">GoGoGo</a></p>
+        <p class="mt-1 font-mono text-xs">観察は智慧の始まり — Observation is the beginning of wisdom</p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

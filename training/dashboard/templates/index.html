@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Games{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="text-center space-y-2">
+        <h1 class="text-3xl font-semibold">Self-Play Games</h1>
+        <p class="text-ink/60">{{ total_games }} games recorded</p>
+    </div>
+
+    <!-- Games grid -->
+    {% if games %}
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {% for game in games %}
+        <a href="/game/{{ game.id }}"
+           class="block p-4 bg-white/50 rounded-lg border border-ink/10 hover:border-ink/30 hover:bg-white/70 transition group">
+            <div class="flex items-center justify-between">
+                <span class="font-mono text-sm text-ink/50">{{ game.id[:12] }}...</span>
+                <span class="text-xs px-2 py-0.5 rounded-full
+                    {% if 'B+' in game.result %}bg-stone-black text-white{% else %}bg-stone-white text-ink border{% endif %}">
+                    {{ game.result }}
+                </span>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+                <span class="text-2xl font-semibold">{{ game.moves }}</span>
+                <span class="text-ink/50 text-sm">moves</span>
+            </div>
+            <div class="mt-1 text-xs text-ink/40">
+                {{ game.board_size }}×{{ game.board_size }} board
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-16 text-ink/50">
+        <p class="text-lg">No games recorded yet.</p>
+        <p class="mt-2 text-sm">Run self-play training to generate games.</p>
+    </div>
+    {% endif %}
+
+    <!-- Quick stats -->
+    {% if games %}
+    <div class="mt-12 p-6 bg-white/30 rounded-lg border border-ink/10">
+        <h2 class="text-lg font-semibold mb-4">Quick Stats</h2>
+        <div class="grid grid-cols-3 gap-4 text-center">
+            <div>
+                <div class="text-2xl font-mono">{{ games|length }}</div>
+                <div class="text-xs text-ink/50 uppercase tracking-wide">Recent</div>
+            </div>
+            <div>
+                <div class="text-2xl font-mono">
+                    {{ (games|map(attribute='moves')|sum / games|length)|round|int if games else 0 }}
+                </div>
+                <div class="text-xs text-ink/50 uppercase tracking-wide">Avg Moves</div>
+            </div>
+            <div>
+                <div class="text-2xl font-mono">
+                    {% set black_wins = namespace(count=0) %}
+                    {% for g in games %}{% if 'B+' in g.result %}{% set black_wins.count = black_wins.count + 1 %}{% endif %}{% endfor %}
+                    {{ (black_wins.count / games|length * 100)|round|int if games else 0 }}%
+                </div>
+                <div class="text-xs text-ink/50 uppercase tracking-wide">Black wins</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

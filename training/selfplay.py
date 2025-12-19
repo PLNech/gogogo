@@ -151,7 +151,7 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
                   f"W:{stats['white_stones']}({stats['white_groups']}g) "
                   f"Score:{stats['score']:+.1f} Empty:{stats['empty']}")
 
-        policy = mcts.search(board, verbose=False)  # Batched MCTS is already efficient
+        policy = mcts.search(board, verbose=False, move_number=move_count)  # Pass move number for temp scheduling
 
         # Select move first so we can record it
         temp = config.temperature if move_count < config.temp_threshold else 0.0
