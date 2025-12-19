@@ -168,6 +168,9 @@ class GoNet(nn.Module):
         # Opponent policy head (KataGo: 1.30x speedup from predicting opponent's response)
         # Shares conv features with main policy, separate FC layer
         self.opponent_policy_fc = nn.Linear(2 * config.board_size ** 2, self.action_size)
+        # Auxiliary soft policy head (KataGo A.6: forces discrimination of lower-prob moves)
+        # Predicts softened policy (T=4), weighted 8x in loss
+        self.soft_policy_fc = nn.Linear(2 * config.board_size ** 2, self.action_size)
 
         # Value head with global pooling
         self.value_conv = nn.Conv2d(config.num_filters, 1, 1, bias=False)
@@ -189,7 +192,7 @@ class GoNet(nn.Module):
         self.score_fc = nn.Linear(config.board_size ** 2, self.score_bins)
 
     def forward(self, x, return_ownership: bool = False, return_opponent_policy: bool = False,
-                return_score_dist: bool = False):
+                return_score_dist: bool = False, return_soft_policy: bool = False):
         # x: (batch, planes, size, size)
         x = F.relu(self.bn_init(self.conv_init(x)))
 
@@ -206,6 +209,11 @@ class GoNet(nn.Module):
         if return_opponent_policy:
             opponent_policy = F.log_softmax(self.opponent_policy_fc(p_flat), dim=1)
 
+        # Auxiliary soft policy head (KataGo A.6)
+        soft_policy = None
+        if return_soft_policy:
+            soft_policy = F.log_softmax(self.soft_policy_fc(p_flat), dim=1)
+
         # Value head
         v = F.relu(self.value_bn(self.value_conv(x)))
         v = v.view(v.size(0), -1)
@@ -213,7 +221,7 @@ class GoNet(nn.Module):
         value = torch.tanh(self.value_fc2(v))
 
         # Build return tuple based on what was requested
-        if return_ownership or return_opponent_policy or return_score_dist:
+        if return_ownership or return_opponent_policy or return_score_dist or return_soft_policy:
             result = [policy, value]
             if return_ownership:
                 ownership = self.ownership_conv(x)
@@ -226,6 +234,8 @@ class GoNet(nn.Module):
                 s = s.view(s.size(0), -1)
                 score_logits = self.score_fc(s)  # Raw logits for cross-entropy
                 result.append(score_logits)
+            if return_soft_policy:
+                result.append(soft_policy)
             return tuple(result)
 
         return policy, value

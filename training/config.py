@@ -40,5 +40,12 @@ class Config:
     root_policy_temp_early: float = 1.25  # Higher temp in opening (first N moves)
     root_policy_temp_early_moves: int = 30  # Apply early temp for this many moves
 
+    # KataGo A.6: Auxiliary Soft Policy Target
+    # Additional head predicting softened policy (T=4) - forces discrimination of lower-prob moves
+    # Source: KataGo Methods doc
+    use_soft_policy: bool = True  # Enable auxiliary soft policy head
+    soft_policy_temp: float = 4.0  # Temperature for soft policy target (higher = softer)
+    soft_policy_weight: float = 8.0  # Loss weight relative to main policy
+
 DEFAULT = Config()
 QUICK = Config(num_blocks=4, num_filters=64, mcts_simulations=50, games_per_iter=20, train_steps_per_iter=100)
