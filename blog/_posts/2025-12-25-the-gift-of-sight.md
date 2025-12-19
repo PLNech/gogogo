@@ -37,7 +37,7 @@ We didn't know. We couldn't know.
 
 So we built eyes.
 
-![Game Analysis Dashboard](/images/dashboard-game.png)
+![Game Analysis Dashboard](/gogogo/images/dashboard-game.png)
 
 *Select a move to see details* — the slider becomes a time machine.
 
@@ -81,7 +81,7 @@ Hokusai painted Mount Fuji thirty-six times. Same mountain. Different angles, se
 
 Each view revealed something the others could not.
 
-![Game Comparison](/images/dashboard-compare.png)
+![Game Comparison](/gogogo/images/dashboard-compare.png)
 
 Our **Compare** view overlays games like Hokusai's prints. Two trajectories. Same board size. Different outcomes.
 

@@ -12,7 +12,7 @@ We shipped code today. KataGo techniques. Shaped Dirichlet noise. Root policy te
 
 We did not write tests.
 
-![Tester c'est Douter](/images/tester-cest-douter.png)
+![Tester c'est Douter](/gogogo/images/tester-cest-douter.png)
 
 ---
 

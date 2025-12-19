@@ -551,6 +551,8 @@ class SelfPlayTrainer:
 
                 if train_metrics:
                     status += f" | Loss: {train_metrics.get('loss', 0):.3f}"
+                    if self.use_curriculum and 'instinct_lambda' in train_metrics:
+                        status += f" | λ: {train_metrics['instinct_lambda']:.2f}"
 
                 print(status)
 

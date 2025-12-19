@@ -17,7 +17,7 @@ Not clever tests. Not deep reading. Not life-and-death.
 
 [Sensei's 8 Basic Instincts](/glossary#basic-instincts) — patterns masters play without thinking.
 
-![The 8 Basic Instincts](/images/eight-basic-instincts.png)
+![The 8 Basic Instincts](/gogogo/images/eight-basic-instincts.png)
 
 ---
 
@@ -40,7 +40,7 @@ A child learns them in their first lessons.
 
 Our model scored **1.3%**.
 
-![Benchmark Results](/images/learning-to-see-benchmark.png)
+![Benchmark Results](/gogogo/images/learning-to-see-benchmark.png)
 
 Zero on extend. Zero on hane. Zero on connect.
 

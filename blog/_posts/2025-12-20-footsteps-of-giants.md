@@ -12,7 +12,7 @@ We have a model. It plays. Badly, but it plays.
 
 Now we ask: can it learn to play on any board?
 
-![Research Evolution](/images/research-evolution.png)
+![Research Evolution](/gogogo/images/research-evolution.png)
 
 ---
 
