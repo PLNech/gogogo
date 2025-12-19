@@ -208,6 +208,16 @@ class GameRecord:
 
     def to_json(self) -> str:
         """Export complete record to JSON."""
+        def numpy_encoder(obj):
+            """Convert numpy types to Python types for JSON."""
+            if isinstance(obj, np.integer):
+                return int(obj)
+            elif isinstance(obj, np.floating):
+                return float(obj)
+            elif isinstance(obj, np.ndarray):
+                return obj.tolist()
+            raise TypeError(f'Object of type {type(obj)} not serializable')
+
         return json.dumps({
             'board_size': self.board_size,
             'game_id': self.game_id,
@@ -220,7 +230,7 @@ class GameRecord:
             'white_name': self.white_name,
             'config_snapshot': self.config_snapshot,
             'move_stats': [s.to_dict() for s in self.move_stats],
-        }, indent=2)
+        }, indent=2, default=numpy_encoder)
 
     @classmethod
     def from_json(cls, json_str: str) -> 'GameRecord':

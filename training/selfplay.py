@@ -1,10 +1,19 @@
 """Self-play game generation with optional tactical enhancement."""
 import numpy as np
 import time
+import uuid
+from datetime import datetime
+from pathlib import Path
 from typing import List, Tuple, Optional
 from board import Board
 from mcts import MCTS
 from config import Config
+from game_record import GameRecord, MoveStats, compute_move_stats
+
+
+# Directory for saving games (for dashboard)
+GAMES_DIR = Path(__file__).parent / "games"
+GAMES_DIR.mkdir(exist_ok=True)
 
 
 def get_game_stats(board: Board) -> dict:
@@ -44,71 +53,13 @@ def get_game_stats(board: Board) -> dict:
     }
 
 
-class GameRecord:
-    """Record of a single game for training."""
-
-    def __init__(self, board_size: int = 19):
-        self.board_size = board_size
-        self.states: List[np.ndarray] = []  # Board tensors
-        self.policies: List[np.ndarray] = []  # MCTS policies
-        self.current_players: List[int] = []  # Who played each move
-        self.moves: List[Tuple[int, int]] = []  # Move coordinates
-        self.comments: List[str] = []  # Optional comments per move
-
-    def add(self, state: np.ndarray, policy: np.ndarray, player: int,
-            move: Tuple[int, int] = None, comment: str = ""):
-        self.states.append(state)
-        self.policies.append(policy)
-        self.current_players.append(player)
-        if move is not None:
-            self.moves.append(move)
-        self.comments.append(comment)
-
-    def to_sgf(self, result: str = "?", black_name: str = "GoGoGo",
-               white_name: str = "GoGoGo") -> str:
-        """Export game to SGF format."""
-        sgf = f"(;GM[1]FF[4]CA[UTF-8]SZ[{self.board_size}]\n"
-        sgf += f"PB[{black_name}]PW[{white_name}]RE[{result}]\n"
-
-        for i, (move, player) in enumerate(zip(self.moves, self.current_players)):
-            color = "B" if player == 1 else "W"
-            if move == (-1, -1):
-                sgf += f";{color}[]"  # Pass
-            else:
-                row, col = move
-                # SGF uses a-s for 19x19, lowercase
-                sgf_col = chr(ord('a') + col)
-                sgf_row = chr(ord('a') + row)
-                sgf += f";{color}[{sgf_col}{sgf_row}]"
-
-            # Add comment if present
-            if i < len(self.comments) and self.comments[i]:
-                sgf += f"C[{self.comments[i]}]"
-
-            # Newline every 10 moves for readability
-            if (i + 1) % 10 == 0:
-                sgf += "\n"
-
-        sgf += ")\n"
-        return sgf
-
-    def finalize(self, winner: int) -> List[Tuple[np.ndarray, np.ndarray, float]]:
-        """Convert to training samples with final game result."""
-        samples = []
-        for state, policy, player in zip(self.states, self.policies, self.current_players):
-            if winner == 0:
-                value = 0.0
-            elif player == winner:
-                value = 1.0
-            else:
-                value = -1.0
-            samples.append((state, policy, value))
-        return samples
+## Old GameRecord removed - now imported from game_record.py
 
 
 def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
                batch_size: int = 8, use_hybrid: bool = False,
-               tactical_weight: float = 0.3) -> List[Tuple[np.ndarray, np.ndarray, float]]:
+               tactical_weight: float = 0.3,
+               save_for_dashboard: bool = True) -> List[Tuple[np.ndarray, np.ndarray, float]]:
     """Play a single self-play game with batched MCTS.
 
     Args:
@@ -119,6 +70,7 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
         batch_size: Batch size for MCTS
         use_hybrid: If True, use HybridMCTS with tactical enhancements
         tactical_weight: Weight for tactical adjustments (0-1)
+        save_for_dashboard: Save game to games/ directory for dashboard
 
     Returns:
         List of (state, policy, value) tuples for training
@@ -134,42 +86,77 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
     else:
         mcts = MCTS(model, config, batch_size=batch_size)
 
-    record = GameRecord(board_size=config.board_size)
+    # Create rich game record
+    game_id = f"game_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    record = GameRecord(
+        board_size=config.board_size,
+        game_id=game_id,
+        timestamp=datetime.now().isoformat(),
+    )
 
     move_count = 0
     max_moves = config.board_size ** 2 * 2  # Reasonable limit
+    black_captures = 0
+    white_captures = 0
 
     if verbose:
         print(f"  [Game {game_idx+1}] Starting game...")
 
     while not board.is_game_over() and move_count < max_moves:
-        # Get MCTS policy
-        if verbose and move_count % 10 == 0:
-            stats = get_game_stats(board)
-            print(f"  [Game {game_idx+1}] Move {move_count}/{max_moves} | "
-                  f"B:{stats['black_stones']}({stats['black_groups']}g) "
-                  f"W:{stats['white_stones']}({stats['white_groups']}g) "
-                  f"Score:{stats['score']:+.1f} Empty:{stats['empty']}")
+        player = board.current_player
 
-        policy = mcts.search(board, verbose=False, move_number=move_count)  # Pass move number for temp scheduling
+        # Get MCTS policy and value
+        policy = mcts.search(board, verbose=False, move_number=move_count)
 
-        # Select move first so we can record it
+        # Get value estimate from the root
+        mcts_value = 0.5  # Default
+        if hasattr(mcts, 'root') and mcts.root is not None:
+            mcts_value = (mcts.root.value() + 1) / 2  # Convert from [-1,1] to [0,1]
+
+        # Select move
         temp = config.temperature if move_count < config.temp_threshold else 0.0
         action = mcts.select_action(board, temp)
 
-        # Record state before move (with the move that will be played)
-        record.add(
-            board.to_tensor(),
-            policy,
-            board.current_player,
-            move=action
-        )
+        # Count captures before move
+        stones_before = np.sum(board.board != 0)
 
         # Play the move
         if action == (-1, -1):
             board.pass_move()
+            captures = 0
         else:
             board.play(action[0], action[1])
+            stones_after = np.sum(board.board != 0)
+            # Captures = stones removed (before + 1 for new stone - after)
+            captures = stones_before + 1 - stones_after
+            if captures > 0:
+                if player == 1:
+                    black_captures += captures
+                else:
+                    white_captures += captures
+
+        # Compute rich stats AFTER the move
+        move_stats = compute_move_stats(
+            board=board,
+            move=action,
+            player=player,
+            move_num=move_count,
+            captures=captures,
+            mcts_policy=policy,
+            mcts_value=mcts_value,
+            mcts_visits=config.mcts_simulations,
+            cumulative_captures=(black_captures - (captures if player == 1 else 0),
+                                white_captures - (captures if player == -1 else 0))
+        )
+
+        # Add to record with training data
+        record.add_move(move_stats, board.to_tensor(), policy)
+
+        if verbose and move_count % 10 == 0:
+            print(f"  [Game {game_idx+1}] Move {move_count}/{max_moves} | "
+                  f"B:{move_stats.black_stones}({move_stats.black_groups}g) "
+                  f"W:{move_stats.white_stones}({move_stats.white_groups}g) "
+                  f"Score:{move_stats.score_estimate:+.1f} V:{mcts_value:.2f}")
 
         move_count += 1
 
@@ -177,24 +164,23 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
     score = board.score()
     if score > 0:
         winner = 1  # Black wins
-        result = f"B+{score:.1f}"
     elif score < 0:
         winner = -1  # White wins
-        result = f"W+{-score:.1f}"
     else:
         winner = 0  # Draw
-        result = "0"
 
     if verbose:
         print(f"  [Game {game_idx+1}] Finished after {move_count} moves. "
-              f"Result: {result}")
+              f"Result: {record.result_string}")
 
-    # Store result and record for potential SGF export
-    record.winner = winner
-    record.result = result
-    record.score = score
+    # Finalize and get training samples
+    samples = record.finalize(winner, score)
 
-    return record.finalize(winner), record
+    # Save for dashboard (every Nth game to avoid too many files)
+    if save_for_dashboard and game_idx % 10 == 0:
+        record.save(str(GAMES_DIR / f"{game_id}.json"))
+
+    return samples, record
 
 
 def generate_games(model, config: Config, num_games: int, verbose: bool = True,
@@ -226,12 +212,12 @@ def generate_games(model, config: Config, num_games: int, verbose: bool = True,
                                     use_hybrid=use_hybrid, tactical_weight=tactical_weight)
         all_samples.extend(samples)
         records.append(record)
-        print(f"Game {i+1}/{num_games}: {len(samples)} positions, {record.result}")
+        print(f"Game {i+1}/{num_games}: {len(samples)} positions, {record.result_string}")
 
         if save_sgf:
             sgf_path = os.path.join(save_sgf, f"game_{i+1:04d}.sgf")
             with open(sgf_path, 'w') as f:
-                f.write(record.to_sgf(result=record.result))
+                f.write(record.to_sgf())
 
     return all_samples, records
 
