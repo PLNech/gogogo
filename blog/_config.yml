@@ -11,8 +11,8 @@ description: >-
 markdown: kramdown
 highlighter: rouge
 
-# Future posts - show all posts regardless of date
-future: true
+# Future posts - only show posts with date <= today
+future: false
 
 # URL settings (GitHub Pages)
 baseurl: "/gogogo"
