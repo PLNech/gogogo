@@ -16,7 +16,7 @@ title: Home
 <h2>The Journey</h2>
 
 <ul class="post-list">
-{% for post in site.posts reversed %}
+{% for post in site.posts %}
 {% assign slug = post.slug | default: post.title | slugify %}
 <li>
     <div class="post-thumb-container">

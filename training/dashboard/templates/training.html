@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Training{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-semibold">Training Status</h1>
+        <a href="/?bypass=1" class="text-sm text-ink/60 dark:text-ink-dark/60 hover:text-ink dark:hover:text-ink-dark hover:underline">
+            View Games &rarr;
+        </a>
+    </div>
+
+    <!-- Status Card -->
+    <div id="training-status"
+         hx-get="/training/status"
+         hx-trigger="load, every 2s"
+         hx-swap="innerHTML"
+         class="chart-container rounded-xl p-6">
+
+        {% if state and state.active %}
+        <!-- Active Training -->
+        <div class="space-y-6">
+            <!-- Phase Badge -->
+            <div class="flex items-center gap-3">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                </span>
+                <span class="text-lg font-medium capitalize">{{ state.phase }}</span>
+                <span class="text-sm text-ink/50 dark:text-ink-dark/50">
+                    Iteration {{ state.iteration }}/{{ state.total_iterations }}
+                </span>
+            </div>
+
+            <!-- Progress Bars -->
+            <div class="space-y-4">
+                {% if state.phase == 'selfplay' %}
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>Self-play Games</span>
+                        <span>{{ state.current_game }}/{{ state.games_target }}</span>
+                    </div>
+                    <div class="h-2 bg-ink/10 dark:bg-ink-dark/10 rounded-full overflow-hidden">
+                        <div class="h-full bg-blue-500 transition-all duration-500"
+                             style="width: {{ (state.current_game / state.games_target * 100) if state.games_target > 0 else 0 }}%"></div>
+                    </div>
+                </div>
+                {% elif state.phase == 'training' %}
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>Training Steps</span>
+                        <span>{{ state.train_step }}/{{ state.train_steps_target }}</span>
+                    </div>
+                    <div class="h-2 bg-ink/10 dark:bg-ink-dark/10 rounded-full overflow-hidden">
+                        <div class="h-full bg-amber-500 transition-all duration-500"
+                             style="width: {{ (state.train_step / state.train_steps_target * 100) if state.train_steps_target > 0 else 0 }}%"></div>
+                    </div>
+                </div>
+                {% elif state.phase == 'evaluating' %}
+                <div class="flex items-center gap-2 text-blue-500 dark:text-blue-400">
+                    <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                    </svg>
+                    <span>Evaluating model strength...</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-ink/10 dark:border-ink-dark/10">
+                <div class="text-center">
+                    <div class="text-2xl font-mono">{{ state.games_generated }}</div>
+                    <div class="text-xs text-ink/50 dark:text-ink-dark/50">Games Generated</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-mono">{{ state.buffer_size }}</div>
+                    <div class="text-xs text-ink/50 dark:text-ink-dark/50">Buffer Size</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-mono">{{ "%.4f"|format(state.last_loss) }}</div>
+                    <div class="text-xs text-ink/50 dark:text-ink-dark/50">Last Loss</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-mono">{{ "%.0f"|format(state.eval_win_rate * 100) }}%</div>
+                    <div class="text-xs text-ink/50 dark:text-ink-dark/50">Win Rate</div>
+                </div>
+            </div>
+
+            <!-- Loss Breakdown -->
+            {% if state.phase == 'training' %}
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div class="bg-ink/5 dark:bg-ink-dark/5 rounded-lg p-3">
+                    <span class="text-ink/50 dark:text-ink-dark/50">Policy Loss:</span>
+                    <span class="font-mono ml-2">{{ "%.4f"|format(state.last_policy_loss) }}</span>
+                </div>
+                <div class="bg-ink/5 dark:bg-ink-dark/5 rounded-lg p-3">
+                    <span class="text-ink/50 dark:text-ink-dark/50">Value Loss:</span>
+                    <span class="font-mono ml-2">{{ "%.4f"|format(state.last_value_loss) }}</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% elif state and state.phase == 'completed' %}
+        <!-- Completed -->
+        <div class="text-center py-8">
+            <div class="text-4xl mb-2 text-green-500">&#10003;</div>
+            <h2 class="text-xl font-medium text-green-600 dark:text-green-400">Training Complete</h2>
+            <p class="text-ink/60 dark:text-ink-dark/60 mt-2">{{ state.games_generated }} games generated</p>
+            <a href="/" class="inline-block mt-4 px-4 py-2 bg-ink dark:bg-ink-dark text-white dark:text-ink rounded-lg hover:bg-ink/80 dark:hover:bg-ink-dark/80">
+                View Games
+            </a>
+        </div>
+
+        {% elif state and state.phase == 'stale' %}
+        <!-- Stale (crashed?) -->
+        <div class="text-center py-8">
+            <div class="text-4xl mb-2 text-amber-500">&#9888;</div>
+            <h2 class="text-xl font-medium text-amber-600 dark:text-amber-400">Training Stalled</h2>
+            <p class="text-ink/60 dark:text-ink-dark/60 mt-2">No updates for 60+ seconds</p>
+            <p class="text-sm text-ink/40 dark:text-ink-dark/40 mt-1">Last: {{ state.last_update }}</p>
+        </div>
+
+        {% else %}
+        <!-- No Training -->
+        <div class="text-center py-8">
+            <div class="text-4xl mb-2 text-ink/30 dark:text-ink-dark/30">&#9676;</div>
+            <h2 class="text-xl font-medium text-ink/60 dark:text-ink-dark/60">No Active Training</h2>
+            <p class="text-ink/40 dark:text-ink-dark/40 mt-2">Start training with:</p>
+            <code class="block mt-2 bg-ink/5 dark:bg-ink-dark/10 rounded px-3 py-2 font-mono text-sm">
+                poetry run python train.py --iterations 10
+            </code>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Games -->
+    {% if recent_games %}
+    <div class="chart-container rounded-xl p-6">
+        <h2 class="text-lg font-medium mb-4">Recent Games</h2>
+        <div class="space-y-2">
+            {% for game_id in recent_games %}
+            <a href="/game/{{ game_id }}"
+               class="block px-3 py-2 rounded-lg hover:bg-ink/5 dark:hover:bg-ink-dark/10 transition font-mono text-sm">
+                {{ game_id }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto-refresh the page if training completes
+document.body.addEventListener('htmx:afterSwap', function(evt) {
+    if (evt.detail.target.id === 'training-status') {
+        // Check if we should redirect to games
+        const status = document.querySelector('#training-status');
+        if (status && status.textContent.includes('No Active Training')) {
+            // Training ended, stay on page but show completion
+        }
+    }
+});
+</script>
+{% endblock %}

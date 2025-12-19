@@ -1,0 +1,3962 @@
+[
+  {
+    "name": "block_expansion_0",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_0_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_4",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_4_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_5",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_5_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_0",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_0_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_4",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_4_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_5",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_5_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_6",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_6_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_7",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_7_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_8",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_8_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_9",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        5
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_9_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        5
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_10",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "center"
+  },
+  {
+    "name": "block_expansion_10_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "center"
+  },
+  {
+    "name": "block_connect_11",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "center"
+  },
+  {
+    "name": "block_connect_11_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "center"
+  },
+  {
+    "name": "block_expansion_0",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_0_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_4",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_4_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_5",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_5_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_6",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_6_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_7",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_7_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_8",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_8_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_9",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_9_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_10",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "center"
+  },
+  {
+    "name": "block_expansion_10_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "center"
+  },
+  {
+    "name": "block_connect_11",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "center"
+  },
+  {
+    "name": "block_connect_11_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "center"
+  },
+  {
+    "name": "block_expansion_0",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_0_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        11
+      ],
+      [
+        3,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        11
+      ],
+      [
+        3,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_4",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_4_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_5",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        9,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_5_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        9,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_6",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_6_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_7",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        11
+      ],
+      [
+        9,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_7_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        11
+      ],
+      [
+        9,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_8",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_8_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_9",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        3,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_9_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        3,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_10",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_10_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_11",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        6,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_11_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        6,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_12",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_12_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_13",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        11
+      ],
+      [
+        6,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_13_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        11
+      ],
+      [
+        6,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_14",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_14_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_15",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        9,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_15_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        9,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_16",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "center"
+  },
+  {
+    "name": "block_expansion_16_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "center"
+  },
+  {
+    "name": "block_connect_17",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        8
+      ],
+      [
+        6,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "center"
+  },
+  {
+    "name": "block_connect_17_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        8
+      ],
+      [
+        6,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "center"
+  },
+  {
+    "name": "block_expansion_0",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_0_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_1_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        18
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_2_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        18
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        15
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        17
+      ],
+      [
+        3,
+        18
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_3_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        17
+      ],
+      [
+        3,
+        18
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        15
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_4",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_4_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_5",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        5
+      ],
+      [
+        15,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_5_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        5
+      ],
+      [
+        15,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_6",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        18
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_6_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        18
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        15
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_7",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        17
+      ],
+      [
+        15,
+        18
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_connect_7_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        17
+      ],
+      [
+        15,
+        18
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        15
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "corner"
+  },
+  {
+    "name": "block_expansion_8",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_8_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_9",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        11
+      ],
+      [
+        3,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_9_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        11
+      ],
+      [
+        3,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_10",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_10_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_11",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        9,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_11_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        9,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_12",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        18
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_12_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        18
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        15
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_13",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        17
+      ],
+      [
+        9,
+        18
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_13_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        17
+      ],
+      [
+        9,
+        18
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        15
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_14",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_14_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_15",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        11
+      ],
+      [
+        15,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_connect_15_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        11
+      ],
+      [
+        15,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "edge"
+  },
+  {
+    "name": "block_expansion_16",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "center"
+  },
+  {
+    "name": "block_expansion_16_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "easy",
+    "description": "Block expansion",
+    "region": "center"
+  },
+  {
+    "name": "block_connect_17",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        11
+      ],
+      [
+        9,
+        12
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "center"
+  },
+  {
+    "name": "block_connect_17_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        11
+      ],
+      [
+        9,
+        12
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "block",
+    "difficulty": "medium",
+    "description": "Block connection",
+    "region": "center"
+  }
+]

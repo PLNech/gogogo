@@ -1,6 +1,6 @@
-<!-- Go board visualization -->
-<div class="relative" style="aspect-ratio: 1;">
-    <canvas id="board-canvas" class="w-full h-full"></canvas>
+<!-- Go board visualization - fixed 256px square -->
+<div class="relative mx-auto" style="width: 256px; height: 256px;">
+    <canvas id="board-canvas" width="256" height="256"></canvas>
 </div>
 
 <script>
@@ -12,14 +12,16 @@ class BoardRenderer {
         this.padding = 20;
         this.resize();
 
-        // Colors matching our aesthetic
+        // Colors matching our aesthetic - detect dark mode
+        const isDark = document.documentElement.classList.contains('dark');
         this.colors = {
-            board: '#DEB887',      // Warm wood
-            lines: '#4A4A4A',
+            board: isDark ? '#3d3224' : '#DEB887',      // Darker wood in dark mode
+            lines: isDark ? '#6b6b6b' : '#4A4A4A',
             black: '#1a1a1a',
             white: '#F5F5DC',
             whiteBorder: '#888',
             lastMove: '#E63946',
+            atari: '#FF6B35',      // Warning orange for atari
             territory: {
                 black: 'rgba(30, 30, 30, 0.3)',
                 white: 'rgba(200, 200, 200, 0.4)'
@@ -28,14 +30,16 @@ class BoardRenderer {
     }
 
     resize() {
-        const rect = this.canvas.parentElement.getBoundingClientRect();
+        // Fixed size - 256px
+        const canvasSize = 256;
         const dpr = window.devicePixelRatio || 1;
-        this.canvas.width = rect.width * dpr;
-        this.canvas.height = rect.height * dpr;
-        this.canvas.style.width = rect.width + 'px';
-        this.canvas.style.height = rect.height + 'px';
+        this.canvas.width = canvasSize * dpr;
+        this.canvas.height = canvasSize * dpr;
+        this.canvas.style.width = canvasSize + 'px';
+        this.canvas.style.height = canvasSize + 'px';
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
         this.ctx.scale(dpr, dpr);
-        this.cellSize = (rect.width - 2 * this.padding) / (this.size - 1);
+        this.cellSize = (canvasSize - 2 * this.padding) / (this.size - 1);
     }
 
     clear() {
@@ -98,10 +102,19 @@ class BoardRenderer {
         return [];
     }
 
-    drawStone(row, col, color, isLast = false) {
+    drawStone(row, col, color, isLast = false, inAtari = false) {
         const x = this.padding + col * this.cellSize;
         const y = this.padding + row * this.cellSize;
         const radius = this.cellSize * 0.45;
+
+        // Atari warning ring (drawn first, behind stone)
+        if (inAtari) {
+            this.ctx.strokeStyle = this.colors.atari;
+            this.ctx.lineWidth = 3;
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, radius + 3, 0, Math.PI * 2);
+            this.ctx.stroke();
+        }
 
         // Shadow
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
@@ -145,7 +158,7 @@ class BoardRenderer {
         this.ctx.fillRect(x - size/2, y - size/2, size, size);
     }
 
-    render(boardState, lastMove = null, territory = null) {
+    render(boardState, lastMove = null, territory = null, atari = null) {
         this.clear();
 
         // Territory shading first (under stones)
@@ -159,12 +172,13 @@ class BoardRenderer {
             }
         }
 
-        // Stones
+        // Stones (with atari highlighting)
         for (let r = 0; r < this.size; r++) {
             for (let c = 0; c < this.size; c++) {
                 if (boardState[r][c] !== 0) {
                     const isLast = lastMove && lastMove[0] === r && lastMove[1] === c;
-                    this.drawStone(r, c, boardState[r][c], isLast);
+                    const inAtari = atari && atari[r][c] !== 0;
+                    this.drawStone(r, c, boardState[r][c], isLast, inAtari);
                 }
             }
         }
@@ -184,19 +198,45 @@ function initBoard(size) {
                 boardRenderer.render(
                     window.currentBoardState,
                     window.currentLastMove,
-                    window.currentTerritory
+                    window.currentTerritory,
+                    window.currentAtari
                 );
             }
         }
     });
 }
 
-function updateBoard(boardState, lastMove, territory) {
+function updateBoard(boardState, lastMove, territory, atari) {
     window.currentBoardState = boardState;
     window.currentLastMove = lastMove;
     window.currentTerritory = territory;
+    window.currentAtari = atari;
     if (boardRenderer) {
-        boardRenderer.render(boardState, lastMove, territory);
+        boardRenderer.render(boardState, lastMove, territory, atari);
     }
 }
+
+function updateBoardTheme() {
+    if (boardRenderer) {
+        const isDark = document.documentElement.classList.contains('dark');
+        boardRenderer.colors.board = isDark ? '#3d3224' : '#DEB887';
+        boardRenderer.colors.lines = isDark ? '#6b6b6b' : '#4A4A4A';
+        // Re-render with current state
+        if (window.currentBoardState) {
+            boardRenderer.render(
+                window.currentBoardState,
+                window.currentLastMove,
+                window.currentTerritory,
+                window.currentAtari
+            );
+        } else {
+            boardRenderer.clear();
+        }
+    }
+}
+
+// Listen for theme toggle
+document.getElementById('theme-toggle')?.addEventListener('click', function() {
+    setTimeout(updateBoardTheme, 50);
+});
 </script>

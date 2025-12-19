@@ -48,14 +48,29 @@
         <span class="moon">☾</span>
     </button>
 
-    <div class="container">
+    <div class="container with-sidebar">
         <header>
             <a href="{{ '/' | relative_url }}" class="home-link">{{ site.title }}</a>
         </header>
 
-        <main>
-            {{ content }}
-        </main>
+        <div class="main-content">
+            <main>
+                {{ content }}
+            </main>
+
+            <!-- Sidebar navigation -->
+            <aside class="post-nav-sidebar">
+                <div class="sidebar-title">Journal</div>
+                <nav class="sidebar-posts">
+                    {% for post in site.posts %}
+                    <a href="{{ post.url | relative_url }}" class="sidebar-post {% if page.url == post.url %}active{% endif %}">
+                        <span class="sidebar-date">{{ post.date | date: "%m/%d" }}</span>
+                        <span class="sidebar-post-title">{{ post.title | truncate: 28 }}</span>
+                    </a>
+                    {% endfor %}
+                </nav>
+            </aside>
+        </div>
 
         <footer>
             <div class="quote">

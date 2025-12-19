@@ -185,7 +185,8 @@ def play_game(model, config: Config, game_idx: int = 0, verbose: bool = False,
 
 def generate_games(model, config: Config, num_games: int, verbose: bool = True,
                    use_hybrid: bool = False, tactical_weight: float = 0.3,
-                   save_sgf: str = None) -> List[Tuple[np.ndarray, np.ndarray, float]]:
+                   save_sgf: str = None,
+                   game_callback=None) -> List[Tuple[np.ndarray, np.ndarray, float]]:
     """Generate multiple self-play games.
 
     Args:
@@ -213,6 +214,8 @@ def generate_games(model, config: Config, num_games: int, verbose: bool = True,
         all_samples.extend(samples)
         records.append(record)
         print(f"Game {i+1}/{num_games}: {len(samples)} positions, {record.result_string}")
+        if game_callback:
+            game_callback(i)
 
         if save_sgf:
             sgf_path = os.path.join(save_sgf, f"game_{i+1:04d}.sgf")

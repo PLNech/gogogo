@@ -9,11 +9,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         paper: '#faf5eb',
+                        'paper-dark': '#1a1a1a',
                         ink: '#1a1a1a',
+                        'ink-dark': '#e5e5e5',
                         stone: {
                             black: '#1e1e1e',
                             white: '#f5f5dc',
@@ -27,6 +30,14 @@
             }
         }
     </script>
+    <script>
+        // Dark mode: check localStorage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -35,17 +46,34 @@
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 
     <style>
+        :root {
+            --bg-gradient-start: #faf5eb;
+            --bg-gradient-end: #f5f0e6;
+            --chart-bg: rgba(255, 255, 255, 0.5);
+            --chart-border: rgba(0, 0, 0, 0.1);
+            --noise-opacity: 0.03;
+        }
+
+        html.dark {
+            --bg-gradient-start: #1a1a1a;
+            --bg-gradient-end: #121212;
+            --chart-bg: rgba(50, 50, 50, 0.8);
+            --chart-border: rgba(255, 255, 255, 0.1);
+            --noise-opacity: 0.04;
+        }
+
         body {
-            background: linear-gradient(135deg, #faf5eb 0%, #f5f0e6 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             min-height: 100vh;
         }
         .paper-texture {
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
         }
         .chart-container {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: var(--chart-bg);
+            border: 1px solid var(--chart-border);
         }
+
         /* Smooth HTMX transitions */
         .htmx-swapping {
             opacity: 0;
@@ -59,16 +87,26 @@
 
     {% block head %}{% endblock %}
 </head>
-<body class="paper-texture font-serif text-ink antialiased">
+<body class="paper-texture font-serif text-ink dark:text-ink-dark antialiased bg-paper dark:bg-paper-dark">
     <!-- Header -->
-    <header class="border-b border-ink/10 bg-white/30 backdrop-blur-sm sticky top-0 z-50">
+    <header class="border-b border-ink/10 dark:border-ink-dark/10 bg-white/30 dark:bg-black/30 backdrop-blur-sm sticky top-0 z-50">
         <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
             <a href="/" class="text-xl font-semibold tracking-tight hover:opacity-70 transition">
                 碁 GoGoGo
             </a>
-            <div class="flex gap-6 text-sm">
+            <div class="flex items-center gap-6 text-sm">
+                <a href="/training" class="hover:underline underline-offset-4">Training</a>
                 <a href="/" class="hover:underline underline-offset-4">Games</a>
                 <a href="/compare" class="hover:underline underline-offset-4">Compare</a>
+                <!-- Dark mode toggle -->
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-ink/10 dark:hover:bg-ink-dark/10 transition" title="Toggle dark mode">
+                    <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg id="moon-icon" class="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
             </div>
         </nav>
     </header>
@@ -79,10 +117,47 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-ink/10 mt-16 py-8 text-center text-sm text-ink/50">
+    <footer class="border-t border-ink/10 dark:border-ink-dark/10 mt-16 py-8 text-center text-sm text-ink/50 dark:text-ink-dark/50">
         <p>Training insights for <a href="https://github.com/your/gogogo" class="underline">GoGoGo</a></p>
         <p class="mt-1 font-mono text-xs">観察は智慧の始まり — Observation is the beginning of wisdom</p>
     </footer>
+
+    <!-- Dark mode toggle script -->
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+            // Update Plotly charts if they exist
+            updateChartsTheme();
+        });
+
+        function updateChartsTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const chartDivs = document.querySelectorAll('[id^="chart-"]');
+            const layout = {
+                paper_bgcolor: isDark ? 'rgba(40,40,40,0)' : 'rgba(255,255,255,0)',
+                plot_bgcolor: isDark ? 'rgba(40,40,40,0)' : 'rgba(255,255,255,0)',
+                font: { color: isDark ? '#e5e5e5' : '#1a1a1a' },
+                xaxis: { gridcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' },
+                yaxis: { gridcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }
+            };
+            chartDivs.forEach(div => {
+                if (div.data) {
+                    Plotly.relayout(div, layout);
+                }
+            });
+        }
+
+        // Apply theme to charts on load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(updateChartsTheme, 100);
+        });
+    </script>
 
     {% block scripts %}{% endblock %}
 </body>

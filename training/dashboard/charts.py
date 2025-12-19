@@ -62,7 +62,7 @@ def victory_probability_chart(record: GameRecord) -> Dict[str, Any]:
             "showlegend": False,
             "margin": {"l": 40, "r": 20, "t": 40, "b": 40},
             "paper_bgcolor": "rgba(0,0,0,0)",
-            "plot_bgcolor": "rgba(250, 245, 235, 0.5)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
             "hovermode": "x unified"
         }
     }
@@ -98,10 +98,10 @@ def groups_chart(record: GameRecord) -> Dict[str, Any]:
             "xaxis": {"title": "Move", "showgrid": False},
             "yaxis": {"title": "Groups", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)"},
             "showlegend": True,
-            "legend": {"x": 0.02, "y": 0.98, "bgcolor": "rgba(255,255,255,0.8)"},
+            "legend": {"x": 0.02, "y": 0.98, "bgcolor": "rgba(128,128,128,0.3)"},
             "margin": {"l": 40, "r": 20, "t": 40, "b": 40},
             "paper_bgcolor": "rgba(0,0,0,0)",
-            "plot_bgcolor": "rgba(250, 245, 235, 0.5)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
             "hovermode": "x unified"
         }
     }
@@ -142,7 +142,7 @@ def territory_chart(record: GameRecord) -> Dict[str, Any]:
             "showlegend": False,
             "margin": {"l": 50, "r": 20, "t": 40, "b": 40},
             "paper_bgcolor": "rgba(0,0,0,0)",
-            "plot_bgcolor": "rgba(250, 245, 235, 0.5)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
             "hovermode": "x unified"
         }
     }
@@ -191,10 +191,10 @@ def captures_chart(record: GameRecord) -> Dict[str, Any]:
             "xaxis": {"title": "Move", "showgrid": False},
             "yaxis": {"title": "Stones captured", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)"},
             "showlegend": True,
-            "legend": {"x": 0.02, "y": 0.98, "bgcolor": "rgba(255,255,255,0.8)"},
+            "legend": {"x": 0.02, "y": 0.98, "bgcolor": "rgba(128,128,128,0.3)"},
             "margin": {"l": 40, "r": 20, "t": 40, "b": 40},
             "paper_bgcolor": "rgba(0,0,0,0)",
-            "plot_bgcolor": "rgba(250, 245, 235, 0.5)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
             "annotations": annotations[:10],  # Limit annotations
             "hovermode": "x unified"
         }
@@ -249,10 +249,10 @@ def liberties_chart(record: GameRecord) -> Dict[str, Any]:
             "xaxis": {"title": "Move", "showgrid": False},
             "yaxis": {"title": "Liberties", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)"},
             "showlegend": True,
-            "legend": {"x": 0.02, "y": 0.98, "bgcolor": "rgba(255,255,255,0.8)"},
+            "legend": {"x": 0.02, "y": 0.98, "bgcolor": "rgba(128,128,128,0.3)"},
             "margin": {"l": 40, "r": 20, "t": 40, "b": 40},
             "paper_bgcolor": "rgba(0,0,0,0)",
-            "plot_bgcolor": "rgba(250, 245, 235, 0.5)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
             "hovermode": "x unified"
         }
     }
@@ -283,7 +283,7 @@ def policy_entropy_chart(record: GameRecord) -> Dict[str, Any]:
             "showlegend": False,
             "margin": {"l": 40, "r": 20, "t": 40, "b": 40},
             "paper_bgcolor": "rgba(0,0,0,0)",
-            "plot_bgcolor": "rgba(250, 245, 235, 0.5)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
             "hovermode": "x unified"
         }
     }
@@ -342,10 +342,10 @@ def overlay_victory_charts(records: List[GameRecord], labels: List[str] = None) 
             "xaxis": {"title": "Move", "showgrid": False},
             "yaxis": {"title": "P(Black wins)", "range": [0, 1], "tickformat": ".0%"},
             "showlegend": True,
-            "legend": {"x": 0.02, "y": 0.98},
+            "legend": {"x": 0.02, "y": 0.98, "bgcolor": "rgba(128,128,128,0.3)"},
             "margin": {"l": 50, "r": 20, "t": 40, "b": 40},
             "paper_bgcolor": "rgba(0,0,0,0)",
-            "plot_bgcolor": "rgba(250, 245, 235, 0.5)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
             "hovermode": "x unified"
         }
     }

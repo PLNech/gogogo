@@ -541,11 +541,57 @@ Overall: 17.6% Top-1 accuracy
   Snapback: 50.0% (4 positions) — OK
 ```
 
-**Next Steps (Priority Order):**
-1. Write pytest tests for A.4, A.5 → verify implementations work
-2. Wire A.6 soft policy loss into self-play training
-3. Train with all KataGo improvements
-4. Re-benchmark → expect improvement on captures
+**Next Steps - REVISED (2025-12-19 Late Session):**
+
+### The Problem
+Model is STUPID at captures (0% accuracy). This is unacceptable - captures are DETERMINISTIC.
+Throwing more compute at broken training won't help. Fix foundations first.
+
+### New Strategy: Foundation → Signal → Scale
+
+**Phase 1: Symbolic Tactics (The 8 Instincts)** 🎯 HIGHEST PRIORITY
+Why: Captures shouldn't be "learned" - they should be KNOWN.
+- [ ] TODO - Strengthen TacticalAnalyzer with 8 fundamental instincts:
+  1. **Capture**: If enemy group has 1 liberty, play there
+  2. **Escape**: If own group has 1 liberty, add liberty or capture attacker
+  3. **Extend**: Connect weak groups to strong ones
+  4. **Cut**: Separate enemy groups
+  5. **Block**: Prevent enemy extension
+  6. **Surround**: Reduce enemy liberties
+  7. **Defend**: Protect cutting points
+  8. **Invade**: Enter enemy territory
+- [ ] TODO - Hard-code capture moves into policy prior (100% boost for atari captures)
+- [ ] TODO - Validate with benchmark: Capture accuracy must be >80% symbolically
+
+**Phase 2: Dense Training Signal** 🔥 HIGH PRIORITY
+Why: Win/loss is 1 bit per game. Ownership is 81 floats per position.
+- [ ] TODO - Wire ownership prediction loss (Board.ownership_map() exists)
+- [ ] TODO - Wire soft policy loss (A.6 - head exists, loss not wired)
+- [ ] TODO - Wire score prediction loss (head exists)
+- [ ] TODO - Add symmetry augmentation (8× free data from rotations/reflections)
+
+**Phase 3: Curriculum Learning** 📈 HIGH PRIORITY
+Why: 5×5 games are 10× faster. Learn fundamentals, transfer up.
+- [ ] TODO - Start curriculum at 5×5 board (capture-focused)
+- [ ] TODO - Progress: 5×5 → 7×7 → 9×9 based on benchmark accuracy
+- [ ] TODO - Transfer learning: load smaller model weights into larger
+
+**Phase 4: Training Efficiency** ⚡ MEDIUM PRIORITY (after above work)
+Why: Only optimize what works.
+- [ ] TODO - Parallel self-play (multiprocessing)
+- [ ] TODO - Increase MCTS batch size (8 → 32)
+- [ ] TODO - Target: >50% GPU utilization (currently 6%)
+
+### Success Criteria
+Before Phase 4, we MUST achieve:
+- [ ] Capture benchmark: >80% (currently 0%)
+- [ ] Ladder benchmark: >60% (currently 20%)
+- [ ] Overall benchmark: >50% (currently 17.6%)
+
+### Key Insight
+**Neurosymbolic > Pure Neural for tactics.**
+The network learns PATTERNS. Tactics are CALCULATIONS.
+Hybrid approach: Neural for strategy, Symbolic for tactics.
 
 **Blog Posts:**
 - 2025-12-19: "From Python to Browser" (Integration)

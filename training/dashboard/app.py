@@ -9,7 +9,7 @@ from typing import List, Optional
 import sys
 
 from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -18,6 +18,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from game_record import GameRecord
 from dashboard.charts import generate_all_charts, overlay_victory_charts
+from training_state import read_state, TrainingState
+from board import Board
 
 app = FastAPI(title="GoGoGo Game Dashboard", description="Contemplate the games")
 
@@ -57,26 +59,104 @@ def load_game(game_id: str) -> Optional[GameRecord]:
 
 
 @app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    """Dashboard home - list of games."""
+async def index(request: Request, bypass: str = None, winner: str = None, min_moves: int = None, max_moves: int = None):
+    """Dashboard home - redirect to training if active, else list games."""
+    # Check if training is active (unless bypass)
+    if not bypass:
+        state = read_state()
+        if state and state.active:
+            return RedirectResponse(url="/training", status_code=302)
+
     games = get_available_games()
     game_summaries = []
 
-    for game_id in games[:20]:  # Limit to recent 20
+    for game_id in games[:50]:  # Show more games
         record = load_game(game_id)
         if record:
+            # Apply filters
+            if winner:
+                if winner == "black" and record.winner != 1:
+                    continue
+                elif winner == "white" and record.winner != -1:
+                    continue
+            if min_moves and record.total_moves < min_moves:
+                continue
+            if max_moves and record.total_moves > max_moves:
+                continue
+
+            # Get final stats
+            final_stats = record.move_stats[-1] if record.move_stats else None
+
             game_summaries.append({
                 "id": game_id,
                 "result": record.result_string,
+                "winner": record.winner,
+                "score": record.final_score,
                 "moves": record.total_moves,
                 "board_size": record.board_size,
+                "black_captures": final_stats.total_black_captures if final_stats else 0,
+                "white_captures": final_stats.total_white_captures if final_stats else 0,
+                "black_territory": final_stats.black_territory if final_stats else 0,
+                "white_territory": final_stats.white_territory if final_stats else 0,
+                "final_black_groups": final_stats.black_groups if final_stats else 0,
+                "final_white_groups": final_stats.white_groups if final_stats else 0,
+                "avg_entropy": sum(s.policy_entropy for s in record.move_stats) / len(record.move_stats) if record.move_stats else 0,
             })
+
+    # Stats
+    total_black_wins = sum(1 for g in game_summaries if g["winner"] == 1)
+    total_white_wins = sum(1 for g in game_summaries if g["winner"] == -1)
+    avg_moves = sum(g["moves"] for g in game_summaries) / len(game_summaries) if game_summaries else 0
 
     return templates.TemplateResponse("index.html", {
         "request": request,
         "games": game_summaries,
         "total_games": len(games),
+        "filtered_count": len(game_summaries),
+        "black_wins": total_black_wins,
+        "white_wins": total_white_wins,
+        "avg_moves": avg_moves,
+        "filters": {"winner": winner, "min_moves": min_moves, "max_moves": max_moves},
     })
+
+
+@app.get("/training", response_class=HTMLResponse)
+async def training_status(request: Request):
+    """Live training status page."""
+    state = read_state()
+    games = get_available_games()[:5]  # Recent games
+
+    return templates.TemplateResponse("training.html", {
+        "request": request,
+        "state": state,
+        "recent_games": games,
+    })
+
+
+@app.get("/training/status", response_class=JSONResponse)
+async def training_status_api():
+    """API endpoint for training state (for HTMX polling)."""
+    state = read_state()
+    if not state:
+        return {"active": False, "phase": "idle"}
+
+    return {
+        "active": state.active,
+        "phase": state.phase,
+        "iteration": state.iteration,
+        "total_iterations": state.total_iterations,
+        "current_game": state.current_game,
+        "games_target": state.games_target,
+        "train_step": state.train_step,
+        "train_steps_target": state.train_steps_target,
+        "last_loss": round(state.last_loss, 4),
+        "last_policy_loss": round(state.last_policy_loss, 4),
+        "last_value_loss": round(state.last_value_loss, 4),
+        "buffer_size": state.buffer_size,
+        "eval_win_rate": round(state.eval_win_rate, 2),
+        "games_generated": state.games_generated,
+        "last_update": state.last_update,
+    }
 
 
 @app.get("/game/{game_id}", response_class=HTMLResponse)
@@ -132,17 +212,23 @@ async def get_board_at_move(game_id: str, move_num: int):
     if move_num < 0 or move_num >= len(record.move_stats):
         raise HTTPException(status_code=400, detail="Invalid move number")
 
-    # Reconstruct board state by replaying moves
+    # Use actual Board class to properly handle captures
     size = record.board_size
-    board = [[0] * size for _ in range(size)]
+    go_board = Board(size)
 
     for i in range(move_num + 1):
         stats = record.move_stats[i]
         move = stats.move
-        if move != (-1, -1):  # Not a pass
+        if move == (-1, -1):  # Pass
+            go_board.pass_move()
+        else:
             r, c = move
             if 0 <= r < size and 0 <= c < size:
-                board[r][c] = stats.player
+                # Board handles captures internally
+                go_board.play(r, c)
+
+    # Convert numpy board to list
+    board = go_board.board.tolist()
 
     # Get last move for highlighting
     last_move = record.move_stats[move_num].move
@@ -150,7 +236,6 @@ async def get_board_at_move(game_id: str, move_num: int):
         last_move = None
 
     # Simple territory estimate (empty points surrounded by one color)
-    # This is a rough heuristic, not accurate scoring
     territory = [[0] * size for _ in range(size)]
     for r in range(size):
         for c in range(size):
@@ -164,10 +249,19 @@ async def get_board_at_move(game_id: str, move_num: int):
                 if neighbors and all(n == neighbors[0] for n in neighbors):
                     territory[r][c] = neighbors[0]
 
+    # Get atari points from Board's group_stats (single pass)
+    atari_dict = go_board.atari_points
+    atari = [[0] * size for _ in range(size)]
+    for r, c in atari_dict[1]:  # Black in atari
+        atari[r][c] = 1
+    for r, c in atari_dict[-1]:  # White in atari
+        atari[r][c] = -1
+
     return {
         "board": board,
         "last_move": last_move,
         "territory": territory,
+        "atari": atari,
         "move_num": move_num,
     }
 

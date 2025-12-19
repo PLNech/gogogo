@@ -49,3 +49,16 @@ class Config:
 
 DEFAULT = Config()
 QUICK = Config(num_blocks=4, num_filters=64, mcts_simulations=50, games_per_iter=20, train_steps_per_iter=100)
+
+# GPU-saturating config for RTX 4080 12GB
+# Key insight: parallel games + bigger batches = better GPU utilization
+FAST = Config(
+    num_blocks=6,
+    num_filters=128,
+    mcts_simulations=200,       # More sims = better moves + more GPU work
+    games_per_iter=50,          # Fewer games but parallel
+    train_steps_per_iter=500,
+    batch_size=512,             # Bigger training batches
+    replay_buffer_size=50_000,  # Smaller buffer, fresher data
+    min_replay_size=2000,
+)

@@ -3,68 +3,302 @@
 {% block title %}Games{% endblock %}
 
 {% block content %}
-<div class="space-y-8">
+<div class="space-y-6">
     <!-- Header -->
-    <div class="text-center space-y-2">
-        <h1 class="text-3xl font-semibold">Self-Play Games</h1>
-        <p class="text-ink/60">{{ total_games }} games recorded</p>
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-semibold">Self-Play Games</h1>
+            <p class="text-ink/60 dark:text-ink-dark/60 mt-1">{{ total_games }} total games</p>
+        </div>
+        <a href="/training" class="text-sm text-ink/60 dark:text-ink-dark/60 hover:underline">Training Status &rarr;</a>
     </div>
 
-    <!-- Games grid -->
+    <!-- Stats Bar -->
+    <div class="grid grid-cols-4 gap-4">
+        <div class="chart-container rounded-lg p-4 text-center">
+            <div class="text-2xl font-mono">{{ filtered_count }}</div>
+            <div class="text-xs text-ink/50 dark:text-ink-dark/50">Showing</div>
+        </div>
+        <div class="chart-container rounded-lg p-4 text-center">
+            <div class="text-2xl font-mono">{{ black_wins }}<span class="text-ink/30 dark:text-ink-dark/30">/</span>{{ white_wins }}</div>
+            <div class="text-xs text-ink/50 dark:text-ink-dark/50">B / W Wins</div>
+        </div>
+        <div class="chart-container rounded-lg p-4 text-center">
+            <div class="text-2xl font-mono">{{ avg_moves|round|int }}</div>
+            <div class="text-xs text-ink/50 dark:text-ink-dark/50">Avg Moves</div>
+        </div>
+        <div class="chart-container rounded-lg p-4 text-center">
+            <div class="text-2xl font-mono">{{ ((black_wins / filtered_count) * 100)|round|int if filtered_count else 0 }}%</div>
+            <div class="text-xs text-ink/50 dark:text-ink-dark/50">Black Win Rate</div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="chart-container rounded-lg p-4">
+        <form method="get" class="flex flex-wrap items-center gap-4">
+            <div class="flex items-center gap-2">
+                <label class="text-sm text-ink/70 dark:text-ink-dark/70">Winner:</label>
+                <select name="winner" class="px-2 py-1 text-sm border border-ink/20 dark:border-ink-dark/20 rounded bg-transparent">
+                    <option value="">All</option>
+                    <option value="black" {% if filters.winner == 'black' %}selected{% endif %}>Black</option>
+                    <option value="white" {% if filters.winner == 'white' %}selected{% endif %}>White</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <label class="text-sm text-ink/70 dark:text-ink-dark/70">Moves:</label>
+                <input type="number" name="min_moves" value="{{ filters.min_moves or '' }}" placeholder="min"
+                       class="w-16 px-2 py-1 text-sm border border-ink/20 dark:border-ink-dark/20 rounded bg-transparent">
+                <span class="text-ink/30">-</span>
+                <input type="number" name="max_moves" value="{{ filters.max_moves or '' }}" placeholder="max"
+                       class="w-16 px-2 py-1 text-sm border border-ink/20 dark:border-ink-dark/20 rounded bg-transparent">
+            </div>
+            <button type="submit" class="px-3 py-1 text-sm bg-ink dark:bg-ink-dark text-white dark:text-ink rounded hover:opacity-80">
+                Filter
+            </button>
+            {% if filters.winner or filters.min_moves or filters.max_moves %}
+            <a href="/" class="text-sm text-ink/50 dark:text-ink-dark/50 hover:underline">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Games Table -->
     {% if games %}
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {% for game in games %}
-        <a href="/game/{{ game.id }}"
-           class="block p-4 bg-white/50 rounded-lg border border-ink/10 hover:border-ink/30 hover:bg-white/70 transition group">
-            <div class="flex items-center justify-between">
-                <span class="font-mono text-sm text-ink/50">{{ game.id[:12] }}...</span>
-                <span class="text-xs px-2 py-0.5 rounded-full
-                    {% if 'B+' in game.result %}bg-stone-black text-white{% else %}bg-stone-white text-ink border{% endif %}">
-                    {{ game.result }}
-                </span>
-            </div>
-            <div class="mt-2 flex items-baseline gap-2">
-                <span class="text-2xl font-semibold">{{ game.moves }}</span>
-                <span class="text-ink/50 text-sm">moves</span>
-            </div>
-            <div class="mt-1 text-xs text-ink/40">
-                {{ game.board_size }}×{{ game.board_size }} board
-            </div>
-        </a>
-        {% endfor %}
+    <div class="chart-container rounded-lg overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-ink/5 dark:bg-ink-dark/10">
+                <tr>
+                    <th class="px-4 py-3 text-left font-medium text-ink/70 dark:text-ink-dark/70">Game</th>
+                    <th class="px-4 py-3 text-center font-medium text-ink/70 dark:text-ink-dark/70 cursor-pointer hover:text-ink dark:hover:text-ink-dark select-none"
+                        data-sort="winner" onclick="sortTable('winner')">Result</th>
+                    <th class="px-4 py-3 text-center font-medium text-ink/70 dark:text-ink-dark/70 cursor-pointer hover:text-ink dark:hover:text-ink-dark select-none"
+                        data-sort="moves" onclick="sortTable('moves')">Moves</th>
+                    <th class="px-4 py-3 text-center font-medium text-ink/70 dark:text-ink-dark/70 cursor-pointer hover:text-ink dark:hover:text-ink-dark select-none"
+                        data-sort="captures" onclick="sortTable('captures')">Captures</th>
+                    <th class="px-4 py-3 text-center font-medium text-ink/70 dark:text-ink-dark/70 cursor-pointer hover:text-ink dark:hover:text-ink-dark select-none"
+                        data-sort="groups" onclick="sortTable('groups')">Groups</th>
+                    <th class="px-4 py-3 text-center font-medium text-ink/70 dark:text-ink-dark/70 cursor-pointer hover:text-ink dark:hover:text-ink-dark select-none"
+                        data-sort="entropy" onclick="sortTable('entropy')">Entropy</th>
+                    <th class="px-4 py-3 text-center font-medium text-ink/70 dark:text-ink-dark/70">Board</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-ink/10 dark:divide-ink-dark/10">
+                {% for game in games %}
+                <tr class="hover:bg-ink/5 dark:hover:bg-ink-dark/5 transition cursor-pointer"
+                    onclick="window.location='/game/{{ game.id }}'"
+                    data-winner="{{ game.winner }}"
+                    data-moves="{{ game.moves }}"
+                    data-captures="{{ game.black_captures + game.white_captures }}"
+                    data-groups="{{ game.final_black_groups + game.final_white_groups }}"
+                    data-entropy="{{ '%.4f'|format(game.avg_entropy) }}">
+                    <td class="px-4 py-3">
+                        <span class="font-mono text-xs text-ink/50 dark:text-ink-dark/50">{{ game.id[:16] }}...</span>
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                        <span class="px-2 py-0.5 rounded text-xs font-medium
+                            {% if game.winner == 1 %}bg-stone-black text-white{% else %}bg-stone-white text-ink border border-ink/20{% endif %}">
+                            {{ game.result }}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-center font-mono">{{ game.moves }}</td>
+                    <td class="px-4 py-3 text-center">
+                        <span class="text-stone-black dark:text-stone-white">{{ game.black_captures }}</span>
+                        <span class="text-ink/30 dark:text-ink-dark/30">/</span>
+                        <span class="text-ink/70 dark:text-ink-dark/70">{{ game.white_captures }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                        <span class="text-stone-black dark:text-stone-white">{{ game.final_black_groups }}</span>
+                        <span class="text-ink/30 dark:text-ink-dark/30">/</span>
+                        <span class="text-ink/70 dark:text-ink-dark/70">{{ game.final_white_groups }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-center font-mono text-xs">{{ "%.2f"|format(game.avg_entropy) }}</td>
+                    <td class="px-4 py-3" onclick="event.stopPropagation()">
+                        <canvas id="mini-{{ game.id[:8] }}" width="48" height="48" class="mx-auto rounded"
+                                data-game-id="{{ game.id }}"
+                                data-board-size="{{ game.board_size }}"
+                                data-moves="{{ game.moves }}"
+                                onmouseenter="hoverTimeout = setTimeout(() => showBoardPreview(this, '{{ game.id }}', {{ game.board_size }}), 300)"
+                                onmouseleave="hideBoardPreview()"></canvas>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     {% else %}
-    <div class="text-center py-16 text-ink/50">
-        <p class="text-lg">No games recorded yet.</p>
-        <p class="mt-2 text-sm">Run self-play training to generate games.</p>
-    </div>
-    {% endif %}
-
-    <!-- Quick stats -->
-    {% if games %}
-    <div class="mt-12 p-6 bg-white/30 rounded-lg border border-ink/10">
-        <h2 class="text-lg font-semibold mb-4">Quick Stats</h2>
-        <div class="grid grid-cols-3 gap-4 text-center">
-            <div>
-                <div class="text-2xl font-mono">{{ games|length }}</div>
-                <div class="text-xs text-ink/50 uppercase tracking-wide">Recent</div>
-            </div>
-            <div>
-                <div class="text-2xl font-mono">
-                    {{ (games|map(attribute='moves')|sum / games|length)|round|int if games else 0 }}
-                </div>
-                <div class="text-xs text-ink/50 uppercase tracking-wide">Avg Moves</div>
-            </div>
-            <div>
-                <div class="text-2xl font-mono">
-                    {% set black_wins = namespace(count=0) %}
-                    {% for g in games %}{% if 'B+' in g.result %}{% set black_wins.count = black_wins.count + 1 %}{% endif %}{% endfor %}
-                    {{ (black_wins.count / games|length * 100)|round|int if games else 0 }}%
-                </div>
-                <div class="text-xs text-ink/50 uppercase tracking-wide">Black wins</div>
-            </div>
-        </div>
+    <div class="text-center py-16 text-ink/50 dark:text-ink-dark/50">
+        <p class="text-lg">No games found.</p>
+        <p class="mt-2 text-sm">Adjust filters or run self-play training.</p>
     </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Sortable table
+const sortState = {};
+
+function sortTable(column) {
+    const table = document.querySelector('table tbody');
+    const rows = Array.from(table.querySelectorAll('tr'));
+
+    // Toggle sort state: none -> desc -> asc -> none
+    if (!sortState[column]) sortState[column] = 'desc';
+    else if (sortState[column] === 'desc') sortState[column] = 'asc';
+    else { sortState[column] = null; return location.reload(); }  // Reset to original
+
+    // Clear other column states
+    Object.keys(sortState).forEach(k => { if (k !== column) sortState[k] = null; });
+
+    // Update header indicators
+    document.querySelectorAll('th[data-sort]').forEach(th => {
+        th.querySelector('.sort-indicator')?.remove();
+        if (th.dataset.sort === column && sortState[column]) {
+            const indicator = document.createElement('span');
+            indicator.className = 'sort-indicator ml-1';
+            indicator.textContent = sortState[column] === 'desc' ? '▼' : '▲';
+            th.appendChild(indicator);
+        }
+    });
+
+    // Sort rows
+    rows.sort((a, b) => {
+        const aVal = a.dataset[column] || '';
+        const bVal = b.dataset[column] || '';
+        const aNum = parseFloat(aVal);
+        const bNum = parseFloat(bVal);
+
+        let cmp = 0;
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+            cmp = aNum - bNum;
+        } else {
+            cmp = aVal.localeCompare(bVal);
+        }
+        return sortState[column] === 'desc' ? -cmp : cmp;
+    });
+
+    rows.forEach(row => table.appendChild(row));
+}
+
+// Hover preview
+let hoverTimeout = null;
+let hoverPreview = null;
+
+function showBoardPreview(canvas, gameId, boardSize) {
+    if (hoverPreview) hoverPreview.remove();
+
+    hoverPreview = document.createElement('div');
+    hoverPreview.className = 'fixed z-50 pointer-events-none';
+    hoverPreview.innerHTML = `<canvas width="240" height="240" class="rounded shadow-lg"></canvas>`;
+
+    // Position: right side, vertically centered on canvas
+    const rect = canvas.getBoundingClientRect();
+    const top = Math.max(10, Math.min(window.innerHeight - 260, rect.top - 96));
+    hoverPreview.style.cssText = `right: 20px; top: ${top}px;`;
+
+    document.body.appendChild(hoverPreview);
+
+    // Render larger board
+    const previewCanvas = hoverPreview.querySelector('canvas');
+    const renderer = new MiniBoardRenderer(previewCanvas, boardSize, 240);
+
+    fetch(`/game/${gameId}/board/${canvas.dataset.moves - 1}`)
+        .then(r => r.json())
+        .then(data => renderer.render(data.board))
+        .catch(() => {});
+}
+
+function hideBoardPreview() {
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+    if (hoverPreview) { hoverPreview.remove(); hoverPreview = null; }
+}
+
+// Mini board renderer
+class MiniBoardRenderer {
+    constructor(canvas, size = 13, canvasSize = 48) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.size = size;
+        this.canvasSize = canvasSize;
+        this.cellSize = canvasSize / size;
+    }
+
+    render(board) {
+        const isDark = document.documentElement.classList.contains('dark');
+        const w = this.canvasSize, h = this.canvasSize;
+
+        // Background
+        this.ctx.fillStyle = isDark ? '#3d3224' : '#DEB887';
+        this.ctx.fillRect(0, 0, w, h);
+
+        // Grid (simplified)
+        this.ctx.strokeStyle = isDark ? '#5a5a5a' : '#4A4A4A';
+        this.ctx.lineWidth = this.canvasSize > 100 ? 1 : 0.5;
+        for (let i = 0; i < this.size; i++) {
+            const pos = i * this.cellSize + this.cellSize / 2;
+            this.ctx.beginPath();
+            this.ctx.moveTo(pos, this.cellSize / 2);
+            this.ctx.lineTo(pos, h - this.cellSize / 2);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.cellSize / 2, pos);
+            this.ctx.lineTo(w - this.cellSize / 2, pos);
+            this.ctx.stroke();
+        }
+
+        // Stones
+        const radius = this.cellSize * 0.4;
+        for (let r = 0; r < this.size; r++) {
+            for (let c = 0; c < this.size; c++) {
+                if (board[r] && board[r][c] !== 0) {
+                    const x = c * this.cellSize + this.cellSize / 2;
+                    const y = r * this.cellSize + this.cellSize / 2;
+
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    this.ctx.fillStyle = board[r][c] === 1 ? '#1a1a1a' : '#F5F5DC';
+                    this.ctx.fill();
+                    if (board[r][c] === -1) {
+                        this.ctx.strokeStyle = '#888';
+                        this.ctx.lineWidth = this.canvasSize > 100 ? 1 : 0.5;
+                        this.ctx.stroke();
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Load mini boards
+async function loadMiniBoards() {
+    const canvases = document.querySelectorAll('canvas[data-game-id]');
+    for (const canvas of canvases) {
+        const gameId = canvas.dataset.gameId;
+        try {
+            // Get final board state
+            const response = await fetch(`/api/game/${gameId}`);
+            const data = await response.json();
+            const totalMoves = data.total_moves;
+
+            if (totalMoves > 0) {
+                const boardResponse = await fetch(`/game/${gameId}/board/${totalMoves - 1}`);
+                const boardData = await boardResponse.json();
+
+                const renderer = new MiniBoardRenderer(canvas, data.board_size);
+                renderer.render(boardData.board);
+            }
+        } catch (e) {
+            console.error(`Failed to load mini board for ${gameId}:`, e);
+        }
+    }
+}
+
+// Load on page ready
+document.addEventListener('DOMContentLoaded', loadMiniBoards);
+
+// Update mini boards on theme change
+document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    setTimeout(loadMiniBoards, 100);
+});
+</script>
 {% endblock %}

@@ -1,0 +1,9002 @@
+[
+  {
+    "name": "escape_extend_0",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_0_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_4",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_4_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_5",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_5_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_6",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_6_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_7",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_7_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_8",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_8_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_9",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_9_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_10",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_10_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_11",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_11_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_12",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_12_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_13",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_13_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_14",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_14_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_18",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  },
+  {
+    "name": "escape_extend_18_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  },
+  {
+    "name": "escape_group_19",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "center"
+  },
+  {
+    "name": "escape_group_19_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "center"
+  },
+  {
+    "name": "escape_connect_20",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "center"
+  },
+  {
+    "name": "escape_connect_20_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "center"
+  },
+  {
+    "name": "escape_extend_0",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_0_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        0,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        0,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_4",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        0
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        4,
+        1
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_4_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        0
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        4,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_5",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        0
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        6,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_5_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        0
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        6,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_6",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        0
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        6,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_6_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        0
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        6,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_7",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        4
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_7_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        4
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_8",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_8_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_9",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_9_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_10",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_10_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_11",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_11_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        1
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_12",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_12_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_13",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_13_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_14",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_14_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        2
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        2
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        2
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        2
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        2
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        2
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_18",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  },
+  {
+    "name": "escape_extend_18_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  },
+  {
+    "name": "escape_group_19",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "center"
+  },
+  {
+    "name": "escape_group_19_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "center"
+  },
+  {
+    "name": "escape_connect_20",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "center"
+  },
+  {
+    "name": "escape_connect_20_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "center"
+  },
+  {
+    "name": "escape_extend_0",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_0_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        1,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        1,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_4",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_4_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        7
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_5",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_5_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_6",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        1
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        5,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_6_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        1
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        5,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_7",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        1
+      ],
+      [
+        7,
+        1
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_7_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        1
+      ],
+      [
+        7,
+        1
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_8",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        1
+      ],
+      [
+        7,
+        2
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_8_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        1
+      ],
+      [
+        7,
+        2
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_9",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_9_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_10",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        7,
+        5
+      ],
+      [
+        7,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_10_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        7,
+        5
+      ],
+      [
+        7,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        7
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_11",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        7,
+        6
+      ],
+      [
+        7,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_11_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        7,
+        6
+      ],
+      [
+        7,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_12",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_12_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_13",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_13_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_14",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_14_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        1
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        1
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        1
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        1
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_18",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_18_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_19",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        5,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_19_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        5,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_20",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        5,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_20_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        5,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_21",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        5,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_21_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        5,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_22",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        7,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_22_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        7,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_23",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        7,
+        4
+      ],
+      [
+        7,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_23_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        7,
+        4
+      ],
+      [
+        7,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_24",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  },
+  {
+    "name": "escape_extend_24_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  },
+  {
+    "name": "escape_extend_0",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_0_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        3,
+        10
+      ],
+      [
+        2,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        3,
+        10
+      ],
+      [
+        2,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_4",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        4,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_4_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        4,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        10
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_5",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        4,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_5_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        4,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_6",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        9,
+        4
+      ],
+      [
+        8,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_6_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        9,
+        4
+      ],
+      [
+        8,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_7",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        10,
+        2
+      ],
+      [
+        10,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_7_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        10,
+        2
+      ],
+      [
+        10,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_8",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        10,
+        3
+      ],
+      [
+        10,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_8_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        10,
+        3
+      ],
+      [
+        10,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_9",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        8,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_9_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        8,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_10",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        10,
+        8
+      ],
+      [
+        10,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_10_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        10,
+        8
+      ],
+      [
+        10,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        10
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_11",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        10,
+        9
+      ],
+      [
+        10,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_11_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        10,
+        9
+      ],
+      [
+        10,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_12",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_12_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_13",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_13_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        7
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_14",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_14_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        7,
+        2
+      ],
+      [
+        7,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        7,
+        2
+      ],
+      [
+        7,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        7,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        7,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_18",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        8
+      ],
+      [
+        6,
+        10
+      ],
+      [
+        5,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_18_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        8
+      ],
+      [
+        6,
+        10
+      ],
+      [
+        5,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_19",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        8
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        7,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_19_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        8
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        7,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        10
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_20",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        8
+      ],
+      [
+        7,
+        9
+      ],
+      [
+        7,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_20_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        8
+      ],
+      [
+        7,
+        9
+      ],
+      [
+        7,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_21",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        9,
+        7
+      ],
+      [
+        8,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_21_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        9,
+        7
+      ],
+      [
+        8,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_22",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        10,
+        5
+      ],
+      [
+        10,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_22_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        10,
+        5
+      ],
+      [
+        10,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        7
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        8
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_23",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        10,
+        6
+      ],
+      [
+        10,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_23_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        5
+      ],
+      [
+        10,
+        6
+      ],
+      [
+        10,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_24",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  },
+  {
+    "name": "escape_extend_24_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        6
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  },
+  {
+    "name": "escape_extend_0",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_0_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_1_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_2_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        14
+      ],
+      [
+        3,
+        16
+      ],
+      [
+        2,
+        15
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        15
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_3_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        14
+      ],
+      [
+        3,
+        16
+      ],
+      [
+        2,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        15
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        15
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_4",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        14
+      ],
+      [
+        4,
+        14
+      ],
+      [
+        4,
+        16
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_4_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        14
+      ],
+      [
+        4,
+        14
+      ],
+      [
+        4,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        16
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_5",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        17
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        14
+      ],
+      [
+        4,
+        15
+      ],
+      [
+        4,
+        16
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_5_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        14
+      ],
+      [
+        4,
+        15
+      ],
+      [
+        4,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_6",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        2
+      ],
+      [
+        15,
+        4
+      ],
+      [
+        14,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        16,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_6_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        2
+      ],
+      [
+        15,
+        4
+      ],
+      [
+        14,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        16,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_7",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        2
+      ],
+      [
+        16,
+        2
+      ],
+      [
+        16,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_7_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        2
+      ],
+      [
+        16,
+        2
+      ],
+      [
+        16,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_8",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        2
+      ],
+      [
+        16,
+        3
+      ],
+      [
+        16,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_8_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        2
+      ],
+      [
+        16,
+        3
+      ],
+      [
+        16,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_9",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        14
+      ],
+      [
+        15,
+        16
+      ],
+      [
+        14,
+        15
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        16,
+        15
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_9_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        14
+      ],
+      [
+        15,
+        16
+      ],
+      [
+        14,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        15
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        16,
+        15
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_10",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        14
+      ],
+      [
+        16,
+        14
+      ],
+      [
+        16,
+        16
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_group_10_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        14
+      ],
+      [
+        16,
+        14
+      ],
+      [
+        16,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        16
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_11",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        17
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        14
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        16,
+        16
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_connect_11_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        14
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        16,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "corner"
+  },
+  {
+    "name": "escape_extend_12",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        3,
+        10
+      ],
+      [
+        2,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_12_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        3,
+        10
+      ],
+      [
+        2,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_13",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        4,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_13_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        4,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        10
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_14",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        4,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_14_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        4,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        9,
+        4
+      ],
+      [
+        8,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_15_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        9,
+        4
+      ],
+      [
+        8,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        10,
+        2
+      ],
+      [
+        10,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_16_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        10,
+        2
+      ],
+      [
+        10,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        10,
+        3
+      ],
+      [
+        10,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_17_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        2
+      ],
+      [
+        10,
+        3
+      ],
+      [
+        10,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_18",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        14
+      ],
+      [
+        9,
+        16
+      ],
+      [
+        8,
+        15
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        15
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_18_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        14
+      ],
+      [
+        9,
+        16
+      ],
+      [
+        8,
+        15
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        15
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        15
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_19",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        14
+      ],
+      [
+        10,
+        14
+      ],
+      [
+        10,
+        16
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_19_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        14
+      ],
+      [
+        10,
+        14
+      ],
+      [
+        10,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        16
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        17
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_20",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        17
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        14
+      ],
+      [
+        10,
+        15
+      ],
+      [
+        10,
+        16
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_20_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        14
+      ],
+      [
+        10,
+        15
+      ],
+      [
+        10,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_21",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        8
+      ],
+      [
+        15,
+        10
+      ],
+      [
+        14,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        16,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_21_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        8
+      ],
+      [
+        15,
+        10
+      ],
+      [
+        14,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        16,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_22",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        8
+      ],
+      [
+        16,
+        8
+      ],
+      [
+        16,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_group_22_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        8
+      ],
+      [
+        16,
+        8
+      ],
+      [
+        16,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        10
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        11
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape group in atari",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_23",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        8
+      ],
+      [
+        16,
+        9
+      ],
+      [
+        16,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_connect_23_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        8
+      ],
+      [
+        16,
+        9
+      ],
+      [
+        16,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "medium",
+    "description": "Escape by connecting",
+    "region": "edge"
+  },
+  {
+    "name": "escape_extend_24",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        8,
+        9
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  },
+  {
+    "name": "escape_extend_24_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        8
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        8,
+        9
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        9
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "escape",
+    "difficulty": "easy",
+    "description": "Escape by extending",
+    "region": "center"
+  }
+]

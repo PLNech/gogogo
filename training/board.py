@@ -157,6 +157,57 @@ class Board:
         self.current_player = -self.current_player
         self.ko_point = None
 
+    @property
+    def group_stats(self) -> dict:
+        """Compute all group statistics in one pass.
+
+        Returns dict with:
+            - groups: list of (color, positions, liberties)
+            - atari: {1: [...positions...], -1: [...positions...]}
+            - by_liberties: {color: {lib_count: [groups]}}
+        """
+        groups = []
+        atari = {1: [], -1: []}
+        by_liberties = {1: {}, -1: {}}
+        visited = set()
+
+        for r in range(self.size):
+            for c in range(self.size):
+                if (r, c) in visited or self.board[r, c] == 0:
+                    continue
+
+                color = int(self.board[r, c])
+                group = self.get_group(r, c)
+                for pos in group:
+                    visited.add(pos)
+
+                liberties = self.count_liberties(group)
+                groups.append((color, group, liberties))
+
+                # Track atari groups
+                if liberties == 1:
+                    atari[color].extend(group)
+
+                # Group by liberty count
+                if liberties not in by_liberties[color]:
+                    by_liberties[color][liberties] = []
+                by_liberties[color][liberties].append(group)
+
+        return {
+            'groups': groups,
+            'atari': atari,
+            'by_liberties': by_liberties,
+            'black_groups': len([g for g in groups if g[0] == 1]),
+            'white_groups': len([g for g in groups if g[0] == -1]),
+            'black_in_atari': len(atari[1]),
+            'white_in_atari': len(atari[-1]),
+        }
+
+    @property
+    def atari_points(self) -> dict:
+        """Get all points in atari, by color. Cached single-pass."""
+        return self.group_stats['atari']
+
     def is_game_over(self) -> bool:
         """Check if game is over (two consecutive passes)."""
         return self.passes >= 2

@@ -1,0 +1,6652 @@
+[
+  {
+    "name": "connect_simple_0",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_0_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_5",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_5_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_6",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_6_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_7",
+    "board_size": 5,
+    "black_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_7_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_8",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_8_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_9",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_9_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_10",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_10_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_11",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_11_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_12",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_12_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        4,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_13",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_simple_13_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_threatened_14",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "center"
+  },
+  {
+    "name": "connect_threatened_14_flipped",
+    "board_size": 5,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "center"
+  },
+  {
+    "name": "connect_bamboo_15",
+    "board_size": 5,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_bamboo_15_flipped",
+    "board_size": 5,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_simple_0",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_0_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        2,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        6,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_5",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_5_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_6",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_6_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        1,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_7",
+    "board_size": 7,
+    "black_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_7_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_8",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_8_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_9",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_9_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        4,
+        2
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_10",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_10_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        2
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_11",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_11_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_12",
+    "board_size": 7,
+    "black_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_12_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_13",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_simple_13_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_threatened_14",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "center"
+  },
+  {
+    "name": "connect_threatened_14_flipped",
+    "board_size": 7,
+    "black_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "center"
+  },
+  {
+    "name": "connect_bamboo_15",
+    "board_size": 7,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_bamboo_15_flipped",
+    "board_size": 7,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_simple_0",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_0_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        3,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        3,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_5",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        8
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_5_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        8
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_6",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_6_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_7",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        7,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_7_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        7,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_8",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        8,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_8_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        8,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_9",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_9_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_10",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        7,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_10_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        7,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_11",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ],
+      [
+        8,
+        6
+      ],
+      [
+        8,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_11_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ],
+      [
+        8,
+        6
+      ],
+      [
+        8,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_12",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_12_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_13",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_13_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        2,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_14",
+    "board_size": 9,
+    "black_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_14_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_15",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_15_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_16",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        3
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_16_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        5,
+        3
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_17",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_17_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        4
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        3
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_18",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_18_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_19",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        5,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_19_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        5,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_20",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        5,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_20_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        4,
+        6
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        5,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_21",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        6
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_21_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_22",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        6
+      ]
+    ],
+    "white_stones": [
+      [
+        7,
+        5
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_22_flipped",
+    "board_size": 9,
+    "black_stones": [
+      [
+        7,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_23",
+    "board_size": 9,
+    "black_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        8,
+        6
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_23_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        4
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        8,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_24",
+    "board_size": 9,
+    "black_stones": [
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_simple_24_flipped",
+    "board_size": 9,
+    "black_stones": [],
+    "white_stones": [
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        5
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_simple_0",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_0_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        4,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_5",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ],
+      [
+        5,
+        9
+      ],
+      [
+        5,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_5_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ],
+      [
+        5,
+        9
+      ],
+      [
+        5,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_6",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_6_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_7",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        10,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_7_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        10,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_8",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ],
+      [
+        11,
+        3
+      ],
+      [
+        11,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_8_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ],
+      [
+        11,
+        3
+      ],
+      [
+        11,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_9",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_9_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_10",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        10,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_10_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        10,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_11",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ],
+      [
+        11,
+        9
+      ],
+      [
+        11,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_11_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ],
+      [
+        11,
+        9
+      ],
+      [
+        11,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_12",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_12_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_13",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_13_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        4,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_14",
+    "board_size": 13,
+    "black_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        8
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        5,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_14_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        6
+      ],
+      [
+        3,
+        8
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        5,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_15",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_15_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_16",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        7,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_16_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        7,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_17",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        8,
+        3
+      ],
+      [
+        8,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_17_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        3
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        8,
+        3
+      ],
+      [
+        8,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_18",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_18_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_19",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        7,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_19_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        7,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_20",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        11
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        8,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        7,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_20_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        9
+      ],
+      [
+        6,
+        11
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        8,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        7,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_21",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_21_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_22",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        8
+      ]
+    ],
+    "white_stones": [
+      [
+        10,
+        7
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_22_flipped",
+    "board_size": 13,
+    "black_stones": [
+      [
+        10,
+        7
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_23",
+    "board_size": 13,
+    "black_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        8
+      ],
+      [
+        11,
+        6
+      ],
+      [
+        11,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_23_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        6
+      ],
+      [
+        9,
+        8
+      ],
+      [
+        11,
+        6
+      ],
+      [
+        11,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_24",
+    "board_size": 13,
+    "black_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_simple_24_flipped",
+    "board_size": 13,
+    "black_stones": [],
+    "white_stones": [
+      [
+        6,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        6,
+        7
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_simple_0",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_0_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_1_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        4,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_2_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        17
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_3_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        17
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        16
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_4_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        4,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_5",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        17
+      ],
+      [
+        5,
+        15
+      ],
+      [
+        5,
+        17
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_5_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        15
+      ],
+      [
+        3,
+        17
+      ],
+      [
+        5,
+        15
+      ],
+      [
+        5,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_6",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_6_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_7",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        16,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_7_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        16,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_8",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        5
+      ],
+      [
+        17,
+        3
+      ],
+      [
+        17,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        16,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_8_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        15,
+        3
+      ],
+      [
+        15,
+        5
+      ],
+      [
+        17,
+        3
+      ],
+      [
+        17,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        16,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_9",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        17
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_9_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_10",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        17
+      ]
+    ],
+    "white_stones": [
+      [
+        16,
+        16
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_threatened_10_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        16,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_11",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        17
+      ],
+      [
+        17,
+        15
+      ],
+      [
+        17,
+        17
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        16,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_bamboo_11_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        15,
+        15
+      ],
+      [
+        15,
+        17
+      ],
+      [
+        17,
+        15
+      ],
+      [
+        17,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        16,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "corner"
+  },
+  {
+    "name": "connect_simple_12",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_12_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_13",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        4,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_13_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        4,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        3,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_14",
+    "board_size": 19,
+    "black_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ],
+      [
+        5,
+        9
+      ],
+      [
+        5,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        4,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_14_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        3,
+        9
+      ],
+      [
+        3,
+        11
+      ],
+      [
+        5,
+        9
+      ],
+      [
+        5,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        4,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_15",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_15_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_16",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "white_stones": [
+      [
+        10,
+        4
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_16_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        10,
+        4
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_17",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ],
+      [
+        11,
+        3
+      ],
+      [
+        11,
+        5
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_17_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        3
+      ],
+      [
+        9,
+        5
+      ],
+      [
+        11,
+        3
+      ],
+      [
+        11,
+        5
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        4
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_18",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        17
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_18_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_19",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        17
+      ]
+    ],
+    "white_stones": [
+      [
+        10,
+        16
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_19_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        10,
+        16
+      ]
+    ],
+    "white_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_20",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        17
+      ],
+      [
+        11,
+        15
+      ],
+      [
+        11,
+        17
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        10,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_20_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        15
+      ],
+      [
+        9,
+        17
+      ],
+      [
+        11,
+        15
+      ],
+      [
+        11,
+        17
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        10,
+        16
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_21",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_21_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_22",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        11
+      ]
+    ],
+    "white_stones": [
+      [
+        16,
+        10
+      ]
+    ],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        15,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_threatened_22_flipped",
+    "board_size": 19,
+    "black_stones": [
+      [
+        16,
+        10
+      ]
+    ],
+    "white_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        15,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "medium",
+    "description": "Connect under threat",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_23",
+    "board_size": 19,
+    "black_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        11
+      ],
+      [
+        17,
+        9
+      ],
+      [
+        17,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        16,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_bamboo_23_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        15,
+        9
+      ],
+      [
+        15,
+        11
+      ],
+      [
+        17,
+        9
+      ],
+      [
+        17,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        16,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Bamboo joint connect",
+    "region": "edge"
+  },
+  {
+    "name": "connect_simple_24",
+    "board_size": 19,
+    "black_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ]
+    ],
+    "white_stones": [],
+    "to_play": "black",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  },
+  {
+    "name": "connect_simple_24_flipped",
+    "board_size": 19,
+    "black_stones": [],
+    "white_stones": [
+      [
+        9,
+        9
+      ],
+      [
+        9,
+        11
+      ]
+    ],
+    "to_play": "white",
+    "expected_moves": [
+      [
+        9,
+        10
+      ]
+    ],
+    "avoid_moves": [],
+    "category": "connect",
+    "difficulty": "easy",
+    "description": "Simple connect",
+    "region": "center"
+  }
+]

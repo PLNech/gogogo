@@ -10,6 +10,7 @@ from model import GoNet, create_model, save_checkpoint, load_checkpoint
 from selfplay import generate_games, ReplayBuffer
 from mcts import MCTS
 from board import Board
+from training_state import TrainingTracker
 
 
 def train_step(model, optimizer, states, policies, values, device):
@@ -138,56 +139,68 @@ def main():
 
     global_step = start_step
 
-    for iteration in range(args.iterations):
-        print(f"\n=== Iteration {iteration + 1}/{args.iterations} ===")
+    with TrainingTracker(args.iterations, config) as tracker:
+        for iteration in range(args.iterations):
+            tracker.start_iteration(iteration + 1)
+            print(f"\n=== Iteration {iteration + 1}/{args.iterations} ===")
 
-        # Generate self-play games
-        print(f"Generating {config.games_per_iter} games...")
-        model.eval()
-        samples = generate_games(model, config, config.games_per_iter)
-        replay_buffer.add(samples)
-        print(f"Buffer size: {len(replay_buffer)}")
-
-        # Training
-        if len(replay_buffer) >= config.min_replay_size:
-            print(f"Training for {config.train_steps_per_iter} steps...")
-            model.train()
-
-            for step in range(config.train_steps_per_iter):
-                states, policies, values = replay_buffer.sample(config.batch_size)
-                losses = train_step(model, optimizer, states, policies, values, config.device)
-
-                global_step += 1
-
-                if step % 100 == 0:
-                    print(f"  Step {step}: loss={losses['total_loss']:.4f} (p={losses['policy_loss']:.4f}, v={losses['value_loss']:.4f})")
-
-                writer.add_scalar('Loss/policy', losses['policy_loss'], global_step)
-                writer.add_scalar('Loss/value', losses['value_loss'], global_step)
-                writer.add_scalar('Loss/total', losses['total_loss'], global_step)
-
-                # Checkpoint
-                if global_step % config.checkpoint_interval == 0:
-                    path = f'checkpoints/model_{global_step}.pt'
-                    save_checkpoint(model, optimizer, global_step, path)
-                    print(f"  Saved checkpoint: {path}")
-
-        # Evaluation
-        if iteration % 5 == 0 and iteration > 0:
-            print("Evaluating vs best model...")
+            # Generate self-play games
+            tracker.start_selfplay(config.games_per_iter)
+            print(f"Generating {config.games_per_iter} games...")
             model.eval()
-            win_rate = evaluate(model, best_model, config, config.eval_games)
-            print(f"Win rate vs best: {win_rate:.1%}")
-            writer.add_scalar('Eval/win_rate', win_rate, global_step)
+            samples, records = generate_games(
+                model, config, config.games_per_iter,
+                game_callback=lambda i: tracker.game_complete(i)
+            )
+            replay_buffer.add(samples)
+            print(f"Buffer size: {len(replay_buffer)}")
 
-            if win_rate > config.win_threshold:
-                print("New best model!")
-                best_model.load_state_dict(model.state_dict())
-                save_checkpoint(model, optimizer, global_step, 'checkpoints/best.pt')
+            # Training
+            if len(replay_buffer) >= config.min_replay_size:
+                tracker.start_training(config.train_steps_per_iter)
+                print(f"Training for {config.train_steps_per_iter} steps...")
+                model.train()
 
-    # Final save
-    save_checkpoint(model, optimizer, global_step, 'checkpoints/final.pt')
-    print(f"\nTraining complete! Final model saved to checkpoints/final.pt")
+                for step in range(config.train_steps_per_iter):
+                    states, policies, values = replay_buffer.sample(config.batch_size)
+                    losses = train_step(model, optimizer, states, policies, values, config.device)
+
+                    global_step += 1
+                    tracker.training_step(step, losses, len(replay_buffer))
+
+                    if step % 100 == 0:
+                        print(f"  Step {step}: loss={losses['total_loss']:.4f} (p={losses['policy_loss']:.4f}, v={losses['value_loss']:.4f})")
+
+                    writer.add_scalar('Loss/policy', losses['policy_loss'], global_step)
+                    writer.add_scalar('Loss/value', losses['value_loss'], global_step)
+                    writer.add_scalar('Loss/total', losses['total_loss'], global_step)
+
+                    # Checkpoint
+                    if global_step % config.checkpoint_interval == 0:
+                        path = f'checkpoints/model_{global_step}.pt'
+                        save_checkpoint(model, optimizer, global_step, path)
+                        print(f"  Saved checkpoint: {path}")
+
+            # Evaluation
+            if iteration % 5 == 0 and iteration > 0:
+                tracker.start_eval()
+                print("Evaluating vs best model...")
+                model.eval()
+                win_rate = evaluate(model, best_model, config, config.eval_games)
+                print(f"Win rate vs best: {win_rate:.1%}")
+                writer.add_scalar('Eval/win_rate', win_rate, global_step)
+
+                is_best = win_rate > config.win_threshold
+                tracker.eval_complete(win_rate, is_best)
+
+                if is_best:
+                    print("New best model!")
+                    best_model.load_state_dict(model.state_dict())
+                    save_checkpoint(model, optimizer, global_step, 'checkpoints/best.pt')
+
+        # Final save
+        save_checkpoint(model, optimizer, global_step, 'checkpoints/final.pt')
+        print(f"\nTraining complete! Final model saved to checkpoints/final.pt")
 
 
 if __name__ == '__main__':
