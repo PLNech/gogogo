@@ -75,6 +75,18 @@ loss = policy_loss + value_loss + instinct_loss
 
 The results speak.
 
+---
+
+## Before vs After
+
+![Before and After Self-Play Games](/assets/images/before_after_games.png)
+
+Five games. Same random seeds. Different models.
+
+**Left**: Untrained. Random scattering. No structure. No captures.
+
+**Right**: Curriculum-trained. Groups form. Captures happen. Go emerges.
+
 **Before**: 0% capture, 5.7% overall.
 
 **After 5 epochs**: 100% capture, 100% overall.
