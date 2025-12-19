@@ -13,6 +13,8 @@ excerpt: "A journey of a thousand lines begins with a single hello world."
 
 Before the first move, there is only potential.
 
+![The First Stone](/images/journey-begins.png)
+
 The board lies empty. Not barren—pregnant with possibility.
 
 Each intersection awaits its purpose.

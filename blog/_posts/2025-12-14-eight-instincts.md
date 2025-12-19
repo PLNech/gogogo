@@ -15,6 +15,8 @@ excerpt: "Test first, then implement. Define truth before seeking it. The 8 basi
 
 Masters don't think. They see.
 
+![Sensei's 8 Basic Instincts](/images/eight-basic-instincts.png)
+
 Thousands of games distilled into instinct. When a stone touches yours, the response is automatic. When two stones align, the hane appears.
 
 These patterns have names. Eight fundamental responses, passed through generations.

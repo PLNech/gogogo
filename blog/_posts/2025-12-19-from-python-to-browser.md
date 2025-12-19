@@ -10,6 +10,8 @@ excerpt: "Exporting neural networks to ONNX, building benchmarks, and the joy of
 
 The model exists. It trains. It learns (slowly). But it lives in Python, trapped in PyTorch tensors. Today we set it free.
 
+![From Python to Browser](/images/python-to-browser.png)
+
 ---
 
 ## The Export Pipeline

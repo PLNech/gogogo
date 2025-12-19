@@ -3,7 +3,7 @@ layout: post
 title: "Learning to See"
 date: 2025-12-20
 phase: "Foundation"
-excerpt: "1449 tests. Eight instincts. Before we run, we crawl."
+excerpt: "Sensei's 8 Basic Instincts. Before we run, we crawl."
 ---
 
 > 初心忘るべからず
@@ -15,47 +15,34 @@ We built 1449 tests today.
 
 Not clever tests. Not deep reading. Not life-and-death.
 
-[Basic instincts](/glossary#basic-instincts):
+[Sensei's 8 Basic Instincts](/glossary#basic-instincts) — patterns masters play without thinking.
 
-```
-CAPTURE — take what's yours       ESCAPE — save what's dying
-
-    . ● .                             . ○ .
-    ● ○ ★  ← fill last liberty        ○ ● ★  ← extend to breathe
-    . ● .                             . ○ .
-```
-
-```
-CONNECT — join your friends       CUT — divide your enemies
-
-    ● . ★ . ●  ← link groups          ○ . ★ . ○  ← separate them
-```
-
-```
-ATARI — threaten                  DEFEND — protect
-
-    . ● .                             ● . ●
-    ● ○ ★  ← reduce to 1 liberty      . ★ .  ← guard the cut
-    . . .                             . ○ .
-```
-
-```
-EXTEND — breathe                  BLOCK — deny
-
-    . . .                             . ○ .
-    ● ★ .  ← grow outward             . ★ .  ← stop expansion
-    . . .                             . . .
-```
-
-Eight ways to see: [Capture](/glossary#capture), [Escape](/glossary#escape), [Connect](/glossary#connect), [Cut](/glossary#cut), [Atari](/glossary#atari), [Defend](/glossary#defend), [Extend](/glossary#extend), [Block](/glossary#block).
-
-A child learns them in their first game.
+![The 8 Basic Instincts](/images/eight-basic-instincts.png)
 
 ---
 
+## The Eight
+
+| # | Instinct | Japanese | When |
+|---|----------|----------|------|
+| 1 | [Extend from Atari](/glossary#extend-from-atari) | アタリから伸びよ | Stone in atari → extend |
+| 2 | [Hane vs Tsuke](/glossary#hane-vs-tsuke) | ツケにはハネ | Opponent attaches → hane |
+| 3 | [Hane at Head of Two](/glossary#hane-at-head-of-two) | 二子の頭にハネ | Two stones in row → play above |
+| 4 | [Stretch from Kosumi](/glossary#stretch-from-kosumi) | コスミから伸びよ | Diagonal attach → stretch away |
+| 5 | [Block the Angle](/glossary#block-the-angle) | カケにはオサエ | Angle attack → block |
+| 6 | [Connect vs Peep](/glossary#connect-vs-peep) | ノゾキにはツギ | Opponent peeps → connect |
+| 7 | [Block the Thrust](/glossary#block-the-thrust) | ツキアタリには | Opponent thrusts → block |
+| 8 | [Stretch from Bump](/glossary#stretch-from-bump) | ブツカリから伸びよ | Supported attach → stretch |
+
+---
+
+A child learns them in their first lessons.
+
 Our model scored **1.3%**.
 
-Zero on capture. Zero on escape. Zero on connect.
+![Benchmark Results](/images/learning-to-see-benchmark.png)
+
+Zero on extend. Zero on hane. Zero on connect.
 
 Worse than random.
 
@@ -124,15 +111,15 @@ First, we learn to see.
 ```
 INSTINCT BENCHMARK RESULTS
 ============================================================
-  capture     :  0.0% (0/44)
-  escape      :  0.0% (0/50)
-  connect     :  0.0% (0/50)
-  cut         :  0.0% (0/48)
-  extend      :  5.6% (2/36)
-  atari       :  5.6% (2/36)
-  block       :  0.0% (0/24)
-  defend      :  0.0% (0/27)
-  OVERALL     :  1.3% (4/315)
+  extend_atari    :  0.0% (0/44)
+  hane_tsuke      :  0.0% (0/50)
+  hane_head_two   :  5.6% (2/36)
+  stretch_kosumi  :  0.0% (0/48)
+  block_angle     :  5.6% (2/36)
+  connect_peep    :  0.0% (0/50)
+  block_thrust    :  0.0% (0/24)
+  stretch_bump    :  0.0% (0/27)
+  OVERALL         :  1.3% (4/315)
 ============================================================
 ```
 

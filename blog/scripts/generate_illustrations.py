@@ -19,6 +19,8 @@ import numpy as np
 BLOG_DIR = Path(__file__).parent.parent
 IMAGES_DIR = BLOG_DIR / "images"
 IMAGES_DIR.mkdir(exist_ok=True)
+HERO_DIR = BLOG_DIR / "assets" / "hero"
+HERO_DIR.mkdir(parents=True, exist_ok=True)
 
 # Style constants
 COLORS = {
@@ -652,10 +654,463 @@ def generate_capture_rule():
     print("Generated: capture-rule.png")
 
 
+def generate_eight_basic_instincts():
+    """Generate Sensei's 8 Basic Instincts board diagrams."""
+    fig, axes = plt.subplots(2, 4, figsize=(16, 8), facecolor=COLORS['bg'])
+    axes = axes.flatten()
+
+    instincts = [
+        ("1. Extend from Atari", "アタリから伸びよ", "extend_from_atari"),
+        ("2. Hane vs Tsuke", "ツケにはハネ", "hane_tsuke"),
+        ("3. Hane at Head of Two", "二子の頭にハネ", "hane_head_two"),
+        ("4. Stretch from Kosumi", "コスミから伸びよ", "stretch_kosumi"),
+        ("5. Block the Angle", "カケにはオサエ", "block_angle"),
+        ("6. Connect vs Peep", "ノゾキにはツギ", "connect_peep"),
+        ("7. Block the Thrust", "ツキアタリには", "block_thrust"),
+        ("8. Stretch from Bump", "ブツカリから伸びよ", "stretch_bump"),
+    ]
+
+    for i, (title, japanese, pattern) in enumerate(instincts):
+        ax = axes[i]
+        setup_board_axes(ax, size=7)
+
+        if pattern == "extend_from_atari":
+            # Black stone in atari (one liberty)
+            draw_stone(ax, 3, 3, 'black')
+            draw_stone(ax, 2, 3, 'white')
+            draw_stone(ax, 4, 3, 'white')
+            draw_stone(ax, 3, 2, 'white')
+            # Correct response: extend at 3,4
+            draw_marker(ax, 3, 4, 'square', COLORS['highlight_good'])
+            ax.text(3, 4.7, 'EXTEND', ha='center', fontsize=8,
+                   color=COLORS['highlight_good'], fontweight='bold')
+
+        elif pattern == "hane_tsuke":
+            # Black stone, white attaches (tsuke)
+            draw_stone(ax, 3, 3, 'black')
+            draw_stone(ax, 4, 3, 'white', label='1')  # Tsuke
+            # Correct response: hane at 4,4
+            draw_marker(ax, 4, 4, 'square', COLORS['highlight_good'])
+            ax.text(4, 4.7, 'HANE', ha='center', fontsize=8,
+                   color=COLORS['highlight_good'], fontweight='bold')
+
+        elif pattern == "hane_head_two":
+            # Two white stones in a row
+            draw_stone(ax, 3, 3, 'white')
+            draw_stone(ax, 4, 3, 'white')
+            # Black should play above the head
+            draw_marker(ax, 5, 3, 'square', COLORS['highlight_good'])
+            ax.text(5, 3.7, 'HANE', ha='center', fontsize=8,
+                   color=COLORS['highlight_good'], fontweight='bold')
+
+        elif pattern == "stretch_kosumi":
+            # Black stone, white plays kosumi-tsuke (diagonal attach)
+            draw_stone(ax, 3, 3, 'black')
+            draw_stone(ax, 4, 4, 'white', label='1')  # Kosumi-tsuke
+            # Correct response: stretch away
+            draw_marker(ax, 2, 3, 'square', COLORS['highlight_good'])
+            ax.text(2, 3.7, 'STRETCH', ha='center', fontsize=8,
+                   color=COLORS['highlight_good'], fontweight='bold')
+
+        elif pattern == "block_angle":
+            # White plays angle attack (kake)
+            draw_stone(ax, 3, 3, 'black')
+            draw_stone(ax, 4, 4, 'white', label='1')  # Angle play
+            # Block diagonally
+            draw_marker(ax, 4, 3, 'square', COLORS['highlight_good'])
+            ax.text(4.7, 3, 'BLOCK', ha='center', fontsize=8,
+                   color=COLORS['highlight_good'], fontweight='bold')
+
+        elif pattern == "connect_peep":
+            # Two black stones with cutting point, white peeps
+            draw_stone(ax, 2, 3, 'black')
+            draw_stone(ax, 4, 3, 'black')
+            draw_stone(ax, 3, 4, 'white', label='1')  # Peep
+            # Must connect!
+            draw_marker(ax, 3, 3, 'square', COLORS['highlight_good'])
+            ax.text(3, 2.3, 'CONNECT', ha='center', fontsize=8,
+                   color=COLORS['highlight_good'], fontweight='bold')
+
+        elif pattern == "block_thrust":
+            # Two black stones, white thrusts between
+            draw_stone(ax, 2, 3, 'black')
+            draw_stone(ax, 4, 3, 'black')
+            draw_stone(ax, 3, 2, 'white', label='1')  # Thrust
+            # Block the thrust
+            draw_marker(ax, 3, 3, 'square', COLORS['highlight_good'])
+            ax.text(3, 3.7, 'BLOCK', ha='center', fontsize=8,
+                   color=COLORS['highlight_good'], fontweight='bold')
+
+        elif pattern == "stretch_bump":
+            # Black stone, white bumps (supported attachment)
+            draw_stone(ax, 3, 3, 'black')
+            draw_stone(ax, 4, 3, 'white', label='1')  # Bump
+            draw_stone(ax, 5, 3, 'white')  # Support stone
+            # Stretch, don't hane
+            draw_marker(ax, 2, 3, 'square', COLORS['highlight_good'])
+            ax.text(2, 3.7, 'STRETCH', ha='center', fontsize=8,
+                   color=COLORS['highlight_good'], fontweight='bold')
+
+        ax.set_title(f'{title}\n{japanese}', fontsize=10, color=COLORS['text'])
+
+    plt.suptitle("Sensei's 8 Basic Instincts\nPatterns masters play without thinking",
+                fontsize=14, color=COLORS['text'], y=1.02, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig(IMAGES_DIR / 'eight-basic-instincts.png', dpi=150, facecolor=COLORS['bg'],
+                bbox_inches='tight')
+    plt.close()
+    print("Generated: eight-basic-instincts.png")
+
+
+def generate_journey_begins():
+    """Generate illustration for 'A Journey Begins' post."""
+    fig, ax = plt.subplots(1, 1, figsize=(8, 8), facecolor=COLORS['bg'])
+    setup_board_axes(ax, size=9)
+
+    # Empty board with just one black stone - the first move
+    draw_stone(ax, 2, 6, 'black', label='1')
+
+    ax.set_title('The First Stone\n\n一石投じる — To cast the first stone',
+                fontsize=14, color=COLORS['text'], pad=15)
+
+    plt.tight_layout()
+    plt.savefig(IMAGES_DIR / 'journey-begins.png', dpi=150, facecolor=COLORS['bg'],
+                bbox_inches='tight')
+    plt.close()
+    print("Generated: journey-begins.png")
+
+
+def generate_from_python_to_browser():
+    """Generate illustration for Python to Browser export."""
+    fig, ax = plt.subplots(1, 1, figsize=(10, 5), facecolor=COLORS['bg'])
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 6)
+    ax.axis('off')
+
+    # PyTorch box
+    pytorch_box = FancyBboxPatch((0.5, 3.5), 2, 1.5, boxstyle="round,pad=0.1",
+                                  facecolor='#ee4c2c', alpha=0.3,
+                                  edgecolor='#ee4c2c', linewidth=2)
+    ax.add_patch(pytorch_box)
+    ax.text(1.5, 4.5, 'PyTorch', ha='center', fontsize=12, fontweight='bold')
+    ax.text(1.5, 3.9, 'Training', ha='center', fontsize=9)
+
+    # Arrow
+    ax.annotate('', xy=(3, 4.25), xytext=(2.7, 4.25),
+               arrowprops=dict(arrowstyle='->', color=COLORS['text'], lw=2))
+
+    # ONNX box
+    onnx_box = FancyBboxPatch((3.2, 3.5), 2, 1.5, boxstyle="round,pad=0.1",
+                               facecolor='#005CED', alpha=0.3,
+                               edgecolor='#005CED', linewidth=2)
+    ax.add_patch(onnx_box)
+    ax.text(4.2, 4.5, 'ONNX', ha='center', fontsize=12, fontweight='bold')
+    ax.text(4.2, 3.9, 'Portable', ha='center', fontsize=9)
+
+    # Arrow
+    ax.annotate('', xy=(5.7, 4.25), xytext=(5.4, 4.25),
+               arrowprops=dict(arrowstyle='->', color=COLORS['text'], lw=2))
+
+    # TensorFlow.js box
+    tfjs_box = FancyBboxPatch((5.9, 3.5), 2.5, 1.5, boxstyle="round,pad=0.1",
+                               facecolor='#ff6f00', alpha=0.3,
+                               edgecolor='#ff6f00', linewidth=2)
+    ax.add_patch(tfjs_box)
+    ax.text(7.15, 4.5, 'TensorFlow.js', ha='center', fontsize=12, fontweight='bold')
+    ax.text(7.15, 3.9, 'Browser', ha='center', fontsize=9)
+
+    # Browser window below
+    browser_box = FancyBboxPatch((2.5, 0.5), 5, 2.2, boxstyle="round,pad=0.1",
+                                  facecolor=COLORS['highlight_good'], alpha=0.2,
+                                  edgecolor=COLORS['highlight_good'], linewidth=2)
+    ax.add_patch(browser_box)
+    ax.text(5, 2.2, '🌐 Browser', ha='center', fontsize=14, fontweight='bold')
+    ax.text(5, 1.5, 'model.predict(boardState)', ha='center', fontsize=11,
+           fontfamily='monospace')
+    ax.text(5, 0.9, 'No server needed!', ha='center', fontsize=10,
+           color=COLORS['highlight_good'], style='italic')
+
+    # Arrow down
+    ax.annotate('', xy=(7.15, 2.9), xytext=(7.15, 3.3),
+               arrowprops=dict(arrowstyle='->', color=COLORS['text'], lw=2))
+
+    ax.set_title('From Python to Browser\nTrain once, deploy anywhere',
+                fontsize=14, color=COLORS['text'], pad=10)
+
+    plt.tight_layout()
+    plt.savefig(IMAGES_DIR / 'python-to-browser.png', dpi=150, facecolor=COLORS['bg'],
+                bbox_inches='tight')
+    plt.close()
+    print("Generated: python-to-browser.png")
+
+
+def generate_footsteps_research():
+    """Generate illustration for research survey post."""
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4), facecolor=COLORS['bg'])
+
+    # AlphaGo/AlphaZero
+    ax = axes[0]
+    setup_board_axes(ax, size=5)
+    # Iconic move 37 style position
+    draw_stone(ax, 2, 2, 'black')
+    draw_stone(ax, 1, 3, 'white')
+    draw_stone(ax, 3, 1, 'white')
+    draw_stone(ax, 2, 4, 'black', label='37')
+    ax.set_title('AlphaGo (2016)\nDeep Learning + MCTS', fontsize=11, color=COLORS['text'])
+
+    # KataGo multi-size
+    ax = axes[1]
+    setup_board_axes(ax, size=5)
+    # Show different size concept
+    for i in range(5):
+        ax.axhline(y=i, color=COLORS['grid'], linewidth=0.5, alpha=0.3)
+        ax.axvline(x=i, color=COLORS['grid'], linewidth=0.5, alpha=0.3)
+    ax.text(2, 2, '5×5\n9×9\n19×19', ha='center', va='center', fontsize=10,
+           color=COLORS['highlight_blue'], fontweight='bold')
+    ax.set_title('KataGo (2019)\nMulti-size Training', fontsize=11, color=COLORS['text'])
+
+    # GNN approach
+    ax = axes[2]
+    ax.set_facecolor(COLORS['bg'])
+    ax.set_xlim(0, 5)
+    ax.set_ylim(0, 5)
+    ax.axis('off')
+    # Draw graph nodes
+    nodes = [(1, 2), (2, 1), (2, 3), (3, 2), (2.5, 4), (4, 3)]
+    for x, y in nodes:
+        circle = patches.Circle((x, y), 0.3, facecolor=COLORS['highlight_good'],
+                                edgecolor=COLORS['grid'], linewidth=1.5)
+        ax.add_patch(circle)
+    # Draw edges
+    edges = [((1, 2), (2, 1)), ((1, 2), (2, 3)), ((2, 1), (3, 2)),
+             ((2, 3), (3, 2)), ((2, 3), (2.5, 4)), ((3, 2), (4, 3))]
+    for (x1, y1), (x2, y2) in edges:
+        ax.plot([x1, x2], [y1, y2], '-', color=COLORS['grid'], linewidth=1.5)
+    ax.set_title('AlphaGateau (2024)\nGraph Neural Networks', fontsize=11, color=COLORS['text'])
+
+    plt.suptitle('Standing on Shoulders\nFrom AlphaGo to Graph Networks',
+                fontsize=14, color=COLORS['text'], y=1.02, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig(IMAGES_DIR / 'research-evolution.png', dpi=150, facecolor=COLORS['bg'],
+                bbox_inches='tight')
+    plt.close()
+    print("Generated: research-evolution.png")
+
+
+def generate_tester_cest_douter():
+    """Generate illustration for testing reflection post."""
+    fig, axes = plt.subplots(1, 2, figsize=(10, 5), facecolor=COLORS['bg'])
+
+    # Left: Untested code (sand castle)
+    ax = axes[0]
+    ax.set_facecolor(COLORS['bg'])
+    ax.set_xlim(0, 5)
+    ax.set_ylim(0, 5)
+    ax.axis('off')
+
+    # Stack of blocks (unstable)
+    for i, (x, y, w, h) in enumerate([
+        (1.5, 0.5, 2, 0.8), (1.7, 1.3, 1.6, 0.7), (1.9, 2, 1.2, 0.6),
+        (2.1, 2.6, 0.8, 0.5)
+    ]):
+        rect = FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.02",
+                               facecolor=COLORS['highlight_bad'], alpha=0.3 + i*0.15,
+                               edgecolor=COLORS['highlight_bad'], linewidth=1.5)
+        ax.add_patch(rect)
+
+    # Question marks
+    ax.text(3.5, 3, '?', fontsize=40, color=COLORS['highlight_bad'], alpha=0.5)
+    ax.text(0.8, 2.5, '?', fontsize=30, color=COLORS['highlight_bad'], alpha=0.5)
+
+    ax.set_title('Without Tests\n"Castle of Sand"', fontsize=12, color=COLORS['text'])
+
+    # Right: Tested code (solid foundation)
+    ax = axes[1]
+    ax.set_facecolor(COLORS['bg'])
+    ax.set_xlim(0, 5)
+    ax.set_ylim(0, 5)
+    ax.axis('off')
+
+    # Solid foundation with checkmarks
+    for i, (x, y, w, h) in enumerate([
+        (1, 0.5, 3, 0.8), (1.2, 1.4, 2.6, 0.7), (1.4, 2.2, 2.2, 0.6),
+        (1.6, 2.9, 1.8, 0.5)
+    ]):
+        rect = FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.02",
+                               facecolor=COLORS['highlight_good'], alpha=0.3 + i*0.15,
+                               edgecolor=COLORS['highlight_good'], linewidth=1.5)
+        ax.add_patch(rect)
+        ax.text(x + w + 0.2, y + h/2, '✓', fontsize=16,
+               color=COLORS['highlight_good'], va='center')
+
+    ax.set_title('With Tests\n"Concrete Foundation"', fontsize=12, color=COLORS['text'])
+
+    plt.suptitle('Tester c\'est Douter\nTo test is to doubt — and doubt is wisdom',
+                fontsize=14, color=COLORS['text'], y=1.02, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig(IMAGES_DIR / 'tester-cest-douter.png', dpi=150, facecolor=COLORS['bg'],
+                bbox_inches='tight')
+    plt.close()
+    print("Generated: tester-cest-douter.png")
+
+
+def generate_learning_to_see():
+    """Generate illustration for 'Learning to See' post - benchmark results."""
+    fig, ax = plt.subplots(1, 1, figsize=(10, 6), facecolor=COLORS['bg'])
+
+    instincts = [
+        'Extend\nfrom Atari', 'Hane vs\nTsuke', 'Hane at\nHead of 2',
+        'Stretch from\nKosumi', 'Block the\nAngle', 'Connect vs\nPeep',
+        'Block the\nThrust', 'Stretch from\nBump'
+    ]
+
+    # Benchmark results (model vs random)
+    model_scores = [0, 0, 5.6, 0, 5.6, 0, 0, 0]  # ~1.3% overall
+    random_baseline = [12.5] * 8  # 1/8 random chance
+
+    x = np.arange(len(instincts))
+    width = 0.35
+
+    bars1 = ax.bar(x - width/2, model_scores, width, label='Our Model',
+                   color=COLORS['highlight_bad'], alpha=0.8,
+                   edgecolor=COLORS['grid'], linewidth=1.5)
+    bars2 = ax.bar(x + width/2, random_baseline, width, label='Random Baseline',
+                   color=COLORS['text'], alpha=0.3,
+                   edgecolor=COLORS['grid'], linewidth=1.5)
+
+    ax.axhline(y=100, color=COLORS['highlight_good'], linestyle='--',
+              linewidth=2, alpha=0.5, label='Perfect')
+
+    ax.set_ylabel('Accuracy (%)', fontsize=12)
+    ax.set_xticks(x)
+    ax.set_xticklabels(instincts, fontsize=9)
+    ax.set_ylim(0, 110)
+    ax.legend(loc='upper right')
+    ax.set_facecolor(COLORS['bg'])
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    # Overall score annotation
+    ax.text(3.5, 90, 'Overall: 1.3%', fontsize=16, fontweight='bold',
+           color=COLORS['highlight_bad'], ha='center',
+           bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+
+    ax.set_title("Learning to See: 8 Basic Instincts Benchmark\n"
+                "Before we run, we crawl",
+                fontsize=14, color=COLORS['text'], pad=10)
+
+    plt.tight_layout()
+    plt.savefig(IMAGES_DIR / 'learning-to-see-benchmark.png', dpi=150, facecolor=COLORS['bg'],
+                bbox_inches='tight')
+    plt.close()
+    print("Generated: learning-to-see-benchmark.png")
+
+
+def generate_hero_image(slug, board_pattern='random', title_overlay=None):
+    """Generate a hero image for a post with Go board aesthetic."""
+    fig, ax = plt.subplots(1, 1, figsize=(12, 4), facecolor=COLORS['board'])
+
+    # Create wide board view (cropped top portion of 19x19)
+    size = 19
+    ax.set_xlim(-0.5, size - 0.5)
+    ax.set_ylim(size - 7.5, size - 0.5)  # Show top 7 rows
+    ax.set_facecolor(COLORS['board'])
+
+    # Grid lines
+    for i in range(size):
+        ax.axhline(y=i, color=COLORS['grid'], linewidth=0.5, alpha=0.4)
+        ax.axvline(x=i, color=COLORS['grid'], linewidth=0.5, alpha=0.4)
+
+    # Star points visible in top portion
+    for x, y in [(3, 15), (9, 15), (15, 15)]:
+        circle = patches.Circle((x, y), 0.12, color=COLORS['grid'], alpha=0.6)
+        ax.add_patch(circle)
+
+    np.random.seed(hash(slug) % 2**32)
+
+    if board_pattern == 'opening':
+        # Classic opening pattern
+        stones = [
+            ('black', 3, 16), ('white', 15, 16), ('black', 16, 3),
+            ('white', 3, 3), ('black', 9, 16), ('white', 16, 9),
+        ]
+    elif board_pattern == 'battle':
+        # Mid-game fighting
+        stones = []
+        for _ in range(15):
+            x, y = np.random.randint(2, 17), np.random.randint(12, 18)
+            color = 'black' if np.random.random() > 0.5 else 'white'
+            stones.append((color, x, y))
+    elif board_pattern == 'instincts':
+        # Show some instinct patterns scattered
+        stones = [
+            ('black', 4, 15), ('white', 5, 15), ('white', 4, 14), ('white', 3, 15),  # Atari
+            ('black', 10, 16), ('white', 11, 16),  # Tsuke
+            ('black', 14, 15), ('black', 16, 15), ('white', 15, 16),  # Peep
+        ]
+    elif board_pattern == 'research':
+        # Sparse, contemplative
+        stones = [
+            ('black', 3, 16), ('white', 15, 16), ('black', 16, 14),
+        ]
+    elif board_pattern == 'code':
+        # Grid-like pattern suggesting code/structure
+        stones = []
+        for i in range(3, 16, 4):
+            for j in range(13, 18, 2):
+                if np.random.random() > 0.3:
+                    color = 'black' if (i + j) % 2 == 0 else 'white'
+                    stones.append((color, i, j))
+    else:  # random
+        stones = []
+        for _ in range(8):
+            x, y = np.random.randint(1, 18), np.random.randint(12, 18)
+            color = 'black' if np.random.random() > 0.5 else 'white'
+            stones.append((color, x, y))
+
+    for color, x, y in stones:
+        if 12 <= y <= 18:  # Only draw if visible
+            draw_stone(ax, x, y, color)
+
+    ax.axis('off')
+
+    plt.tight_layout(pad=0)
+    plt.savefig(HERO_DIR / f'{slug}.png', dpi=100, facecolor=COLORS['board'],
+                bbox_inches='tight', pad_inches=0)
+    plt.close()
+    print(f"Generated hero: {slug}.png")
+
+
+def generate_all_heroes():
+    """Generate hero images for all posts."""
+    print("\n🖼️ Generating hero images...\n")
+
+    heroes = [
+        ('a-journey-begins', 'opening'),
+        ('first-steps', 'opening'),
+        ('the-wall', 'battle'),
+        ('standing-on-shoulders', 'research'),
+        ('neurosymbolic-harmony', 'battle'),
+        ('eight-instincts', 'instincts'),
+        ('from-python-to-browser', 'code'),
+        ('footsteps-of-giants', 'research'),
+        ('learning-to-see', 'instincts'),
+        ('tester-cest-douter', 'code'),
+        ('adaptive-curriculum', 'battle'),
+        ('the-gift-of-sight', 'battle'),
+    ]
+
+    for slug, pattern in heroes:
+        generate_hero_image(slug, pattern)
+
+    print(f"\n✅ Hero images generated in {HERO_DIR}")
+
+
 def generate_all():
     """Generate all illustrations."""
     print("\n📸 Generating blog illustrations...\n")
 
+    # Core illustrations
     generate_capture_rule()
     generate_wall_problem()
     generate_mcts_tree()
@@ -666,6 +1121,19 @@ def generate_all():
     generate_ladder()
     generate_tactical_results()
     generate_hybrid_architecture()
+
+    # Sensei's 8 Basic Instincts
+    generate_eight_basic_instincts()
+    generate_learning_to_see()
+
+    # Post-specific illustrations
+    generate_journey_begins()
+    generate_from_python_to_browser()
+    generate_footsteps_research()
+    generate_tester_cest_douter()
+
+    # Hero images for all posts
+    generate_all_heroes()
 
     print("\n✅ All illustrations generated!")
     print(f"   Location: {IMAGES_DIR}")
