@@ -37,16 +37,18 @@ jobs:
       - name: Build Vite app
         run: npm run build
 
-      # Build Jekyll blog
+      # Build Jekyll blog to temp location
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./blog
-          destination: ./_site
+          destination: ./_jekyll_out
 
-      # Merge: Copy Vite build into _site/play/
-      - name: Merge Vite app into site
+      # Merge: Combine Jekyll output and Vite build
+      - name: Merge Jekyll and Vite into _site
         run: |
+          mkdir -p ./_site
+          cp -r ./_jekyll_out/* ./_site/
           mkdir -p ./_site/play
           cp -r ./dist/* ./_site/play/
 

@@ -511,9 +511,47 @@
 
 ---
 
-## 🚨 CURRENT STATE (2025-12-19)
+## 🚨 CURRENT STATE (2025-12-20)
 
-**Status**: Browser integration complete. KataGo techniques implemented but untested. Model weak (17.6%).
+**Status**: Instinct benchmark complete (1449 positions). Model baseline 1.3%. Implementing adaptive curriculum.
+
+### Session Summary (2025-12-20)
+
+**Instinct Benchmark Created:**
+- 1449 positions across 8 instincts × 5 board sizes
+- Categories: capture, escape, connect, cut, extend, block, atari, defend
+- Model baseline: **1.3%** overall (0% on captures!)
+
+**New Approach: Adaptive Instinct Curriculum**
+
+The model can't see captures because **nothing tells it captures matter during training**.
+Self-play with random init → no captures in data → model never learns.
+
+**Solution: Wire instincts directly into training loss**
+
+```
+Loss = L_policy + L_value + λ(t) × L_instinct
+
+Where:
+  λ(t) = λ₀ × (1 - instinct_accuracy)
+
+As model masters instincts → λ → 0 → pure RL takes over
+```
+
+**Implementation:**
+1. During each training step, detect instinct opportunities in position
+2. If model's top move != instinct move → add auxiliary loss
+3. Weight decays as benchmark accuracy improves
+4. Model "graduates" from instinct training naturally
+
+**Files:**
+- `training/instinct_benchmark.py` - Generates 1449 test positions
+- `training/train_instincts.py` - Supervised training on instincts
+- `training/benchmarks/instincts/*.json` - Position databases
+
+---
+
+## Previous State (2025-12-19)
 
 ### Session Summary
 
@@ -549,19 +587,20 @@ Throwing more compute at broken training won't help. Fix foundations first.
 
 ### New Strategy: Foundation → Signal → Scale
 
-**Phase 1: Symbolic Tactics (The 8 Instincts)** 🎯 HIGHEST PRIORITY
-Why: Captures shouldn't be "learned" - they should be KNOWN.
-- [ ] TODO - Strengthen TacticalAnalyzer with 8 fundamental instincts:
-  1. **Capture**: If enemy group has 1 liberty, play there
-  2. **Escape**: If own group has 1 liberty, add liberty or capture attacker
-  3. **Extend**: Connect weak groups to strong ones
-  4. **Cut**: Separate enemy groups
-  5. **Block**: Prevent enemy extension
-  6. **Surround**: Reduce enemy liberties
-  7. **Defend**: Protect cutting points
-  8. **Invade**: Enter enemy territory
-- [ ] TODO - Hard-code capture moves into policy prior (100% boost for atari captures)
-- [ ] TODO - Validate with benchmark: Capture accuracy must be >80% symbolically
+**Phase 1: Adaptive Instinct Curriculum** 🎯 HIGHEST PRIORITY
+Why: Model can't learn captures if captures never appear in training data.
+- [x] DONE - Instinct benchmark generator (1449 positions)
+- [x] DONE - 8 instincts: Capture, Escape, Connect, Cut, Extend, Block, Atari, Defend
+- [x] DONE - Model baseline: 1.3% overall, 0% captures
+- [ ] TODO - Implement `InstinctLoss` class:
+  - Detect instinct opportunities in training positions
+  - Add auxiliary loss for missed instinct moves
+  - Adaptive weight: λ(t) = λ₀ × (1 - benchmark_accuracy)
+- [ ] TODO - Curriculum injection:
+  - Early: 30% instinct positions in replay buffer
+  - Mid: 10% instinct positions
+  - Late: pure self-play (instincts mastered)
+- [ ] TODO - Success criteria: Capture >80%, Escape >60%, Overall >50%
 
 **Phase 2: Dense Training Signal** 🔥 HIGH PRIORITY
 Why: Win/loss is 1 bit per game. Ownership is 81 floats per position.
