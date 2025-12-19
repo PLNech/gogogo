@@ -23,6 +23,7 @@ from board import Board
 from model import GoNet, load_checkpoint
 from config import Config
 from mcts import MCTS, NNCache
+from instinct_loss import InstinctCurriculum, InstinctDetector
 
 
 @dataclass
@@ -57,7 +58,8 @@ class SelfPlayTrainer:
     """Self-play trainer for regular Go with parallel game execution."""
 
     def __init__(self, config: Config, checkpoint_path: Optional[str] = None,
-                 num_parallel: int = 16):
+                 num_parallel: int = 16, use_curriculum: bool = False,
+                 instinct_lambda: float = 1.0):
         self.config = config
         self.num_parallel = num_parallel
         self.use_tactical_features = False  # Will be set based on loaded model
@@ -97,6 +99,18 @@ class SelfPlayTrainer:
 
         # Replay buffer
         self.replay_buffer: deque = deque(maxlen=200000)
+
+        # Instinct curriculum (adaptive loss weighting)
+        self.use_curriculum = use_curriculum
+        self.curriculum = None
+        if use_curriculum:
+            self.curriculum = InstinctCurriculum(
+                lambda_0=instinct_lambda,
+                min_lambda=0.05,
+                temperature=2.0,
+                device=config.device
+            )
+            print(f"Instinct curriculum enabled (λ₀={instinct_lambda})")
 
         # Stats
         self.games_played = 0
@@ -380,13 +394,13 @@ class SelfPlayTrainer:
         batch = random.sample(list(self.replay_buffer), batch_size)
 
         # Prepare tensors
-        boards = torch.FloatTensor(np.stack([s.board_tensor for s in batch])).to(self.config.device)
+        boards_tensor = torch.FloatTensor(np.stack([s.board_tensor for s in batch])).to(self.config.device)
         policy_targets = torch.FloatTensor(np.stack([s.policy_target for s in batch])).to(self.config.device)
         value_targets = torch.FloatTensor([s.value_target for s in batch]).to(self.config.device)
 
         # Forward pass
         self.model.train()
-        log_policy, value = self.model(boards)[:2]
+        log_policy, value = self.model(boards_tensor)[:2]
 
         # Policy loss (cross entropy with MCTS policy)
         policy_loss = -torch.sum(policy_targets * log_policy, dim=1).mean()
@@ -394,8 +408,28 @@ class SelfPlayTrainer:
         # Value loss (MSE)
         value_loss = F.mse_loss(value.squeeze(), value_targets)
 
+        # Instinct loss (adaptive curriculum)
+        instinct_loss = torch.tensor(0.0, device=self.config.device)
+        instinct_metrics = {}
+        if self.use_curriculum and self.curriculum is not None:
+            # Reconstruct Board objects from tensors for instinct detection
+            boards_for_instinct = []
+            for s in batch:
+                board = Board(self.config.board_size)
+                # Extract stone positions from tensor (planes 0 and 1)
+                tensor = s.board_tensor
+                board.board = np.zeros((self.config.board_size, self.config.board_size), dtype=np.int8)
+                board.board[tensor[0] > 0.5] = 1   # Black stones
+                board.board[tensor[1] > 0.5] = -1  # White stones
+                board.current_player = 1  # Assume black (we lose this info in tensor)
+                boards_for_instinct.append(board)
+
+            instinct_loss, instinct_metrics = self.curriculum.compute_loss(
+                boards_for_instinct, log_policy
+            )
+
         # Total loss
-        loss = policy_loss + value_loss
+        loss = policy_loss + value_loss + instinct_loss
 
         # Backward pass
         self.optimizer.zero_grad()
@@ -405,11 +439,17 @@ class SelfPlayTrainer:
 
         self.step += 1
 
-        return {
+        metrics = {
             'loss': loss.item(),
             'policy_loss': policy_loss.item(),
             'value_loss': value_loss.item(),
         }
+        if self.use_curriculum:
+            metrics['instinct_loss'] = float(instinct_loss)
+            metrics['instinct_lambda'] = self.curriculum.current_lambda
+            metrics.update(instinct_metrics)
+
+        return metrics
 
     def run_training(self, num_games: int = 1000,
                      games_per_train: int = 10,

@@ -21,7 +21,7 @@ Basic instincts:
 CAPTURE — take what's yours       ESCAPE — save what's dying
 
     . ● .                             . ○ .
-    ● ○ ★  ← fill last liberty        ○ ● ★  ← extend to live
+    ● ○ ★  ← fill last liberty        ○ ● ★  ← extend to breathe
     . ● .                             . ○ .
 ```
 
@@ -35,15 +35,16 @@ CONNECT — join your friends       CUT — divide your enemies
 ATARI — threaten                  DEFEND — protect
 
     . ● .                             ● . ●
-    . ○ ★  ← reduce to 1 liberty      . ★ .  ← guard the cut
+    ● ○ ★  ← reduce to 1 liberty      . ★ .  ← guard the cut
     . . .                             . ○ .
 ```
 
 ```
 EXTEND — breathe                  BLOCK — deny
 
-    ● . ★  ← gain space               ○ . . .
-                                      . . ★ .  ← stop expansion
+    . . .                             . ○ .
+    ● ★ .  ← grow outward             . ★ .  ← stop expansion
+    . . .                             . . .
 ```
 
 Eight ways to see. A child learns them in their first game.
