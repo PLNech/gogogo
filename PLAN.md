@@ -511,9 +511,50 @@
 
 ---
 
-## 🚨 CURRENT STATE (2025-12-12)
+## 🚨 CURRENT STATE (2025-12-19)
 
-**Status**: Neurosymbolic approach implemented. Training with all KataGo enhancements + tactical verification.
+**Status**: Browser integration complete. KataGo techniques implemented but untested. Model weak (17.6%).
+
+### Session Summary
+
+**What Works:**
+| Component | Status | Notes |
+|-----------|--------|-------|
+| ONNX export pipeline | ✅ DONE | PyTorch → ONNX (7.3MB) |
+| Browser inference | ✅ DONE | ONNX Runtime Web, Level 6 AI |
+| Board size validation | ✅ DONE | Metadata-driven, 9x9 only |
+| Playwright tests | ✅ DONE | 2 tests passing |
+| Benchmark suite | ✅ DONE | 17 tactical positions |
+
+**What's Implemented (Untested):**
+| Technique | Code | Tests | Notes |
+|-----------|------|-------|-------|
+| A.4 Shaped Dirichlet | ✅ | ❌ | Concentrate noise on high-logit moves |
+| A.5 Root Policy Temp | ✅ | ❌ | 1.25 early → 1.1 late |
+| A.6 Soft Policy Head | ✅ | ❌ | Head exists, loss not wired |
+
+**Model Quality (Current 9x9):**
+```
+Overall: 17.6% Top-1 accuracy
+  Capture:  0.0% (8 positions) — FAILING
+  Ladder:  20.0% (5 positions) — WEAK
+  Snapback: 50.0% (4 positions) — OK
+```
+
+**Next Steps (Priority Order):**
+1. Write pytest tests for A.4, A.5 → verify implementations work
+2. Wire A.6 soft policy loss into self-play training
+3. Train with all KataGo improvements
+4. Re-benchmark → expect improvement on captures
+
+**Blog Posts:**
+- 2025-12-19: "From Python to Browser" (Integration)
+- 2025-12-20: "Footsteps of Giants" (Research)
+- 2025-12-21: "Tester c'est Douter" (Reflection)
+
+---
+
+## Previous State (2025-12-12)
 
 ### KataGo Techniques Implemented ✅
 - [x] DONE - Curriculum learning (tactical positions first)
