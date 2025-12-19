@@ -13,7 +13,16 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+import matplotlib.font_manager as fm
 import numpy as np
+
+# Configure Japanese font support
+jp_fonts = [f.name for f in fm.fontManager.ttflist if 'CJK' in f.name or 'Noto' in f.name]
+if jp_fonts:
+    plt.rcParams['font.family'] = ['Noto Serif CJK JP', 'Noto Sans CJK JP', 'DejaVu Sans'] + jp_fonts
+else:
+    # Fallback - use romaji instead of kanji
+    print("Warning: No CJK fonts found, Japanese text may not render correctly")
 
 # Paths
 BLOG_DIR = Path(__file__).parent.parent

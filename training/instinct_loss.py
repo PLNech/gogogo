@@ -34,6 +34,7 @@ from dataclasses import dataclass
 from board import Board
 from tactics import TacticalAnalyzer
 from instincts import InstinctAnalyzer
+from sensei_instincts import SenseiInstinctDetector
 
 
 @dataclass
@@ -52,20 +53,32 @@ class InstinctDetector:
     """
 
     # Priority order - captures are most important
+    # Combines tactical priorities with Sensei's 8 instincts
     PRIORITIES = {
-        'capture': 3.0,   # Taking opponent's stones
-        'escape': 2.5,    # Saving own stones
-        'atari': 2.0,     # Putting opponent in atari
-        'connect': 1.5,   # Joining groups
-        'cut': 1.5,       # Separating opponent groups
-        'defend': 1.2,    # Protecting weak points
-        'block': 1.0,     # Preventing opponent extension
-        'extend': 1.0,    # Gaining space
+        # Tactical (high priority)
+        'capture': 3.0,           # Taking opponent's stones
+        'escape': 2.5,            # Saving own stones (= extend_from_atari)
+        'atari': 2.0,             # Putting opponent in atari
+        'connect': 1.5,           # Joining groups (= connect_vs_peep)
+        'cut': 1.5,               # Separating opponent groups
+        'defend': 1.2,            # Protecting weak points
+        'block': 1.0,             # Preventing opponent extension
+        'extend': 1.0,            # Gaining space
+        # Sensei's 8 Instincts
+        'extend_from_atari': 3.0, # アタリから伸びよ (survival)
+        'connect_vs_peep': 2.5,   # ノゾキにはツギ (shape integrity)
+        'block_the_thrust': 2.0,  # ツキアタリには (prevent cut)
+        'hane_vs_tsuke': 1.5,     # ツケにはハネ (development)
+        'hane_at_head_of_two': 1.5,  # 二子の頭にハネ (attack)
+        'stretch_from_kosumi': 1.2,  # コスミから伸びよ (shape)
+        'block_the_angle': 1.2,   # カケにはオサエ (defense)
+        'stretch_from_bump': 1.0, # ブツカリから伸びよ (shape)
     }
 
     def __init__(self):
         self.tactical = TacticalAnalyzer()
         self.instinct = InstinctAnalyzer()
+        self.sensei = SenseiInstinctDetector()
 
     def detect_capture(self, board: Board) -> Optional[InstinctOpportunity]:
         """Detect if current player can capture opponent stones."""

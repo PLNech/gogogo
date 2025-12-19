@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The Gift of Sight"
-date: 2025-12-25
+date: 2026-01-07
 phase: "Synthesis"
 excerpt: "Building a dashboard to see what our AI sees. Observability as meditation."
 ---

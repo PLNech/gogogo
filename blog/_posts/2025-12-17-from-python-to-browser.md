@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "From Python to Browser"
-date: 2025-12-19
+date: 2025-12-17
 phase: "Integration"
 excerpt: "Exporting neural networks to ONNX, building benchmarks, and the joy of seeing your model play in the browser."
 ---

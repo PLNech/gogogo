@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Footsteps of Giants"
-date: 2025-12-20
+date: 2025-12-19
 phase: "Research"
 excerpt: "On the papers that light our path, the doors we chose not to open, and the questions that remain."
 ---

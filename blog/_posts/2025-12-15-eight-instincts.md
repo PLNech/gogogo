@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Eight Instincts"
-date: 2025-12-14
+date: 2025-12-15
 phase: "Wisdom"
 excerpt: "Test first, then implement. Define truth before seeking it. The 8 basic instincts meet TDD."
 ---

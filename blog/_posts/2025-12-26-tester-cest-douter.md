@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Tester c'est Douter"
-date: 2025-12-21
+date: 2025-12-26
 phase: "Reflection"
 excerpt: "On the code we wrote without tests, the French art of confident doubt, and what testing means when your pair programmer is a neural network."
 ---
