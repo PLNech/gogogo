@@ -1,0 +1,95 @@
+/* Shared board grid component styles */
+
+.board-grid {
+  display: grid;
+  background: #dcb35c;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.board-grid.mini {
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+/* Cells */
+.board-cell {
+  aspect-ratio: 1;
+  border: 1px solid #8b7355;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.board-grid.mini .board-cell {
+  border-width: 0.5px;
+}
+
+/* Interactive mode */
+.board-grid.interactive .board-cell {
+  cursor: pointer;
+}
+
+.board-grid.interactive .board-cell:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Territory highlighting */
+.board-cell.territory-black {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.board-cell.territory-white {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Stones */
+.stone {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stone.black {
+  background: radial-gradient(circle at 30% 30%, #4a4a4a, #1a1a1a);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.stone.white {
+  background: radial-gradient(circle at 30% 30%, #ffffff, #d0d0d0);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.board-grid.mini .stone {
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Stone markers (for move numbers, etc.) */
+.stone-marker {
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
+.stone.black .stone-marker {
+  color: white;
+}
+
+.stone.white .stone-marker {
+  color: #333;
+}
+
+/* Last move highlight */
+.board-cell.last-move .stone::after {
+  content: '';
+  position: absolute;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: rgba(255, 0, 0, 0.5);
+}

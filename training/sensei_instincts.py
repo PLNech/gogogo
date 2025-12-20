@@ -170,58 +170,72 @@ class SenseiInstinctDetector:
     # =========================================================================
 
     def detect_hane_at_head_of_two(self, board: Board) -> Optional[InstinctResult]:
-        """Detect two consecutive opponent stones where we can play at the head.
+        """Detect 2v2 confrontation where we can play at head of opponent's two.
 
-        Play above two consecutive opponent stones to create weakness.
-        Must be exactly TWO stones (not three or more).
+        This is a 2v2 pattern: our two stones facing their two stones in parallel.
+        Play at the HEAD of opponent's two to wrap around and gain influence.
+
+        Pattern (vertical example):
+            . . * . .    ← Play at head of opponent's two
+            . 0 1 . .    ← Our stone (0) faces their stone (1)
+            . 2 3 . .    ← Our stone (2) faces their stone (3)
         """
         player = board.current_player
         opponent = -player
         head_moves = []
 
-        # Find pairs of opponent stones
-        visited_pairs: Set[Tuple[Tuple[int, int], Tuple[int, int]]] = set()
-
+        # Find pairs of OUR stones first
         for r in range(board.size):
             for c in range(board.size):
-                if board.board[r, c] != opponent:
+                if board.board[r, c] != player:
                     continue
 
-                # Check for adjacent opponent stone (horizontal or vertical)
-                for dr, dc in [(0, 1), (1, 0)]:  # Only check right and down to avoid duplicates
+                # Check for adjacent friendly stone (our pair)
+                for dr, dc in [(0, 1), (1, 0)]:  # Right and down to avoid duplicates
                     nr, nc = r + dr, c + dc
                     if not self._in_bounds(board, nr, nc):
                         continue
-                    if board.board[nr, nc] != opponent:
+                    if board.board[nr, nc] != player:
                         continue
 
-                    # Found a pair! Check it's exactly two (no third stone continuing)
-                    # Check both ends
-                    prev_r, prev_c = r - dr, c - dc
-                    next_r, next_c = nr + dr, nc + dc
+                    # We have a pair of our stones at (r,c) and (nr,nc)
+                    # Check for PARALLEL opponent pair
+                    # The opponent pair should be adjacent perpendicular to our pair direction
 
-                    has_prev = (self._in_bounds(board, prev_r, prev_c) and
-                               board.board[prev_r, prev_c] == opponent)
-                    has_next = (self._in_bounds(board, next_r, next_c) and
-                               board.board[next_r, next_c] == opponent)
+                    # Perpendicular directions
+                    if dr == 0:  # Our pair is horizontal
+                        perp_dirs = [(-1, 0), (1, 0)]  # Check above and below
+                    else:  # Our pair is vertical
+                        perp_dirs = [(0, -1), (0, 1)]  # Check left and right
 
-                    if has_prev or has_next:
-                        # Part of a longer chain, not "head of two"
-                        continue
+                    for pdr, pdc in perp_dirs:
+                        # Check if opponent has parallel pair
+                        opp1_r, opp1_c = r + pdr, c + pdc
+                        opp2_r, opp2_c = nr + pdr, nc + pdc
 
-                    # Valid pair! Head positions are at both ends
-                    pair = ((r, c), (nr, nc))
-                    if pair in visited_pairs:
-                        continue
-                    visited_pairs.add(pair)
+                        if not (self._in_bounds(board, opp1_r, opp1_c) and
+                                self._in_bounds(board, opp2_r, opp2_c)):
+                            continue
 
-                    # Head at the "next" end
-                    if self._in_bounds(board, next_r, next_c) and board.board[next_r, next_c] == 0:
-                        head_moves.append((next_r, next_c))
+                        if (board.board[opp1_r, opp1_c] == opponent and
+                            board.board[opp2_r, opp2_c] == opponent):
+                            # Found 2v2! Now find the head of opponent's two
+                            # Head is at the extension of their pair
 
-                    # Head at the "prev" end
-                    if self._in_bounds(board, prev_r, prev_c) and board.board[prev_r, prev_c] == 0:
-                        head_moves.append((prev_r, prev_c))
+                            # Check both ends of opponent's pair
+                            # "prev" end (before first opponent stone in pair direction)
+                            prev_r, prev_c = opp1_r - dr, opp1_c - dc
+                            # "next" end (after second opponent stone in pair direction)
+                            next_r, next_c = opp2_r + dr, opp2_c + dc
+
+                            # Add valid head moves
+                            if (self._in_bounds(board, prev_r, prev_c) and
+                                board.board[prev_r, prev_c] == 0):
+                                head_moves.append((prev_r, prev_c))
+
+                            if (self._in_bounds(board, next_r, next_c) and
+                                board.board[next_r, next_c] == 0):
+                                head_moves.append((next_r, next_c))
 
         if head_moves:
             return InstinctResult(
@@ -284,10 +298,25 @@ class SenseiInstinctDetector:
     # 5. BLOCK THE ANGLE (カケにはオサエ)
     # =========================================================================
 
-    def detect_block_the_angle(self, board: Board) -> Optional[InstinctResult]:
-        """Detect opponent angle attack (kake) and find block moves.
+    # Knight's move (keima) offsets - NOT diagonals!
+    KEIMA_OFFSETS = [
+        (-1, -2), (-1, 2), (1, -2), (1, 2),   # 1 vertical, 2 horizontal
+        (-2, -1), (-2, 1), (2, -1), (2, 1),   # 2 vertical, 1 horizontal
+    ]
 
-        Respond to diagonal threats by blocking.
+    def detect_block_the_angle(self, board: Board) -> Optional[InstinctResult]:
+        """Detect opponent knight's move (keima) approach and find block moves.
+
+        When opponent plays a knight's move approach to your stone, block diagonally.
+
+        Pattern:
+            . . . . .
+            . . . B .    ← Your stone
+            . . * . .    ← Block diagonally
+            . W . . .    ← Opponent's knight's move approach
+            . . . . .
+
+        The block is played diagonally between your stone and opponent's keima.
         """
         player = board.current_player
         opponent = -player
@@ -298,20 +327,29 @@ class SenseiInstinctDetector:
                 if board.board[r, c] != player:
                     continue
 
-                # Check for diagonal opponent (angle attack)
-                for dr, dc in self.DIAGONALS:
+                # Check for opponent knight's move (keima) approach
+                for dr, dc in self.KEIMA_OFFSETS:
                     nr, nc = r + dr, c + dc
                     if not self._in_bounds(board, nr, nc):
                         continue
                     if board.board[nr, nc] != opponent:
                         continue
 
-                    # Found angle attack! Block positions are orthogonally adjacent
-                    # to our stone, toward the attacker
-                    block_candidates = [(r + dr, c), (r, c + dc)]
-                    for br, bc in block_candidates:
-                        if self._in_bounds(board, br, bc) and board.board[br, bc] == 0:
-                            block_moves.append((br, bc))
+                    # Found keima approach! Block is diagonal between us and opponent
+                    # The block goes in the direction that narrows the gap
+                    # For keima at (r+dr, c+dc), block is at the "waist" of the knight's move
+
+                    # Determine block position - it's the diagonal step toward the keima
+                    if abs(dr) == 1:  # Keima is 1 row, 2 cols away
+                        # Block is 1 step toward opponent in both directions
+                        block_r = r + dr
+                        block_c = c + (1 if dc > 0 else -1)
+                    else:  # Keima is 2 rows, 1 col away
+                        block_r = r + (1 if dr > 0 else -1)
+                        block_c = c + dc
+
+                    if self._in_bounds(board, block_r, block_c) and board.board[block_r, block_c] == 0:
+                        block_moves.append((block_r, block_c))
 
         if block_moves:
             return InstinctResult(
@@ -370,40 +408,75 @@ class SenseiInstinctDetector:
     # =========================================================================
 
     def detect_block_the_thrust(self, board: Board) -> Optional[InstinctResult]:
-        """Detect opponent thrust between our stones.
+        """Detect opponent thrust into our stone formation.
 
-        When opponent thrusts between your stones, block it.
+        When opponent thrusts into your wall (adjacent to a stone in your line),
+        block by extending the wall.
+
+        Pattern (vertical wall):
+            . . . . .
+            . . * . .    ← Black BLOCKS by extending wall
+            . B W . .    ← White THRUSTS adjacent to our stone
+            . B . . .    ← Our stones in column (wall)
+            . . . . .
+
+        The thrust is perpendicular to our wall. Block extends the wall.
         """
         player = board.current_player
         opponent = -player
         block_moves = []
 
-        # Find empty points between our stones where opponent threatens
+        # Find our stones that are part of a wall (2+ in a line)
         for r in range(board.size):
             for c in range(board.size):
-                if board.board[r, c] != 0:
+                if board.board[r, c] != player:
                     continue
 
-                # Check if this empty point has our stones on opposite sides
-                # and opponent threatening from another direction
+                # Check if this stone is part of a wall in each direction
+                for wall_dr, wall_dc in [(0, 1), (1, 0)]:  # horizontal and vertical walls
+                    # Check for adjacent friendly stone forming a wall
+                    wall_r, wall_c = r + wall_dr, c + wall_dc
+                    if not self._in_bounds(board, wall_r, wall_c):
+                        continue
+                    if board.board[wall_r, wall_c] != player:
+                        continue
 
-                # Horizontal check: our stones at (r, c-1) and (r, c+1)
-                if (self._in_bounds(board, r, c-1) and self._in_bounds(board, r, c+1) and
-                    board.board[r, c-1] == player and board.board[r, c+1] == player):
-                    # Check for opponent thrust from above or below
-                    for thrust_r in [r-1, r+1]:
-                        if self._in_bounds(board, thrust_r, c) and board.board[thrust_r, c] == opponent:
-                            block_moves.append((r, c))
-                            break
+                    # Found a wall segment! (r,c) and (wall_r, wall_c)
+                    # Check for thrust perpendicular to the wall
+                    if wall_dr == 0:  # Horizontal wall (stones side by side)
+                        perp_dirs = [(-1, 0), (1, 0)]  # thrust from above/below
+                    else:  # Vertical wall (stones stacked)
+                        perp_dirs = [(0, -1), (0, 1)]  # thrust from left/right
 
-                # Vertical check: our stones at (r-1, c) and (r+1, c)
-                if (self._in_bounds(board, r-1, c) and self._in_bounds(board, r+1, c) and
-                    board.board[r-1, c] == player and board.board[r+1, c] == player):
-                    # Check for opponent thrust from left or right
-                    for thrust_c in [c-1, c+1]:
-                        if self._in_bounds(board, r, thrust_c) and board.board[r, thrust_c] == opponent:
-                            block_moves.append((r, c))
-                            break
+                    # Check both stones in the wall for adjacent opponent thrust
+                    for stone_r, stone_c in [(r, c), (wall_r, wall_c)]:
+                        for perp_dr, perp_dc in perp_dirs:
+                            thrust_r = stone_r + perp_dr
+                            thrust_c = stone_c + perp_dc
+                            if not self._in_bounds(board, thrust_r, thrust_c):
+                                continue
+                            if board.board[thrust_r, thrust_c] != opponent:
+                                continue
+
+                            # Found thrust! Block by extending the wall in thrust direction
+                            # The block position is adjacent to the opponent stone,
+                            # continuing our wall
+                            block_r = thrust_r + perp_dr
+                            block_c = thrust_c + perp_dc
+
+                            # Also consider blocking by extending parallel to wall
+                            # at the head of the thrust (same row/col as thrust but extending wall)
+                            if wall_dr == 0:  # Horizontal wall
+                                # Block above/below the thrust stone in wall direction
+                                block_along_r = thrust_r
+                                block_along_c = thrust_c + wall_dc if (thrust_c + wall_dc) not in [c, wall_c] else thrust_c - wall_dc
+                            else:  # Vertical wall
+                                block_along_r = thrust_r + wall_dr if (thrust_r + wall_dr) not in [r, wall_r] else thrust_r - wall_dr
+                                block_along_c = thrust_c
+
+                            # Primary block: extending in direction of thrust (blocking their path)
+                            if self._in_bounds(board, block_r, block_c) and board.board[block_r, block_c] == 0:
+                                block_moves.append((block_r, block_c))
 
         if block_moves:
             return InstinctResult(

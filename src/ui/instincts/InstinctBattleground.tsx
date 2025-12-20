@@ -1,21 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './InstinctBattleground.css'
 
 // Instinct data from our 2000-game Atari Go experiment
+// Patterns use numbered stones: even (0,2,4,6,8) = Black, odd (1,3,5,7,9) = White
+// * marks the instinct move
 const INSTINCT_DATA = {
   hane_vs_tsuke: {
     name: 'Hane vs Tsuke',
     japanese: 'ツケにはハネ',
-    description: 'When opponent attaches, wrap around with hane',
-    advantage: 12.1,
-    fired: 75201,
-    followRate: 12.8,
+    description: 'When opponent attaches to your stone, wrap around with hane',
+    advantage: 13.2,
+    fired: 54397,
+    followRate: 19.7,
     rank: 1,
+    // 0: Black stone, 1: White attaches, *: Black hane
     pattern: [
       '  . . . . .  ',
-      '  . . B . .  ',
-      '  . B W . .  ',
-      '  . . H . .  ',
+      '  . . . . .  ',
+      '  . . 0 1 .  ',
+      '  . . . * .  ',
       '  . . . . .  ',
     ],
     verdict: 'Champion',
@@ -23,16 +26,17 @@ const INSTINCT_DATA = {
   extend_from_atari: {
     name: 'Extend from Atari',
     japanese: 'アタリから伸びよ',
-    description: 'When your stone is in atari, extend to gain liberties',
-    advantage: 5.2,
-    fired: 36985,
-    followRate: 4.9,
+    description: 'When your stone is in atari (1 liberty), extend to escape',
+    advantage: 9.7,
+    fired: 19337,
+    followRate: 8.3,
     rank: 2,
+    // 0: Black in center, 1,3,5,7: White surrounds → atari, *: extend
     pattern: [
       '  . . . . .  ',
-      '  . W W . .  ',
-      '  . W B W .  ',
-      '  . . E . .  ',
+      '  . 3 1 . .  ',
+      '  . 5 0 7 .  ',
+      '  . . * . .  ',
       '  . . . . .  ',
     ],
     verdict: 'Confirmed',
@@ -40,16 +44,17 @@ const INSTINCT_DATA = {
   block_the_thrust: {
     name: 'Block the Thrust',
     japanese: 'ツキアタリには',
-    description: 'Block when opponent thrusts into your formation',
-    advantage: 3.7,
-    fired: 38171,
-    followRate: 5.5,
+    description: 'Block when opponent thrusts into your stone formation',
+    advantage: 9.6,
+    fired: 59893,
+    followRate: 13.3,
     rank: 3,
+    // 0,2: Black formation, 3: White thrusts, *: Black blocks
     pattern: [
       '  . . . . .  ',
-      '  . B . B .  ',
-      '  . . W . .  ',
-      '  . . H . .  ',
+      '  . . * . .  ',
+      '  . 0 3 . .  ',
+      '  . 2 . . .  ',
       '  . . . . .  ',
     ],
     verdict: 'Confirmed',
@@ -57,16 +62,17 @@ const INSTINCT_DATA = {
   block_the_angle: {
     name: 'Block the Angle',
     japanese: 'カケにはオサエ',
-    description: 'Block opponent\'s diagonal approach',
+    description: 'Block when opponent makes knight\'s move approach',
     advantage: 3.5,
-    fired: 76785,
-    followRate: 21.4,
+    fired: 64273,
+    followRate: 22.5,
     rank: 4,
+    // 0: Black stone, 1: White knight's move, *: Black blocks
     pattern: [
       '  . . . . .  ',
-      '  . . W . .  ',
-      '  . . H . .  ',
-      '  . B . . .  ',
+      '  . . . 0 .  ',
+      '  . . * . .  ',
+      '  . 1 . . .  ',
       '  . . . . .  ',
     ],
     verdict: 'Works',
@@ -75,15 +81,16 @@ const INSTINCT_DATA = {
     name: 'Connect vs Peep',
     japanese: 'ノゾキにはツギ',
     description: '"Even a moron connects against a peep"',
-    advantage: 2.7,
-    fired: 54683,
-    followRate: 9.3,
+    advantage: 3.4,
+    fired: 65163,
+    followRate: 16.2,
     rank: 5,
+    // 0,2: Black stones with gap, 3: White peeps, *: Black connects
     pattern: [
       '  . . . . .  ',
-      '  . B . B .  ',
-      '  . . C . .  ',
-      '  . . W . .  ',
+      '  . 0 . 2 .  ',
+      '  . . * . .  ',
+      '  . . 3 . .  ',
       '  . . . . .  ',
     ],
     verdict: '"Even a moron"',
@@ -91,16 +98,17 @@ const INSTINCT_DATA = {
   stretch_from_bump: {
     name: 'Stretch from Bump',
     japanese: 'ブツカリから伸びよ',
-    description: 'When opponent bumps with support, stretch away',
-    advantage: 2.1,
-    fired: 39619,
-    followRate: 5.7,
+    description: 'When bumping opponent who has support, stretch (don\'t hane)',
+    advantage: 3.2,
+    fired: 52845,
+    followRate: 11.5,
     rank: 6,
+    // 1: White support, 3: White main, 4: Black bumps, *: stretch
     pattern: [
       '  . . . . .  ',
-      '  . . W W .  ',
-      '  . . B . .  ',
-      '  . . S . .  ',
+      '  . . * . .  ',
+      '  . 1 4 . .  ',
+      '  . . 3 . .  ',
       '  . . . . .  ',
     ],
     verdict: 'Slight positive',
@@ -109,15 +117,16 @@ const INSTINCT_DATA = {
     name: 'Stretch from Kosumi',
     japanese: 'コスミから伸びよ',
     description: 'Stretch away from opponent\'s diagonal contact',
-    advantage: 2.0,
-    fired: 76397,
-    followRate: 25.8,
+    advantage: 3.0,
+    fired: 79665,
+    followRate: 48.2,
     rank: 7,
+    // 0: Black stone, 1: White diagonal contact, *: Black stretches
     pattern: [
       '  . . . . .  ',
-      '  . . W . .  ',
-      '  . . . B .  ',
-      '  . . . S .  ',
+      '  . . 1 . .  ',
+      '  . . . 0 .  ',
+      '  . . . * .  ',
       '  . . . . .  ',
     ],
     verdict: 'Slight positive',
@@ -125,19 +134,20 @@ const INSTINCT_DATA = {
   hane_at_head_of_two: {
     name: 'Hane at Head of Two',
     japanese: '二子の頭にハネ',
-    description: 'Play at the head of two opponent stones',
-    advantage: -0.9,
-    fired: 68468,
-    followRate: 10.9,
+    description: '2v2 confrontation: play at the head of opponent\'s two stones',
+    advantage: 1.9,
+    fired: 45171,
+    followRate: 8.4,
     rank: 8,
+    // 0,2: Black, 1,3: White → 2v2 forms, *: Black at head
     pattern: [
       '  . . . . .  ',
-      '  . . H . .  ',
-      '  . . W . .  ',
-      '  . . W . .  ',
+      '  . . * . .  ',
+      '  . 0 1 . .  ',
+      '  . 2 3 . .  ',
       '  . . . . .  ',
     ],
-    verdict: 'Strategic (needs time)',
+    verdict: 'Strategic',
   },
 }
 
@@ -187,17 +197,35 @@ function PatternBoard({ pattern, size = 5 }: PatternBoardProps) {
           const x = padding + c * cellSize
           const y = padding + r * cellSize
 
-          if (char === 'B') {
-            return <circle key={`${r}-${c}`} cx={x} cy={y} r={11} fill="#1a1a1a" stroke="#000" />
-          } else if (char === 'W') {
-            return <circle key={`${r}-${c}`} cx={x} cy={y} r={11} fill="#f5f5f5" stroke="#666" />
-          } else if (char === 'H' || char === 'E' || char === 'C' || char === 'S') {
-            // Highlighted move
+          // Numbered stones: even (0,2,4,6,8) = Black, odd (1,3,5,7,9) = White
+          const num = parseInt(char)
+          if (!isNaN(num)) {
+            const isBlack = num % 2 === 0
+            return (
+              <g key={`${r}-${c}`}>
+                <circle
+                  cx={x} cy={y} r={11}
+                  fill={isBlack ? "#1a1a1a" : "#f5f5f5"}
+                  stroke={isBlack ? "#000" : "#666"}
+                />
+                <text
+                  x={x} y={y + 4}
+                  textAnchor="middle"
+                  fill={isBlack ? "#fff" : "#333"}
+                  fontSize={10}
+                  fontWeight="bold"
+                >
+                  {num}
+                </text>
+              </g>
+            )
+          } else if (char === '*') {
+            // Instinct move (always Black response)
             return (
               <g key={`${r}-${c}`}>
                 <circle cx={x} cy={y} r={11} fill="#4CAF50" stroke="#2E7D32" strokeWidth={2} />
                 <text x={x} y={y + 4} textAnchor="middle" fill="white" fontSize={12} fontWeight="bold">
-                  {char === 'H' ? '!' : char === 'E' ? '→' : char === 'C' ? '+' : '↓'}
+                  ✦
                 </text>
               </g>
             )
@@ -209,22 +237,21 @@ function PatternBoard({ pattern, size = 5 }: PatternBoardProps) {
   )
 }
 
-function Leaderboard({ onSelect }: { onSelect: (key: InstinctKey) => void }) {
+function Leaderboard({ onSelect, selected }: { onSelect: (key: InstinctKey) => void, selected: InstinctKey }) {
   const sorted = Object.entries(INSTINCT_DATA).sort((a, b) => b[1].advantage - a[1].advantage)
 
   return (
     <div className="leaderboard">
       <h2>Instinct Leaderboard</h2>
-      <p className="subtitle">Ranked by follow advantage (2000 Atari Go games)</p>
+      <p className="subtitle">2000 Atari Go games · Ranked by follow advantage</p>
 
       <table>
         <thead>
           <tr>
             <th>#</th>
             <th>Instinct</th>
-            <th>Advantage</th>
+            <th>Adv.</th>
             <th>Fired</th>
-            <th>Follow%</th>
             <th>Verdict</th>
           </tr>
         </thead>
@@ -232,21 +259,23 @@ function Leaderboard({ onSelect }: { onSelect: (key: InstinctKey) => void }) {
           {sorted.map(([key, data], i) => (
             <tr
               key={key}
-              className={data.advantage > 5 ? 'champion' : data.advantage < 0 ? 'negative' : ''}
+              className={`
+                ${data.advantage > 5 ? 'champion' : data.advantage < 0 ? 'negative' : ''}
+                ${key === selected ? 'selected' : ''}
+              `}
               onClick={() => onSelect(key as InstinctKey)}
             >
               <td className="rank">
                 {i === 0 ? '🏆' : i + 1}
               </td>
               <td className="name">
-                <span className="japanese">{data.japanese}</span>
                 <span className="english">{data.name}</span>
+                <span className="japanese">{data.japanese}</span>
               </td>
               <td className={`advantage ${data.advantage > 0 ? 'positive' : 'negative'}`}>
                 {data.advantage > 0 ? '+' : ''}{data.advantage.toFixed(1)}%
               </td>
-              <td className="fired">{data.fired.toLocaleString()}</td>
-              <td className="follow-rate">{data.followRate.toFixed(1)}%</td>
+              <td className="fired">{(data.fired / 1000).toFixed(0)}k</td>
               <td className="verdict">{data.verdict}</td>
             </tr>
           ))}
@@ -256,15 +285,36 @@ function Leaderboard({ onSelect }: { onSelect: (key: InstinctKey) => void }) {
   )
 }
 
+// Get advantage bar label based on level
+function getAdvantageLabel(adv: number): string {
+  if (adv > 10) return "Game-changer! Always follow."
+  if (adv > 5) return "Strong advantage. Follow this."
+  if (adv > 2) return "Solid positive. Good default."
+  if (adv > 0) return "Slight edge. Consider context."
+  if (adv > -2) return "Neutral to slight negative."
+  return "Strategic — needs more moves."
+}
+
+// Get verdict color class
+function getVerdictClass(adv: number): string {
+  if (adv > 5) return 'verdict-champion'
+  if (adv > 2) return 'verdict-confirmed'
+  if (adv > 0) return 'verdict-positive'
+  return 'verdict-strategic'
+}
+
 function InstinctDetail({ instinctKey }: { instinctKey: InstinctKey }) {
   const data = INSTINCT_DATA[instinctKey]
 
   return (
     <div className="instinct-detail">
       <div className="detail-header">
-        <h2>{data.japanese}</h2>
-        <h3>{data.name}</h3>
+        <h2>{data.name}</h2>
+        <h3>{data.japanese}</h3>
         <p className="description">{data.description}</p>
+        <span className={`verdict-badge ${getVerdictClass(data.advantage)}`}>
+          {data.verdict}
+        </span>
       </div>
 
       <div className="detail-content">
@@ -272,9 +322,9 @@ function InstinctDetail({ instinctKey }: { instinctKey: InstinctKey }) {
           <h4>Pattern</h4>
           <PatternBoard pattern={data.pattern} />
           <p className="pattern-legend">
-            <span className="legend-item"><span className="black-stone"></span> Black</span>
-            <span className="legend-item"><span className="white-stone"></span> White</span>
-            <span className="legend-item"><span className="move-marker"></span> Instinct move</span>
+            <span className="legend-item"><span className="black-stone"></span> Black (0,2,4...)</span>
+            <span className="legend-item"><span className="white-stone"></span> White (1,3,5...)</span>
+            <span className="legend-item"><span className="move-marker"></span> Instinct</span>
           </p>
         </div>
 
@@ -282,7 +332,9 @@ function InstinctDetail({ instinctKey }: { instinctKey: InstinctKey }) {
           <h4>Statistics</h4>
           <div className="stat-grid">
             <div className="stat">
-              <span className="stat-value">{data.advantage > 0 ? '+' : ''}{data.advantage.toFixed(1)}%</span>
+              <span className={`stat-value ${data.advantage > 0 ? 'positive' : 'negative'}`}>
+                {data.advantage > 0 ? '+' : ''}{data.advantage.toFixed(1)}%
+              </span>
               <span className="stat-label">Follow Advantage</span>
             </div>
             <div className="stat">
@@ -302,82 +354,26 @@ function InstinctDetail({ instinctKey }: { instinctKey: InstinctKey }) {
           <div className="advantage-bar">
             <div
               className={`bar-fill ${data.advantage >= 0 ? 'positive' : 'negative'}`}
-              style={{ width: `${Math.min(100, Math.abs(data.advantage) * 5)}%` }}
+              style={{ width: `${Math.min(100, Math.abs(data.advantage) * 8)}%` }}
             />
             <span className="bar-label">
-              {data.advantage >= 0 ? 'Following helps!' : 'May be situational'}
+              {getAdvantageLabel(data.advantage)}
             </span>
           </div>
         </div>
       </div>
 
-      <div className="insight">
+      <div className={`insight ${getVerdictClass(data.advantage)}`}>
         <h4>Insight</h4>
         <p>
           {data.advantage > 10
-            ? `This instinct is a game-changer! Following ${data.name} leads to ${data.advantage.toFixed(1)}% higher win rate. When you see this pattern, respond immediately.`
+            ? <><strong>This instinct is a game-changer!</strong> Following {data.name} leads to {data.advantage.toFixed(1)}% higher win rate. When you see this pattern, respond immediately.</>
             : data.advantage > 3
-            ? `${data.name} consistently helps win games. The proverb is confirmed by data.`
+            ? <><strong>Confirmed by data.</strong> {data.name} consistently helps win games. The proverb holds true.</>
             : data.advantage > 0
-            ? `${data.name} has a slight positive effect. Good to follow when other factors are equal.`
-            : `${data.name} showed negative results in Atari Go, but this may be because it's a strategic move that needs more time to pay off. In full Go, this proverb may still be valuable.`
+            ? <><strong>Slight positive effect.</strong> {data.name} helps when other factors are equal. Not the highest priority, but sound.</>
+            : <><strong>Strategic move.</strong> {data.name} showed negative results in Atari Go, but this is a short-term game. Strategic moves that build influence need more moves to pay off. In full Go, this proverb remains valuable.</>
           }
-        </p>
-      </div>
-    </div>
-  )
-}
-
-function ExperimentPanel() {
-  const [running, setRunning] = useState(false)
-  const [games, setGames] = useState(500)
-  const [boardSize, setBoardSize] = useState(9)
-
-  const runExperiment = () => {
-    setRunning(true)
-    // TODO: Connect to Python backend to run experiments
-    setTimeout(() => setRunning(false), 3000)
-  }
-
-  return (
-    <div className="experiment-panel">
-      <h2>Run Experiment</h2>
-      <p className="subtitle">Generate more data to refine instinct weights</p>
-
-      <div className="controls">
-        <label>
-          Games:
-          <input
-            type="number"
-            value={games}
-            onChange={(e) => setGames(parseInt(e.target.value))}
-            min={100}
-            max={10000}
-            step={100}
-          />
-        </label>
-
-        <label>
-          Board Size:
-          <select value={boardSize} onChange={(e) => setBoardSize(parseInt(e.target.value))}>
-            <option value={5}>5×5 (Fast)</option>
-            <option value={7}>7×7</option>
-            <option value={9}>9×9 (Standard)</option>
-            <option value={13}>13×13</option>
-          </select>
-        </label>
-
-        <button onClick={runExperiment} disabled={running}>
-          {running ? 'Running...' : 'Start Experiment'}
-        </button>
-      </div>
-
-      <div className="experiment-info">
-        <p>
-          Current data: <strong>2000 games</strong> on 9×9 Atari Go
-        </p>
-        <p>
-          Estimated time: ~{Math.ceil(games / 300)} minutes
         </p>
       </div>
     </div>
@@ -396,8 +392,7 @@ export function InstinctBattleground() {
 
       <div className="battleground-layout">
         <div className="left-panel">
-          <Leaderboard onSelect={setSelectedInstinct} />
-          <ExperimentPanel />
+          <Leaderboard onSelect={setSelectedInstinct} selected={selectedInstinct} />
         </div>
 
         <div className="right-panel">

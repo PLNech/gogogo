@@ -112,25 +112,26 @@ class TestHaneVsTsuke:
 
 
 class TestHaneAtHeadOfTwo:
-    """3. Hane at Head of Two (二子の頭にハネ)"""
+    """3. Hane at Head of Two (二子の頭にハネ)
 
-    def test_two_horizontal_stones_hane_at_head(self, detector):
-        """Two horizontal white stones - black plays at the head."""
+    CORRECT PATTERN: This is a 2v2 confrontation!
+    Our two stones parallel to their two stones.
+
+    Pattern (vertical):
+        . . * . .    ← Play at head of opponent's two
+        . B W . .    ← Our stone faces their stone
+        . B W . .    ← Our stone faces their stone
+        . . . . .
+    """
+
+    def test_2v2_vertical_confrontation(self, detector):
+        """2v2 vertical: our two face their two, play at head."""
         board = Board(9)
 
-        board.board[4, 4] = -1
-        board.board[4, 5] = -1
-        board.current_player = 1
-
-        result = detector.detect_hane_at_head_of_two(board)
-
-        assert result is not None
-        assert (4, 6) in result.moves or (4, 3) in result.moves
-
-    def test_two_vertical_stones_hane_at_head(self, detector):
-        """Two vertical white stones - black plays at the head."""
-        board = Board(9)
-
+        # Our pair (Black) at column 3
+        board.board[4, 3] = 1
+        board.board[5, 3] = 1
+        # Their pair (White) at column 4
         board.board[4, 4] = -1
         board.board[5, 4] = -1
         board.current_player = 1
@@ -138,20 +139,39 @@ class TestHaneAtHeadOfTwo:
         result = detector.detect_hane_at_head_of_two(board)
 
         assert result is not None
-        assert (6, 4) in result.moves or (3, 4) in result.moves
+        # Head of their two: (3, 4) or (6, 4)
+        assert (3, 4) in result.moves or (6, 4) in result.moves
 
-    def test_three_stones_not_two(self, detector):
-        """Three stones - not 'head of two'."""
+    def test_2v2_horizontal_confrontation(self, detector):
+        """2v2 horizontal: our two face their two, play at head."""
         board = Board(9)
 
+        # Our pair (Black) at row 3
+        board.board[3, 4] = 1
+        board.board[3, 5] = 1
+        # Their pair (White) at row 4
         board.board[4, 4] = -1
         board.board[4, 5] = -1
-        board.board[4, 6] = -1
         board.current_player = 1
 
         result = detector.detect_hane_at_head_of_two(board)
 
-        # Should not detect (chain is longer than 2)
+        assert result is not None
+        # Head of their two: (4, 3) or (4, 6)
+        assert (4, 3) in result.moves or (4, 6) in result.moves
+
+    def test_isolated_two_stones_not_detected(self, detector):
+        """Only opponent stones (no 2v2) should NOT trigger."""
+        board = Board(9)
+
+        # Only opponent stones - no confrontation
+        board.board[4, 4] = -1
+        board.board[4, 5] = -1
+        board.current_player = 1
+
+        result = detector.detect_hane_at_head_of_two(board)
+
+        # Should NOT detect - this is NOT a 2v2 confrontation
         assert result is None
 
 
@@ -175,22 +195,59 @@ class TestStretchFromKosumi:
 
 
 class TestBlockTheAngle:
-    """5. Block the Angle (カケにはオサエ)"""
+    """5. Block the Angle (カケにはオサエ)
 
-    def test_angle_attack_should_block(self, detector):
-        """White angle attack - black blocks."""
+    CORRECT PATTERN: Knight's move (keima) approach, NOT diagonal!
+
+    Pattern:
+        . . . . .
+        . . . B .    ← Your stone
+        . . * . .    ← Block diagonally between
+        . W . . .    ← Opponent's knight's move (2 down, 1 left)
+        . . . . .
+    """
+
+    def test_keima_approach_should_block(self, detector):
+        """White knight's move approach - black blocks diagonally."""
         board = Board(9)
         c = 4
 
-        board.board[c, c] = 1
-        board.board[c+1, c+1] = -1
+        board.board[c, c] = 1           # Our stone
+        board.board[c+2, c-1] = -1      # Opponent's keima (2 down, 1 left)
         board.current_player = 1
 
         result = detector.detect_block_the_angle(board)
 
         assert result is not None
-        # Block at (c+1, c) or (c, c+1)
-        assert (c+1, c) in result.moves or (c, c+1) in result.moves
+        # Block is diagonal between: (c+1, c-1) - the "waist" of the keima
+        assert (c+1, c-1) in result.moves
+
+    def test_keima_other_direction(self, detector):
+        """Knight's move in another direction."""
+        board = Board(9)
+
+        board.board[4, 4] = 1           # Our stone
+        board.board[5, 6] = -1          # Opponent's keima (1 down, 2 right)
+        board.current_player = 1
+
+        result = detector.detect_block_the_angle(board)
+
+        assert result is not None
+        # Block diagonal: (5, 5)
+        assert (5, 5) in result.moves
+
+    def test_diagonal_not_keima(self, detector):
+        """Diagonal (1,1) is NOT keima - should not trigger."""
+        board = Board(9)
+
+        board.board[4, 4] = 1
+        board.board[5, 5] = -1   # Diagonal, not keima
+        board.current_player = 1
+
+        result = detector.detect_block_the_angle(board)
+
+        # Diagonal is kosumi-tsuke, not keima - should NOT trigger this instinct
+        assert result is None
 
 
 class TestConnectVsPeep:
@@ -212,21 +269,66 @@ class TestConnectVsPeep:
 
 
 class TestBlockTheThrust:
-    """7. Block the Thrust (ツキアタリには)"""
+    """7. Block the Thrust (ツキアタリには)
 
-    def test_thrust_should_block(self, detector):
-        """White thrusts between black stones - black blocks."""
+    CORRECT PATTERN: Opponent thrusts INTO our wall formation.
+
+    Pattern (vertical wall):
+        . . . . .
+        . . * . .    ← Black BLOCKS by extending wall
+        . B W . .    ← White THRUSTS adjacent to our stone
+        . B . . .    ← Our stones in column (wall)
+        . . . . .
+
+    The thrust is perpendicular to our wall. Block extends the wall.
+    """
+
+    def test_thrust_into_vertical_wall(self, detector):
+        """White thrusts into vertical black wall - block extends wall."""
         board = Board(9)
 
-        board.board[4, 3] = 1
-        board.board[4, 5] = 1
-        board.board[5, 4] = -1  # Thrust
+        # Vertical wall of black stones
+        board.board[5, 3] = 1   # Bottom of wall
+        board.board[4, 3] = 1   # Top of wall
+        # White thrusts adjacent to top stone
+        board.board[4, 4] = -1  # Thrust perpendicular to wall
         board.current_player = 1
 
         result = detector.detect_block_the_thrust(board)
 
         assert result is not None
-        assert (4, 4) in result.moves
+        # Block extends wall past the thrust: (4, 5) - continuing perpendicular
+        assert (4, 5) in result.moves
+
+    def test_thrust_into_horizontal_wall(self, detector):
+        """White thrusts into horizontal black wall."""
+        board = Board(9)
+
+        # Horizontal wall of black stones
+        board.board[4, 4] = 1
+        board.board[4, 5] = 1
+        # White thrusts from below
+        board.board[5, 4] = -1
+        board.current_player = 1
+
+        result = detector.detect_block_the_thrust(board)
+
+        assert result is not None
+        # Block extends in thrust direction: (6, 4)
+        assert (6, 4) in result.moves
+
+    def test_no_wall_no_thrust(self, detector):
+        """Single stone with adjacent opponent is not a thrust."""
+        board = Board(9)
+
+        board.board[4, 4] = 1    # Single stone (not a wall)
+        board.board[4, 5] = -1   # Adjacent opponent
+        board.current_player = 1
+
+        result = detector.detect_block_the_thrust(board)
+
+        # Single stone is not a wall - should not trigger thrust
+        assert result is None
 
 
 class TestStretchFromBump:

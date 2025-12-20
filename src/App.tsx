@@ -1,109 +1,54 @@
 import { useState, useEffect } from 'react'
-import { BoardView } from './ui/board/BoardView'
-import { CurrencyDisplay } from './ui/game/CurrencyDisplay'
-import { Milestone1 } from './ui/game/Milestone1'
-import { Milestone2 } from './ui/game/Milestone2'
 import { WatchPage } from './ui/watch/WatchPage'
-import { IdlePanel } from './ui/idle/IdlePanel'
 import { InstinctBattleground } from './ui/instincts/InstinctBattleground'
-import { useGameStore } from './state/gameStore'
-import { getCurrentMoveCount, getUnlockedBoardSizes } from './domain/upgrades/upgrades'
-import { useUpgradeStore } from './state/upgradeStore'
 
-type Tab = 'game' | 'idle' | 'watch' | 'instincts' | 'debug'
+type Tab = 'watch' | 'instincts'
 
 function App() {
   // Initialize tab from URL path
   const getInitialTab = (): Tab => {
     const path = window.location.pathname.replace('/gogogo/', '').replace('/gogogo', '').replace('/', '')
-    if (path === 'watch' || path === 'idle' || path === 'instincts' || path === 'debug') {
-      return path as Tab
+    if (path === 'instincts') {
+      return 'instincts'
     }
-    return 'game'
+    return 'watch'
   }
 
   const [tab, setTab] = useState<Tab>(getInitialTab())
-  const phase = useGameStore((state) => state.phase)
-  const purchased = useUpgradeStore((state) => state.purchased)
 
   // Sync URL with tab state
   useEffect(() => {
-    const path = tab === 'game' ? '/' : `/${tab}`
+    const path = tab === 'watch' ? '/' : `/${tab}`
     const fullPath = (import.meta.env?.BASE_URL || '/') + path.slice(1)
     if (window.location.pathname !== fullPath) {
       window.history.pushState(null, '', fullPath + window.location.search)
     }
   }, [tab])
 
-  const moveCount = getCurrentMoveCount(purchased)
-  const boardSizes = getUnlockedBoardSizes(purchased)
-  const maxBoardSize = Math.max(...boardSizes)
-
   return (
     <div className="app">
-      <CurrencyDisplay />
+      <header className="app-header">
+        <h1>GoGoGo AI Lab</h1>
+        <nav className="nav">
+          <button
+            onClick={() => setTab('watch')}
+            className={tab === 'watch' ? 'active' : ''}
+          >
+            Watch AI
+          </button>
+          <button
+            onClick={() => setTab('instincts')}
+            className={tab === 'instincts' ? 'active' : ''}
+          >
+            Instincts
+          </button>
+        </nav>
+      </header>
 
-      <nav className="nav">
-        <button
-          onClick={() => setTab('game')}
-          className={tab === 'game' ? 'active' : ''}
-        >
-          Game
-        </button>
-        <button
-          onClick={() => setTab('idle')}
-          className={tab === 'idle' ? 'active' : ''}
-        >
-          Idle
-        </button>
-        <button
-          onClick={() => setTab('watch')}
-          className={tab === 'watch' ? 'active' : ''}
-        >
-          Watch
-        </button>
-        <button
-          onClick={() => setTab('instincts')}
-          className={tab === 'instincts' ? 'active' : ''}
-        >
-          Instincts
-        </button>
-        <button
-          onClick={() => setTab('debug')}
-          className={tab === 'debug' ? 'active' : ''}
-        >
-          Debug
-        </button>
-      </nav>
-
-      {tab === 'debug' ? (
-        <div>
-          <h1>Test Board</h1>
-          <BoardView initialSize={5} showDebug={true} aiEnabled={true} />
-        </div>
-      ) : tab === 'instincts' ? (
+      {tab === 'instincts' ? (
         <InstinctBattleground />
-      ) : tab === 'watch' ? (
-        <WatchPage />
-      ) : tab === 'idle' ? (
-        <IdlePanel />
       ) : (
-        <div>
-          {/* Milestone 1: Intro and Capture */}
-          {(phase === 'M1_INTRO' || phase === 'M1_CAPTURE') && <Milestone1 />}
-
-          {/* Milestone 2: Practice and AI Opponent */}
-          {(phase.startsWith('M2_PRACTICE') || phase === 'M2_AI_OPPONENT') && <Milestone2 />}
-
-          {/* Free Play (unlocked after M2) */}
-          {phase === 'FREE_PLAY' && (
-            <div>
-              <h1>Free Play</h1>
-              <p>Max moves: {moveCount} | Unlocked boards: {boardSizes.join(', ')}</p>
-              <BoardView initialSize={maxBoardSize} showDebug={true} aiEnabled={true} />
-            </div>
-          )}
-        </div>
+        <WatchPage />
       )}
     </div>
   )

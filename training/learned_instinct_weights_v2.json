@@ -1,0 +1,155 @@
+{
+  "weights": {
+    "extend_from_atari": 2.991935257552151,
+    "connect_vs_peep": 2.4679155216483144,
+    "block_the_thrust": 2.022451151227013,
+    "hane_vs_tsuke": 1.5521260547148394,
+    "hane_at_head_of_two": 1.483066688535901,
+    "stretch_from_kosumi": 1.187729984126629,
+    "block_the_angle": 1.1991988160134661,
+    "stretch_from_bump": 0.995576526181685
+  },
+  "initial_weights": {
+    "extend_from_atari": 3.0,
+    "connect_vs_peep": 2.5,
+    "block_the_thrust": 2.0,
+    "hane_vs_tsuke": 1.5,
+    "hane_at_head_of_two": 1.5,
+    "stretch_from_kosumi": 1.2,
+    "block_the_angle": 1.2,
+    "stretch_from_bump": 1.0
+  },
+  "stats": {
+    "extend_from_atari": {
+      "fired": 19337,
+      "followed": 1601,
+      "followed_won": 830,
+      "followed_lost": 771,
+      "ignored_won": 7480,
+      "ignored_lost": 10256
+    },
+    "connect_vs_peep": {
+      "fired": 65163,
+      "followed": 10540,
+      "followed_won": 5582,
+      "followed_lost": 4958,
+      "ignored_won": 27053,
+      "ignored_lost": 27570
+    },
+    "block_the_thrust": {
+      "fired": 59893,
+      "followed": 7992,
+      "followed_won": 4694,
+      "followed_lost": 3298,
+      "ignored_won": 25497,
+      "ignored_lost": 26404
+    },
+    "hane_vs_tsuke": {
+      "fired": 54397,
+      "followed": 10733,
+      "followed_won": 6693,
+      "followed_lost": 4040,
+      "ignored_won": 21451,
+      "ignored_lost": 22213
+    },
+    "hane_at_head_of_two": {
+      "fired": 45171,
+      "followed": 3783,
+      "followed_won": 1985,
+      "followed_lost": 1798,
+      "ignored_won": 20914,
+      "ignored_lost": 20474
+    },
+    "stretch_from_kosumi": {
+      "fired": 79665,
+      "followed": 38410,
+      "followed_won": 19800,
+      "followed_lost": 18610,
+      "ignored_won": 20017,
+      "ignored_lost": 21238
+    },
+    "block_the_angle": {
+      "fired": 64273,
+      "followed": 14448,
+      "followed_won": 7661,
+      "followed_lost": 6787,
+      "ignored_won": 24655,
+      "ignored_lost": 25170
+    },
+    "stretch_from_bump": {
+      "fired": 52845,
+      "followed": 6055,
+      "followed_won": 3156,
+      "followed_lost": 2899,
+      "ignored_won": 22905,
+      "ignored_lost": 23885
+    }
+  },
+  "num_games": 2000,
+  "win_rates": {
+    "extend_from_atari": {
+      "fired": 19337,
+      "followed": 1601,
+      "follow_rate": 0.08279464239540776,
+      "follow_winrate": 0.5184259837601499,
+      "ignore_winrate": 0.4217410915651782,
+      "follow_advantage": 0.09668489219497173
+    },
+    "connect_vs_peep": {
+      "fired": 65163,
+      "followed": 10540,
+      "follow_rate": 0.16174823135828614,
+      "follow_winrate": 0.5296015180265654,
+      "ignore_winrate": 0.4952675612837083,
+      "follow_advantage": 0.03433395674285711
+    },
+    "block_the_thrust": {
+      "fired": 59893,
+      "followed": 7992,
+      "follow_rate": 0.1334379643697928,
+      "follow_winrate": 0.5873373373373373,
+      "ignore_winrate": 0.49126221074738446,
+      "follow_advantage": 0.09607512658995282
+    },
+    "hane_vs_tsuke": {
+      "fired": 54397,
+      "followed": 10733,
+      "follow_rate": 0.19730867511075978,
+      "follow_winrate": 0.6235907947451784,
+      "ignore_winrate": 0.4912742762916819,
+      "follow_advantage": 0.1323165184534965
+    },
+    "hane_at_head_of_two": {
+      "fired": 45171,
+      "followed": 3783,
+      "follow_rate": 0.08374842266055656,
+      "follow_winrate": 0.5247158339941845,
+      "ignore_winrate": 0.5053155504010824,
+      "follow_advantage": 0.019400283593102086
+    },
+    "stretch_from_kosumi": {
+      "fired": 79665,
+      "followed": 38410,
+      "follow_rate": 0.4821439779074876,
+      "follow_winrate": 0.5154907576152044,
+      "ignore_winrate": 0.4852017937219731,
+      "follow_advantage": 0.03028896389323127
+    },
+    "block_the_angle": {
+      "fired": 64273,
+      "followed": 14448,
+      "follow_rate": 0.22479112535590373,
+      "follow_winrate": 0.5302464008859358,
+      "ignore_winrate": 0.4948319116909182,
+      "follow_advantage": 0.03541448919501755
+    },
+    "stretch_from_bump": {
+      "fired": 52845,
+      "followed": 6055,
+      "follow_rate": 0.1145803765729965,
+      "follow_winrate": 0.5212221304706853,
+      "ignore_winrate": 0.48952767685402865,
+      "follow_advantage": 0.03169445361665668
+    }
+  }
+}

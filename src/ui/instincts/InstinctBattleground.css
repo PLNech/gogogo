@@ -100,15 +100,22 @@
 .leaderboard .name {
   display: flex;
   flex-direction: column;
-}
-
-.leaderboard .japanese {
-  font-size: 0.9rem;
-  color: #666;
+  gap: 2px;
 }
 
 .leaderboard .english {
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.leaderboard .japanese {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.leaderboard tr.selected {
+  background: #e3f2fd !important;
+  border-left: 3px solid #2196f3;
 }
 
 .leaderboard .advantage {
@@ -293,93 +300,88 @@
   color: #666;
 }
 
+/* Verdict Badge */
+.verdict-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.verdict-badge.verdict-champion {
+  background: linear-gradient(135deg, #ffd700, #ffb300);
+  color: #5d4e00;
+}
+
+.verdict-badge.verdict-confirmed {
+  background: #27ae60;
+  color: white;
+}
+
+.verdict-badge.verdict-positive {
+  background: #3498db;
+  color: white;
+}
+
+.verdict-badge.verdict-strategic {
+  background: #95a5a6;
+  color: white;
+}
+
+/* Insight Section */
 .insight {
   margin-top: 25px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
+  padding: 20px;
+  border-radius: 8px;
+  background: #f8f9fa;
 }
 
 .insight h4 {
   margin: 0 0 10px 0;
-  color: #666;
+  color: #2c3e50;
+  font-size: 1rem;
 }
 
 .insight p {
   color: #444;
   line-height: 1.6;
+  margin: 0;
 }
 
-/* Experiment Panel */
-.experiment-panel {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.experiment-panel h2 {
-  margin: 0 0 5px 0;
+.insight p strong {
   color: #2c3e50;
 }
 
-.experiment-panel .subtitle {
-  color: #888;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
+/* Insight color variations */
+.insight.verdict-champion {
+  background: linear-gradient(135deg, #fff9e6, #fff3cc);
+  border-left: 4px solid #ffd700;
 }
 
-.experiment-panel .controls {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  margin-bottom: 15px;
+.insight.verdict-confirmed {
+  background: #e8f5e9;
+  border-left: 4px solid #27ae60;
 }
 
-.experiment-panel label {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  font-size: 0.9rem;
-  color: #666;
+.insight.verdict-positive {
+  background: #e3f2fd;
+  border-left: 4px solid #3498db;
 }
 
-.experiment-panel input,
-.experiment-panel select {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
+.insight.verdict-strategic {
+  background: #f5f5f5;
+  border-left: 4px solid #95a5a6;
 }
 
-.experiment-panel button {
-  padding: 10px 20px;
-  background: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
+/* Stat value colors */
+.stat-value.positive {
+  color: #27ae60;
 }
 
-.experiment-panel button:hover {
-  background: #2980b9;
-}
-
-.experiment-panel button:disabled {
-  background: #bdc3c7;
-  cursor: not-allowed;
-}
-
-.experiment-info {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.experiment-info p {
-  margin: 5px 0;
+.stat-value.negative {
+  color: #e74c3c;
 }
 
 /* Footer Wisdom */
