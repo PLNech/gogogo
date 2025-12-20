@@ -69,9 +69,19 @@ Negative = following hurts.
 
 Early results with 50 games showed noise. With 2000 games, seven of eight instincts show positive advantage. The proverbs are right.
 
-### The One Exception
+### The Humble Exception
 
-`hane_at_head_of_two` is the only negative (-0.9%). In Atari Go, playing at the head may be too slow. First capture wins—attack beats positional play.
+`hane_at_head_of_two` is the only negative (-0.9%).
+
+But wait—is the proverb wrong, or is our test wrong?
+
+Hane at the head of two is *strategic*. It pressures groups over many moves. It builds attack. It creates weak points that matter 50 moves later.
+
+In Atari Go? First capture wins. There is no "50 moves later."
+
+**The instinct isn't wrong. Our battlefield is too small.**
+
+This teaches humility. Tactical Go (Atari) and strategic Go (full game) reward different wisdom. Some proverbs need space to breathe.
 
 ---
 
@@ -93,11 +103,11 @@ Final weights stayed close to initial (Sensei's wisdom was good!):
 
 1. **Sensei was right.** Seven of eight proverbs confirmed by data.
 
-2. **Context matters.** `hane_at_head_of_two` may work better in full Go.
+2. **Humility in measurement.** When data contradicts wisdom, question the experiment first.
 
-3. **Scale reveals truth.** 50 games showed noise. 2000 games showed signal.
+3. **Tactics ≠ Strategy.** Atari Go tests tactical instincts. Full Go rewards patience.
 
-4. **Hane is king.** In tactical Go, wrapping around attachment dominates.
+4. **Hane is king** (in fights). When contact happens, wrap around. Don't hesitate.
 
 ---
 
