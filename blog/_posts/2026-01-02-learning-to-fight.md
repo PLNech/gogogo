@@ -83,6 +83,10 @@ In Atari Go? First capture wins. There is no "50 moves later."
 
 This teaches humility. Tactical Go (Atari) and strategic Go (full game) reward different wisdom. Some proverbs need space to breathe.
 
+We'll reproduce. Vary board sizes. Test on full Go. Run thousands more games.
+
+Empiric will tell if wisdom was right—but with time. One experiment is a question, not an answer.
+
 ---
 
 ## Weight Evolution
