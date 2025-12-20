@@ -1,0 +1,404 @@
+.instinct-battleground {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.instinct-battleground header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.instinct-battleground header h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.instinct-battleground header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.battleground-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+@media (max-width: 1000px) {
+  .battleground-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Leaderboard */
+.leaderboard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.leaderboard h2 {
+  margin: 0 0 5px 0;
+  color: #2c3e50;
+}
+
+.leaderboard .subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.leaderboard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard th {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 2px solid #eee;
+  color: #666;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.leaderboard td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.leaderboard tr {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.leaderboard tr:hover {
+  background: #f8f9fa;
+}
+
+.leaderboard tr.champion {
+  background: linear-gradient(90deg, #fff9e6 0%, #fff 100%);
+}
+
+.leaderboard tr.champion:hover {
+  background: linear-gradient(90deg, #fff3cc 0%, #f8f9fa 100%);
+}
+
+.leaderboard tr.negative {
+  background: #fff5f5;
+}
+
+.leaderboard .rank {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.leaderboard .name {
+  display: flex;
+  flex-direction: column;
+}
+
+.leaderboard .japanese {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.leaderboard .english {
+  font-weight: 500;
+}
+
+.leaderboard .advantage {
+  font-weight: bold;
+  font-family: 'SF Mono', Monaco, monospace;
+}
+
+.leaderboard .advantage.positive {
+  color: #27ae60;
+}
+
+.leaderboard .advantage.negative {
+  color: #e74c3c;
+}
+
+.leaderboard .fired {
+  color: #666;
+  font-family: 'SF Mono', Monaco, monospace;
+}
+
+.leaderboard .follow-rate {
+  color: #888;
+}
+
+.leaderboard .verdict {
+  font-style: italic;
+  color: #666;
+}
+
+/* Instinct Detail */
+.instinct-detail {
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.detail-header {
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-header h2 {
+  font-size: 2rem;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.detail-header h3 {
+  font-size: 1.2rem;
+  color: #666;
+  font-weight: normal;
+  margin: 5px 0;
+}
+
+.detail-header .description {
+  color: #888;
+  margin-top: 10px;
+}
+
+.detail-content {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.pattern-section {
+  text-align: center;
+}
+
+.pattern-section h4 {
+  margin: 0 0 15px 0;
+  color: #666;
+}
+
+.pattern-board {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.pattern-legend {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.black-stone {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #1a1a1a;
+}
+
+.white-stone {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+}
+
+.move-marker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4CAF50;
+}
+
+.stats-section h4 {
+  margin: 0 0 15px 0;
+  color: #666;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 5px;
+}
+
+.advantage-bar {
+  background: #f0f0f0;
+  border-radius: 8px;
+  height: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.5s ease;
+}
+
+.bar-fill.positive {
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+}
+
+.bar-fill.negative {
+  background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+
+.bar-label {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.insight {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.insight h4 {
+  margin: 0 0 10px 0;
+  color: #666;
+}
+
+.insight p {
+  color: #444;
+  line-height: 1.6;
+}
+
+/* Experiment Panel */
+.experiment-panel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.experiment-panel h2 {
+  margin: 0 0 5px 0;
+  color: #2c3e50;
+}
+
+.experiment-panel .subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.experiment-panel .controls {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 15px;
+}
+
+.experiment-panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.experiment-panel input,
+.experiment-panel select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.experiment-panel button {
+  padding: 10px 20px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.experiment-panel button:hover {
+  background: #2980b9;
+}
+
+.experiment-panel button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.experiment-info {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.experiment-info p {
+  margin: 5px 0;
+}
+
+/* Footer Wisdom */
+.wisdom {
+  text-align: center;
+  margin-top: 40px;
+  padding: 30px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.wisdom blockquote {
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+}
+
+.wisdom p {
+  color: #666;
+  margin: 0;
+}

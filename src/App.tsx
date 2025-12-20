@@ -5,17 +5,18 @@ import { Milestone1 } from './ui/game/Milestone1'
 import { Milestone2 } from './ui/game/Milestone2'
 import { WatchPage } from './ui/watch/WatchPage'
 import { IdlePanel } from './ui/idle/IdlePanel'
+import { InstinctBattleground } from './ui/instincts/InstinctBattleground'
 import { useGameStore } from './state/gameStore'
 import { getCurrentMoveCount, getUnlockedBoardSizes } from './domain/upgrades/upgrades'
 import { useUpgradeStore } from './state/upgradeStore'
 
-type Tab = 'game' | 'idle' | 'watch' | 'debug'
+type Tab = 'game' | 'idle' | 'watch' | 'instincts' | 'debug'
 
 function App() {
   // Initialize tab from URL path
   const getInitialTab = (): Tab => {
     const path = window.location.pathname.replace('/gogogo/', '').replace('/gogogo', '').replace('/', '')
-    if (path === 'watch' || path === 'idle' || path === 'debug') {
+    if (path === 'watch' || path === 'idle' || path === 'instincts' || path === 'debug') {
       return path as Tab
     }
     return 'game'
@@ -62,6 +63,12 @@ function App() {
           Watch
         </button>
         <button
+          onClick={() => setTab('instincts')}
+          className={tab === 'instincts' ? 'active' : ''}
+        >
+          Instincts
+        </button>
+        <button
           onClick={() => setTab('debug')}
           className={tab === 'debug' ? 'active' : ''}
         >
@@ -74,6 +81,8 @@ function App() {
           <h1>Test Board</h1>
           <BoardView initialSize={5} showDebug={true} aiEnabled={true} />
         </div>
+      ) : tab === 'instincts' ? (
+        <InstinctBattleground />
       ) : tab === 'watch' ? (
         <WatchPage />
       ) : tab === 'idle' ? (

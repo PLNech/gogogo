@@ -52,27 +52,30 @@ class InstinctDetector:
     (connect, block, etc.) to provide comprehensive instinct detection.
     """
 
-    # Priority order - captures are most important
-    # Combines tactical priorities with Sensei's 8 instincts
+    # Priority order - learned from 2000 Atari Go games
+    # Higher priority = more important to learn (auxiliary loss weight)
+    #
+    # Key finding: hane_vs_tsuke has +12.1% follow advantage!
+    # When opponent attaches, wrapping with hane is the winning response.
     PRIORITIES = {
-        # Tactical (high priority)
+        # Tactical (deterministic - must learn)
         'capture': 3.0,           # Taking opponent's stones
-        'escape': 2.5,            # Saving own stones (= extend_from_atari)
+        'escape': 2.5,            # Saving own stones
         'atari': 2.0,             # Putting opponent in atari
-        'connect': 1.5,           # Joining groups (= connect_vs_peep)
+        # Sensei's 8 Instincts (learned weights from Atari Go)
+        'extend_from_atari': 3.0, # アタリから伸びよ (+5.2% advantage)
+        'hane_vs_tsuke': 2.5,     # ツケにはハネ (+12.1% advantage!) 🏆
+        'connect_vs_peep': 2.5,   # ノゾキにはツギ (+2.7% advantage)
+        'block_the_thrust': 2.0,  # ツキアタリには (+3.7% advantage)
+        'connect': 1.5,           # Joining groups
         'cut': 1.5,               # Separating opponent groups
-        'defend': 1.2,            # Protecting weak points
+        'hane_at_head_of_two': 1.2,  # 二子の頭にハネ (-0.9% in Atari Go)
+        'block_the_angle': 1.2,   # カケにはオサエ (+3.5% advantage)
+        'stretch_from_kosumi': 1.2,  # コスミから伸びよ (+2.0% advantage)
+        'defend': 1.0,            # Protecting weak points
         'block': 1.0,             # Preventing opponent extension
         'extend': 1.0,            # Gaining space
-        # Sensei's 8 Instincts
-        'extend_from_atari': 3.0, # アタリから伸びよ (survival)
-        'connect_vs_peep': 2.5,   # ノゾキにはツギ (shape integrity)
-        'block_the_thrust': 2.0,  # ツキアタリには (prevent cut)
-        'hane_vs_tsuke': 1.5,     # ツケにはハネ (development)
-        'hane_at_head_of_two': 1.5,  # 二子の頭にハネ (attack)
-        'stretch_from_kosumi': 1.2,  # コスミから伸びよ (shape)
-        'block_the_angle': 1.2,   # カケにはオサエ (defense)
-        'stretch_from_bump': 1.0, # ブツカリから伸びよ (shape)
+        'stretch_from_bump': 1.0, # ブツカリから伸びよ (+2.1% advantage)
     }
 
     def __init__(self):
@@ -226,10 +229,13 @@ class InstinctDetector:
         return None
 
     def detect_all(self, board: Board) -> List[InstinctOpportunity]:
-        """Detect all instinct opportunities in a position."""
+        """Detect all instinct opportunities in a position.
+
+        Combines tactical detectors with Sensei's 8 Basic Instincts.
+        """
         opportunities = []
 
-        # Check each instinct type
+        # Tactical instincts (high priority)
         capture = self.detect_capture(board)
         if capture:
             opportunities.append(capture)
@@ -245,6 +251,17 @@ class InstinctDetector:
         connect = self.detect_connect(board)
         if connect:
             opportunities.append(connect)
+
+        # Sensei's 8 Basic Instincts
+        sensei_results = self.sensei.detect_all(board)
+        for result in sensei_results:
+            # Convert SenseiInstinctResult to InstinctOpportunity
+            priority = self.PRIORITIES.get(result.instinct, 1.0)
+            opportunities.append(InstinctOpportunity(
+                category=result.instinct,
+                moves=result.moves,
+                priority=priority
+            ))
 
         # Sort by priority (highest first)
         opportunities.sort(key=lambda x: x.priority, reverse=True)
