@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Main training loop."""
+"""Main training loop with adaptive instinct curriculum."""
 import os
 import argparse
 import torch
@@ -11,33 +11,123 @@ from selfplay import generate_games, ReplayBuffer
 from mcts import MCTS
 from board import Board
 from training_state import TrainingTracker
+from instinct_loss import InstinctCurriculum
 
 
-def train_step(model, optimizer, states, policies, values, device):
-    """Single training step."""
+def train_step(model, optimizer, states, policies, values, device,
+                curriculum: InstinctCurriculum = None):
+    """Single training step with optional instinct curriculum.
+
+    Loss = L_policy + L_value + λ(t) × L_instinct
+
+    Args:
+        model: Neural network model
+        optimizer: Optimizer
+        states: Batch of board states (numpy array)
+        policies: Target policies (numpy array)
+        values: Target values (numpy array)
+        device: Torch device
+        curriculum: Optional instinct curriculum for auxiliary loss
+
+    Returns:
+        Dictionary of loss metrics
+    """
     model.train()
 
-    states = torch.FloatTensor(states).to(device)
+    states_tensor = torch.FloatTensor(states).to(device)
     target_policies = torch.FloatTensor(policies).to(device)
     target_values = torch.FloatTensor(values).unsqueeze(1).to(device)
 
     # Forward
-    pred_policies, pred_values = model(states)
+    pred_policies, pred_values = model(states_tensor)
 
     # Losses
     policy_loss = -torch.mean(torch.sum(target_policies * pred_policies, dim=1))
     value_loss = F.mse_loss(pred_values, target_values)
     total_loss = policy_loss + value_loss
 
+    # Instinct auxiliary loss
+    instinct_loss = torch.tensor(0.0, device=device)
+    instinct_metrics = {}
+
+    if curriculum is not None and curriculum.current_lambda > 0:
+        # Reconstruct boards from state tensors
+        boards = [Board.from_tensor(s) for s in states]
+
+        # Compute instinct loss
+        instinct_loss, instinct_metrics = curriculum.compute_loss(
+            boards, pred_policies, reduction='mean'
+        )
+        total_loss = total_loss + instinct_loss
+
     # Backward
     optimizer.zero_grad()
     total_loss.backward()
     optimizer.step()
 
-    return {
+    metrics = {
         'policy_loss': policy_loss.item(),
         'value_loss': value_loss.item(),
-        'total_loss': total_loss.item()
+        'total_loss': total_loss.item(),
+    }
+
+    if curriculum is not None:
+        metrics['instinct_loss'] = instinct_metrics.get('instinct_loss', 0.0)
+        metrics['instinct_weighted'] = instinct_metrics.get('instinct_weighted_loss', 0.0)
+        metrics['instinct_lambda'] = curriculum.current_lambda
+        metrics['instinct_count'] = instinct_metrics.get('instinct_count', 0)
+
+    return metrics
+
+
+def evaluate_instinct_accuracy(model, config: Config, device: str) -> dict:
+    """Evaluate model's instinct accuracy on benchmark positions.
+
+    Returns dict with per-category accuracy and overall accuracy.
+    """
+    from benchmark import BenchmarkRunner, load_benchmarks, aggregate_results
+
+    benchmark_dir = 'benchmarks/instincts'
+    positions = load_benchmarks(benchmark_dir, config.board_size)
+
+    if not positions:
+        # No benchmark positions available - return default
+        return {
+            'overall': 0.0,
+            'by_category': {},
+            'total_tested': 0,
+        }
+
+    runner = BenchmarkRunner(model, config)
+
+    # Group by category (instinct)
+    by_instinct = {}
+    for pos in positions:
+        result = runner.evaluate_position(pos)
+        result['name'] = pos.name
+        result['category'] = pos.category
+
+        if pos.category not in by_instinct:
+            by_instinct[pos.category] = []
+        by_instinct[pos.category].append(result)
+
+    # Aggregate by category
+    results_by_cat = {}
+    total_count = 0
+    total_correct = 0
+
+    for instinct, instinct_results in by_instinct.items():
+        agg = aggregate_results(instinct_results)
+        results_by_cat[instinct] = agg['top1_accuracy']
+        total_count += agg['count']
+        total_correct += int(agg['top1_accuracy'] * agg['count'])
+
+    overall = total_correct / total_count if total_count > 0 else 0.0
+
+    return {
+        'overall': overall,
+        'by_category': results_by_cat,
+        'total_tested': total_count,
     }
 
 
@@ -93,6 +183,10 @@ def main():
     parser.add_argument('--iterations', type=int, default=100)
     parser.add_argument('--resume', type=str, default=None, help='Checkpoint to resume from')
     parser.add_argument('--quick', action='store_true', help='Use quick config for testing')
+    parser.add_argument('--instincts', action='store_true',
+                        help='Enable instinct curriculum (auxiliary loss for tactical patterns)')
+    parser.add_argument('--instinct-lambda', type=float, default=1.0,
+                        help='Initial instinct loss weight (decays with accuracy)')
     args = parser.parse_args()
 
     # Config
@@ -103,6 +197,8 @@ def main():
     print(f"Device: {config.device}")
     print(f"Board size: {config.board_size}")
     print(f"Network: {config.num_blocks} blocks, {config.num_filters} filters")
+    if args.instincts:
+        print(f"Instinct curriculum: ENABLED (λ₀={args.instinct_lambda})")
 
     # Directories
     os.makedirs('checkpoints', exist_ok=True)
@@ -129,6 +225,17 @@ def main():
 
     # Replay buffer
     replay_buffer = ReplayBuffer(config.replay_buffer_size)
+
+    # Instinct curriculum (optional)
+    curriculum = None
+    if args.instincts:
+        curriculum = InstinctCurriculum(
+            lambda_0=args.instinct_lambda,
+            min_lambda=0.1,
+            temperature=2.0,
+            device=config.device
+        )
+        print(f"Instinct curriculum initialized")
 
     # Logging
     writer = SummaryWriter('logs')
@@ -163,17 +270,29 @@ def main():
 
                 for step in range(config.train_steps_per_iter):
                     states, policies, values = replay_buffer.sample(config.batch_size)
-                    losses = train_step(model, optimizer, states, policies, values, config.device)
+                    losses = train_step(
+                        model, optimizer, states, policies, values,
+                        config.device, curriculum=curriculum
+                    )
 
                     global_step += 1
                     tracker.training_step(step, losses, len(replay_buffer))
 
                     if step % 100 == 0:
-                        print(f"  Step {step}: loss={losses['total_loss']:.4f} (p={losses['policy_loss']:.4f}, v={losses['value_loss']:.4f})")
+                        loss_str = f"loss={losses['total_loss']:.4f} (p={losses['policy_loss']:.4f}, v={losses['value_loss']:.4f}"
+                        if curriculum:
+                            loss_str += f", i={losses.get('instinct_loss', 0):.4f}×{curriculum.current_lambda:.2f}"
+                        loss_str += ")"
+                        print(f"  Step {step}: {loss_str}")
 
                     writer.add_scalar('Loss/policy', losses['policy_loss'], global_step)
                     writer.add_scalar('Loss/value', losses['value_loss'], global_step)
                     writer.add_scalar('Loss/total', losses['total_loss'], global_step)
+
+                    if curriculum:
+                        writer.add_scalar('Instinct/loss', losses.get('instinct_loss', 0), global_step)
+                        writer.add_scalar('Instinct/lambda', curriculum.current_lambda, global_step)
+                        writer.add_scalar('Instinct/count', losses.get('instinct_count', 0), global_step)
 
                     # Checkpoint
                     if global_step % config.checkpoint_interval == 0:
@@ -181,7 +300,7 @@ def main():
                         save_checkpoint(model, optimizer, global_step, path)
                         print(f"  Saved checkpoint: {path}")
 
-            # Evaluation
+            # Evaluation (every 5 iterations)
             if iteration % 5 == 0 and iteration > 0:
                 tracker.start_eval()
                 print("Evaluating vs best model...")
@@ -197,6 +316,23 @@ def main():
                     print("New best model!")
                     best_model.load_state_dict(model.state_dict())
                     save_checkpoint(model, optimizer, global_step, 'checkpoints/best.pt')
+
+                # Instinct benchmark evaluation (updates curriculum lambda)
+                if curriculum:
+                    print("Evaluating instinct accuracy...")
+                    try:
+                        instinct_results = evaluate_instinct_accuracy(model, config, config.device)
+                        accuracy = instinct_results['overall']
+                        curriculum.update_lambda(accuracy)
+
+                        print(f"Instinct accuracy: {accuracy:.1%} (λ → {curriculum.current_lambda:.2f})")
+                        writer.add_scalar('Instinct/accuracy', accuracy, global_step)
+
+                        # Log per-category accuracy
+                        for cat, cat_acc in instinct_results['by_category'].items():
+                            writer.add_scalar(f'Instinct/{cat}', cat_acc, global_step)
+                    except Exception as e:
+                        print(f"Instinct benchmark failed: {e}")
 
         # Final save
         save_checkpoint(model, optimizer, global_step, 'checkpoints/final.pt')

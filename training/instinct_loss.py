@@ -52,30 +52,31 @@ class InstinctDetector:
     (connect, block, etc.) to provide comprehensive instinct detection.
     """
 
-    # Priority order - learned from 2000 Atari Go games
+    # Priority order - learned from 2000 Atari Go games (2025-12-20)
     # Higher priority = more important to learn (auxiliary loss weight)
     #
-    # Key finding: hane_vs_tsuke has +12.1% follow advantage!
+    # Key finding: hane_vs_tsuke has +13.2% follow advantage!
     # When opponent attaches, wrapping with hane is the winning response.
+    # All 8 proverbs confirmed positive with correct pattern detection.
     PRIORITIES = {
         # Tactical (deterministic - must learn)
         'capture': 3.0,           # Taking opponent's stones
         'escape': 2.5,            # Saving own stones
         'atari': 2.0,             # Putting opponent in atari
-        # Sensei's 8 Instincts (learned weights from Atari Go)
-        'extend_from_atari': 3.0, # アタリから伸びよ (+5.2% advantage)
-        'hane_vs_tsuke': 2.5,     # ツケにはハネ (+12.1% advantage!) 🏆
-        'connect_vs_peep': 2.5,   # ノゾキにはツギ (+2.7% advantage)
-        'block_the_thrust': 2.0,  # ツキアタリには (+3.7% advantage)
+        # Sensei's 8 Instincts (learned weights from 2000 Atari Go games)
+        'hane_vs_tsuke': 3.0,     # ツケにはハネ (+13.2% advantage!) 🏆
+        'extend_from_atari': 2.8, # アタリから伸びよ (+9.7% advantage)
+        'block_the_thrust': 2.8,  # ツキアタリには (+9.6% advantage)
+        'connect_vs_peep': 2.0,   # ノゾキにはツギ (+3.4% advantage)
+        'block_the_angle': 2.0,   # カケにはオサエ (+3.5% advantage)
         'connect': 1.5,           # Joining groups
         'cut': 1.5,               # Separating opponent groups
-        'hane_at_head_of_two': 1.2,  # 二子の頭にハネ (-0.9% in Atari Go)
-        'block_the_angle': 1.2,   # カケにはオサエ (+3.5% advantage)
-        'stretch_from_kosumi': 1.2,  # コスミから伸びよ (+2.0% advantage)
+        'stretch_from_bump': 1.5, # ブツカリから伸びよ (+3.2% advantage)
+        'stretch_from_kosumi': 1.5,  # コスミから伸びよ (+3.0% advantage)
+        'hane_at_head_of_two': 1.2,  # 二子の頭にハネ (+1.9% advantage)
         'defend': 1.0,            # Protecting weak points
         'block': 1.0,             # Preventing opponent extension
         'extend': 1.0,            # Gaining space
-        'stretch_from_bump': 1.0, # ブツカリから伸びよ (+2.1% advantage)
     }
 
     def __init__(self):

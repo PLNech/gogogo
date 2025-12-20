@@ -634,6 +634,38 @@ class Board:
 
         return planes
 
+    @staticmethod
+    def from_tensor(tensor: np.ndarray, current_player: int = 1) -> 'Board':
+        """Reconstruct a Board from a neural network input tensor.
+
+        This is the inverse of to_tensor(). Only reconstructs stone positions,
+        not history or ko state (sufficient for instinct detection).
+
+        Args:
+            tensor: (N, size, size) tensor from to_tensor()
+            current_player: Whose turn it is (1=black, -1=white)
+
+        Returns:
+            Board with stone positions set
+        """
+        size = tensor.shape[1]
+        board = Board(size)
+        board.current_player = current_player
+
+        # Tensor planes[0] = current player's stones
+        # Tensor planes[1] = opponent's stones
+        current_stones = tensor[0] > 0.5
+        opponent_stones = tensor[1] > 0.5
+
+        if current_player == 1:  # Black to play
+            board.board[current_stones] = 1
+            board.board[opponent_stones] = -1
+        else:  # White to play
+            board.board[current_stones] = -1
+            board.board[opponent_stones] = 1
+
+        return board
+
     def __str__(self) -> str:
         symbols = {0: '.', 1: 'X', -1: 'O'}
         rows = []
