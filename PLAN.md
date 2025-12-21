@@ -511,42 +511,109 @@
 
 ---
 
-## 🚨 CURRENT STATE (2025-12-20)
+## 🚨 CURRENT STATE (2025-12-21)
 
-**Status**: Instinct benchmark complete (1449 positions). Model baseline 1.3%. Implementing adaptive curriculum.
+**Status**: Instinct Curriculum WIRED to training loop. First training run completed 11 iterations.
 
-### Session Summary (2025-12-20)
+---
 
-**Instinct Benchmark Created:**
-- 1449 positions across 8 instincts × 5 board sizes
+### Session Summary (2025-12-21)
+
+**COMPLETED: Instinct Curriculum Integration**
+
+1. **Board.from_tensor()** - Reconstruct boards from state tensors for instinct detection
+2. **train_step()** - Now computes instinct auxiliary loss alongside policy/value
+3. **train.py --instincts** - Flag enables curriculum, periodic benchmark evaluation
+4. **Lambda decay** - λ(t) = λ₀ × (1 - accuracy), decays as model masters instincts
+
+**Training Formula:**
+```
+Loss = L_policy + L_value + λ(t) × L_instinct
+```
+
+**First Training Run (stopped at iteration 11/2000):**
+- Self-play phase: 100 games per iteration (SLOW with MCTS)
+- Training phase: 1000 steps per iteration
+- Losses observed: policy=3.2, value=0.0, total=7.7
+- Checkpoints saved up to model_11000.pt
+
+**Key Observation: Self-play is the bottleneck**
+- Each iteration generates 100 MCTS games
+- MCTS is slow but necessary for quality training data
+- Consider reducing games_per_iter for faster iteration
+
+**Files Created/Modified:**
+- `training/train.py` - Instinct curriculum integration
+- `training/board.py` - Added from_tensor() method
+- `training/instinct_loss.py` - Updated priorities from Atari Go experiment
+- `training/architecture.html` - Visual explanation for non-technical audience
+- `training/watch_training.py` - Terminal dashboard for monitoring
+
+**Visualization:**
+- TensorBoard: http://localhost:6006 (logs during training phase only)
+- Architecture page: training/architecture.html (Mermaid diagrams)
+- Terminal dashboard: `poetry run python watch_training.py`
+
+---
+
+### Previous Session (2025-12-20)
+
+**Fixed Instinct Pattern Detectors:**
+- hane_at_head_of_two: Now requires 2v2 confrontation (was detecting any 2 stones)
+- block_the_angle: Now uses keima offsets (was checking diagonals)
+- block_the_thrust: Fixed thrust-into-wall detection
+
+**Ran 2000-Game Atari Go Experiment:**
+All 8 proverbs now show positive advantage:
+| Instinct | Advantage | Verdict |
+|----------|-----------|---------|
+| hane_vs_tsuke | +13.2% | Champion |
+| extend_from_atari | +9.7% | Confirmed |
+| block_the_thrust | +9.6% | Confirmed |
+| block_the_angle | +3.5% | Works |
+| connect_vs_peep | +3.4% | Works |
+| stretch_from_bump | +3.2% | Slight positive |
+| stretch_from_kosumi | +3.0% | Slight positive |
+| hane_at_head_of_two | +1.9% | Strategic |
+
+**Baseline (random init):**
+- Overall: 1.3% accuracy
+- Captures: 0% (the key problem)
+
+---
+
+### NEXT SESSION: Resume Training
+
+**To resume:**
+```bash
+cd ~/Work/Perso/Games/gogogo/training
+poetry run python train.py --iterations 2000 --instincts --resume checkpoints/model_11000.pt
+```
+
+**For faster iteration (fewer games):**
+Edit config.py: `games_per_iter = 25` instead of 100
+
+**Monitor:**
+```bash
+poetry run tensorboard --logdir logs --port 6006
+poetry run python watch_training.py
+```
+
+**Success Criteria:**
+- [ ] Capture accuracy > 50%
+- [ ] Overall instinct accuracy > 30%
+- [ ] λ decays from 1.0 to ~0.5
+
+---
+
+### Instinct Benchmark (1449 positions)
+
+Created benchmark across 8 instincts × 5 board sizes:
 - Categories: capture, escape, connect, cut, extend, block, atari, defend
 - Model baseline: **1.3%** overall (0% on captures!)
 
-**New Approach: Adaptive Instinct Curriculum**
-
-The model can't see captures because **nothing tells it captures matter during training**.
-Self-play with random init → no captures in data → model never learns.
-
-**Solution: Wire instincts directly into training loss**
-
-```
-Loss = L_policy + L_value + λ(t) × L_instinct
-
-Where:
-  λ(t) = λ₀ × (1 - instinct_accuracy)
-
-As model masters instincts → λ → 0 → pure RL takes over
-```
-
-**Implementation:**
-1. During each training step, detect instinct opportunities in position
-2. If model's top move != instinct move → add auxiliary loss
-3. Weight decays as benchmark accuracy improves
-4. Model "graduates" from instinct training naturally
-
 **Files:**
-- `training/instinct_benchmark.py` - Generates 1449 test positions
-- `training/train_instincts.py` - Supervised training on instincts
+- `training/instinct_benchmark.py` - Generates test positions
 - `training/benchmarks/instincts/*.json` - Position databases
 
 ---

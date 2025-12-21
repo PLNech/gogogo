@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoGoGo AI - How It Learns</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --bg: #1a1a2e;
+            --card: #16213e;
+            --accent: #e94560;
+            --accent2: #0f3460;
+            --text: #eee;
+            --muted: #888;
+            --success: #4ade80;
+            --warning: #fbbf24;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--accent2), var(--card));
+            border-radius: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 1.2rem;
+        }
+
+        .section {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .section h2 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mermaid {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .card {
+            background: var(--accent2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .card h3 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .emoji-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .emoji-list li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .emoji-list li::before {
+            position: absolute;
+            left: 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--accent2);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+        }
+
+        .flow-step .number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .instinct-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .instinct-card {
+            background: linear-gradient(135deg, #1e3a5f, #0d1f33);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .instinct-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .instinct-card .emoji {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instinct-card .name {
+            font-weight: bold;
+            color: var(--success);
+        }
+
+        .instinct-card .advantage {
+            color: var(--warning);
+            font-size: 0.9rem;
+        }
+
+        .progress-demo {
+            background: #0d1117;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 24px;
+            background: #333;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            border-radius: 12px;
+            transition: width 1s;
+        }
+
+        .lambda-demo {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .lambda-stage {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .lambda-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: var(--muted);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--muted);
+        }
+
+        .analogy {
+            background: linear-gradient(135deg, #2d1f4e, #1a1333);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #a78bfa;
+        }
+
+        .analogy h4 {
+            color: #a78bfa;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 GoGoGo AI</h1>
+            <p class="subtitle">How our AI learns to play Go from scratch</p>
+        </header>
+
+        <!-- Big Picture -->
+        <div class="section">
+            <h2>🌍 The Big Picture</h2>
+            <p>Our AI learns Go the same way humans do: <strong>practice, feedback, repeat</strong>. But instead of years, it takes hours.</p>
+
+            <div class="mermaid">
+flowchart LR
+    subgraph "🎮 Play"
+        A[AI plays against itself]
+    end
+
+    subgraph "📝 Learn"
+        B[Remember what worked]
+    end
+
+    subgraph "🧠 Improve"
+        C[Update brain]
+    end
+
+    subgraph "📊 Test"
+        D[Check progress]
+    end
+
+    A --> B --> C --> D --> A
+
+    style A fill:#e94560,color:#fff
+    style B fill:#4ade80,color:#000
+    style C fill:#fbbf24,color:#000
+    style D fill:#60a5fa,color:#000
+            </div>
+
+            <div class="analogy">
+                <h4>🎾 Think of it like learning tennis:</h4>
+                <p>You don't read a book about tennis. You <strong>play</strong>, notice what works, practice those moves more, and gradually get better. Our AI does exactly this, but plays thousands of games per hour!</p>
+            </div>
+        </div>
+
+        <!-- The Neural Network Brain -->
+        <div class="section">
+            <h2>🧠 The AI's Brain (Neural Network)</h2>
+            <p>The AI has a "brain" that looks at the Go board and decides where to play. Here's what's inside:</p>
+
+            <div class="mermaid">
+flowchart TB
+    subgraph INPUT["👁️ What the AI Sees"]
+        I1["Black stones<br/>⚫⚫⚫"]
+        I2["White stones<br/>⚪⚪⚪"]
+        I3["Recent moves<br/>📜"]
+    end
+
+    subgraph BRAIN["🧠 The Brain (ResNet)"]
+        direction TB
+        B1["Layer 1: Simple patterns<br/>edges, corners"]
+        B2["Layer 2: Groups<br/>connected stones"]
+        B3["Layer 3: Tactics<br/>captures, escapes"]
+        B4["Layer 4: Strategy<br/>territory, influence"]
+        B5["..."]
+        B6["Layer 10: Master insights"]
+
+        B1 --> B2 --> B3 --> B4 --> B5 --> B6
+    end
+
+    subgraph OUTPUT["💡 What the AI Decides"]
+        O1["🎯 Policy Head<br/>Where to play?<br/>(81 moves ranked)"]
+        O2["📊 Value Head<br/>Who's winning?<br/>(-1 to +1)"]
+    end
+
+    INPUT --> BRAIN --> OUTPUT
+
+    style INPUT fill:#1e3a5f,color:#fff
+    style BRAIN fill:#2d1f4e,color:#fff
+    style OUTPUT fill:#1f4e3d,color:#fff
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>🎯 Policy Head</h3>
+                    <p>Answers: "Where should I play?"</p>
+                    <p>Outputs a probability for each intersection. Higher = better move.</p>
+                </div>
+                <div class="card">
+                    <h3>📊 Value Head</h3>
+                    <p>Answers: "Who's winning?"</p>
+                    <p>+1 = I'm winning<br/>-1 = I'm losing<br/>0 = Even game</p>
+                </div>
+            </div>
+
+            <div class="analogy">
+                <h4>🏠 Like a house of pattern recognition:</h4>
+                <p>Ground floor spots edges. Second floor sees groups. Higher floors understand strategy. The <strong>10 layers</strong> work together, each building on the previous one's insights.</p>
+            </div>
+        </div>
+
+        <!-- Training Loop -->
+        <div class="section">
+            <h2>🔄 How Training Works</h2>
+
+            <div class="mermaid">
+flowchart TB
+    subgraph SELF["1️⃣ Self-Play (Generate Data)"]
+        S1["AI plays as Black ⚫"]
+        S2["AI plays as White ⚪"]
+        S3["Use MCTS to think ahead 🌳"]
+        S4["Save all positions & moves"]
+
+        S1 <--> S2
+        S3 --> S4
+    end
+
+    subgraph TRAIN["2️⃣ Training (Update Brain)"]
+        T1["Load positions from memory"]
+        T2["Brain predicts moves"]
+        T3["Compare to what MCTS chose"]
+        T4["Adjust brain weights"]
+
+        T1 --> T2 --> T3 --> T4
+    end
+
+    subgraph EVAL["3️⃣ Evaluation (Test Progress)"]
+        E1["Play vs previous best"]
+        E2["Win rate > 55%?"]
+        E3["✅ New champion!"]
+        E4["❌ Keep training"]
+
+        E1 --> E2
+        E2 -->|Yes| E3
+        E2 -->|No| E4
+    end
+
+    SELF --> TRAIN --> EVAL
+    EVAL --> SELF
+
+    style SELF fill:#1e3a5f
+    style TRAIN fill:#3d1f1f
+    style EVAL fill:#1f3d2f
+            </div>
+
+            <div class="flow-step">
+                <div class="number">1</div>
+                <div>
+                    <strong>Self-Play:</strong> The AI plays 100 games against itself using MCTS (thinking 800 moves ahead). This generates training data.
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="number">2</div>
+                <div>
+                    <strong>Training:</strong> The brain learns from these games. "When I saw this position, MCTS said play here. Let me remember that."
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="number">3</div>
+                <div>
+                    <strong>Evaluation:</strong> Every 5 iterations, we test if the new brain beats the old one. Champions get saved!
+                </div>
+            </div>
+        </div>
+
+        <!-- MCTS Explained -->
+        <div class="section">
+            <h2>🌳 MCTS: How the AI Thinks Ahead</h2>
+            <p>MCTS = Monte Carlo Tree Search. It's like exploring a maze by trying many paths.</p>
+
+            <div class="mermaid">
+flowchart TB
+    ROOT["Current Position<br/>🎯"]
+
+    ROOT --> M1["Move A<br/>⚫ here"]
+    ROOT --> M2["Move B<br/>⚫ there"]
+    ROOT --> M3["Move C<br/>⚫ corner"]
+
+    M1 --> M1A["White responds..."]
+    M1 --> M1B["White responds..."]
+
+    M2 --> M2A["White responds..."]
+    M2 --> M2B["White responds..."]
+    M2 --> M2C["White responds..."]
+
+    M3 --> M3A["White responds..."]
+
+    M1A --> D1["... many moves later ...<br/>Black wins! ✅"]
+    M1B --> D2["... many moves later ...<br/>White wins ❌"]
+    M2A --> D3["... Black wins! ✅"]
+    M2B --> D4["... Black wins! ✅"]
+    M2C --> D5["... Draw 🤝"]
+    M3A --> D6["... White wins ❌"]
+
+    style ROOT fill:#e94560
+    style M2 fill:#4ade80,color:#000
+    style D3 fill:#4ade80,color:#000
+    style D4 fill:#4ade80,color:#000
+            </div>
+
+            <div class="analogy">
+                <h4>🧭 Like a chess grandmaster:</h4>
+                <p>"If I play here, they'll go there, then I go here..." MCTS simulates <strong>800 future scenarios</strong> per move and picks the path that wins most often. Move B above wins 2/3 times, so it's the best choice!</p>
+            </div>
+        </div>
+
+        <!-- The Instinct Curriculum (Key Innovation!) -->
+        <div class="section">
+            <h2>🎓 Instinct Curriculum: Teaching the Basics First</h2>
+            <p>Here's the problem: a random AI playing against itself never learns captures. No captures in data = no learning captures. <span class="highlight">We fixed this!</span></p>
+
+            <div class="mermaid">
+flowchart LR
+    subgraph PROBLEM["❌ The Problem"]
+        P1["Random AI"]
+        P2["Random moves"]
+        P3["No captures happen"]
+        P4["Never learns captures"]
+
+        P1 --> P2 --> P3 --> P4
+    end
+
+    subgraph SOLUTION["✅ Our Solution"]
+        S1["Detect instinct patterns"]
+        S2["Add bonus loss for missing them"]
+        S3["AI learns fundamentals"]
+        S4["Gradually reduce help"]
+
+        S1 --> S2 --> S3 --> S4
+    end
+
+    PROBLEM -.->|"Instinct Curriculum"| SOLUTION
+
+    style PROBLEM fill:#4a1a1a
+    style SOLUTION fill:#1a4a1a
+            </div>
+
+            <h3 style="margin: 2rem 0 1rem;">The 8 Go Instincts We Teach:</h3>
+
+            <div class="instinct-grid">
+                <div class="instinct-card">
+                    <div class="emoji">🏆</div>
+                    <div class="name">Hane vs Tsuke</div>
+                    <div class="advantage">+13.2% win rate</div>
+                    <div style="color: var(--muted); font-size: 0.8rem;">When attached, wrap around</div>
+                </div>
+                <div class="instinct-card">
+                    <div class="emoji">🏃</div>
+                    <div class="name">Extend from Atari</div>
+                    <div class="advantage">+9.7% win rate</div>
+                    <div style="color: var(--muted); font-size: 0.8rem;">In danger? Run!</div>
+                </div>
+                <div class="instinct-card">
+                    <div class="emoji">🛡️</div>
+                    <div class="name">Block the Thrust</div>
+                    <div class="advantage">+9.6% win rate</div>
+                    <div style="color: var(--muted); font-size: 0.8rem;">Stop the invasion</div>
+                </div>
+                <div class="instinct-card">
+                    <div class="emoji">⚔️</div>
+                    <div class="name">Capture</div>
+                    <div class="advantage">Critical</div>
+                    <div style="color: var(--muted); font-size: 0.8rem;">Take their stones!</div>
+                </div>
+                <div class="instinct-card">
+                    <div class="emoji">🔗</div>
+                    <div class="name">Connect vs Peep</div>
+                    <div class="advantage">+3.4% win rate</div>
+                    <div style="color: var(--muted); font-size: 0.8rem;">Don't get cut!</div>
+                </div>
+                <div class="instinct-card">
+                    <div class="emoji">📐</div>
+                    <div class="name">Block the Angle</div>
+                    <div class="advantage">+3.5% win rate</div>
+                    <div style="color: var(--muted); font-size: 0.8rem;">Stop knight's move</div>
+                </div>
+                <div class="instinct-card">
+                    <div class="emoji">↗️</div>
+                    <div class="name">Stretch from Kosumi</div>
+                    <div class="advantage">+3.0% win rate</div>
+                    <div style="color: var(--muted); font-size: 0.8rem;">Extend diagonally</div>
+                </div>
+                <div class="instinct-card">
+                    <div class="emoji">👑</div>
+                    <div class="name">Hane at Head of Two</div>
+                    <div class="advantage">+1.9% win rate</div>
+                    <div style="color: var(--muted); font-size: 0.8rem;">Dominate the battle</div>
+                </div>
+            </div>
+
+            <h3 style="margin: 2rem 0 1rem;">How λ (Lambda) Decays:</h3>
+            <p>We start with heavy instinct training (λ=1.0), then gradually reduce it as the AI masters the basics.</p>
+
+            <div class="lambda-demo">
+                <div class="lambda-stage">
+                    <div class="lambda-value">λ = 1.0</div>
+                    <div>🐣 Beginner</div>
+                    <div style="color: var(--muted);">0% accuracy</div>
+                    <div style="color: var(--muted);">Heavy instinct training</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="lambda-stage">
+                    <div class="lambda-value">λ = 0.5</div>
+                    <div>📚 Learning</div>
+                    <div style="color: var(--muted);">50% accuracy</div>
+                    <div style="color: var(--muted);">Balanced training</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="lambda-stage">
+                    <div class="lambda-value">λ = 0.1</div>
+                    <div>🎓 Mastered</div>
+                    <div style="color: var(--muted);">90% accuracy</div>
+                    <div style="color: var(--muted);">Pure self-play</div>
+                </div>
+            </div>
+
+            <div class="analogy">
+                <h4>🎿 Like learning to ski:</h4>
+                <p>First, you use training wheels (high λ). The instructor holds you, shows you how to stop. As you get better, they let go more and more. Eventually, you ski freely! Our AI graduates from "instinct school" the same way.</p>
+            </div>
+        </div>
+
+        <!-- Loss Function -->
+        <div class="section">
+            <h2>📉 The Loss Function: How the AI Measures Mistakes</h2>
+
+            <div class="mermaid">
+flowchart LR
+    subgraph TOTAL["Total Loss"]
+        L1["Policy Loss<br/>🎯<br/>Did I pick the right move?"]
+        L2["Value Loss<br/>📊<br/>Did I predict the winner?"]
+        L3["Instinct Loss × λ<br/>🎓<br/>Did I follow fundamentals?"]
+    end
+
+    L1 --> SUM["➕"]
+    L2 --> SUM
+    L3 --> SUM
+    SUM --> RESULT["Total Error<br/>Lower = Better"]
+
+    style L1 fill:#e94560
+    style L2 fill:#4ade80,color:#000
+    style L3 fill:#fbbf24,color:#000
+    style RESULT fill:#60a5fa
+            </div>
+
+            <div style="background: #0d1117; padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; font-family: monospace; font-size: 1.2rem; text-align: center;">
+                <span style="color: #e94560;">L<sub>total</sub></span> =
+                <span style="color: #e94560;">L<sub>policy</sub></span> +
+                <span style="color: #4ade80;">L<sub>value</sub></span> +
+                <span style="color: #fbbf24;">λ(t) × L<sub>instinct</sub></span>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>🎯 Policy Loss</h3>
+                    <p>Compares AI's move preferences to MCTS recommendations. Lower = AI agrees with careful analysis.</p>
+                </div>
+                <div class="card">
+                    <h3>📊 Value Loss</h3>
+                    <p>Compares AI's "who's winning" prediction to actual game result. Lower = better game sense.</p>
+                </div>
+                <div class="card">
+                    <h3>🎓 Instinct Loss</h3>
+                    <p>Penalizes missing obvious moves (captures, escapes). Weighted by λ which decays over time.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Training Status -->
+        <div class="section">
+            <h2>📊 Training Progress</h2>
+
+            <div class="progress-demo">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Iteration</span>
+                    <span id="iteration">1 / 2000</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0.05%;"></div>
+                </div>
+            </div>
+
+            <div class="progress-demo">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Instinct Accuracy (Baseline)</span>
+                    <span>1.3%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 1.3%; background: var(--accent);"></div>
+                </div>
+                <div style="color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem;">
+                    Target: 80%+ for captures, escapes, and basic tactics
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>🎮 Self-Play Phase</h3>
+                    <p>Generating 100 games per iteration using MCTS. This creates diverse training data.</p>
+                </div>
+                <div class="card">
+                    <h3>🧠 Training Phase</h3>
+                    <p>1000 gradient updates per iteration. Brain adjusts to match MCTS insights.</p>
+                </div>
+                <div class="card">
+                    <h3>📈 Expected Journey</h3>
+                    <p>~100 iterations: Learn captures<br>~500 iterations: Basic tactics<br>~2000 iterations: Competent play</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture Details -->
+        <div class="section">
+            <h2>🔧 Technical Architecture</h2>
+
+            <div class="mermaid">
+flowchart TB
+    subgraph INPUT["Input: 17 Planes (9×9 each)"]
+        I1["Plane 0: My stones"]
+        I2["Plane 1: Opponent stones"]
+        I3["Planes 2-16: Move history"]
+    end
+
+    subgraph CONV["Initial Convolution"]
+        C1["Conv2D 3×3<br/>17 → 128 channels"]
+        C2["Batch Norm + ReLU"]
+    end
+
+    subgraph RES["Residual Tower (10 blocks)"]
+        R1["ResBlock 1"]
+        R2["ResBlock 2"]
+        R3["..."]
+        R4["ResBlock 10"]
+
+        R1 --> R2 --> R3 --> R4
+    end
+
+    subgraph RESBLOCK["Each ResBlock"]
+        RB1["Conv 3×3 (128)"]
+        RB2["BatchNorm + ReLU"]
+        RB3["Conv 3×3 (128)"]
+        RB4["BatchNorm"]
+        RB5["+ Skip Connection"]
+        RB6["ReLU"]
+
+        RB1 --> RB2 --> RB3 --> RB4 --> RB5 --> RB6
+    end
+
+    subgraph POLICY["Policy Head"]
+        P1["Conv 1×1 → 2 channels"]
+        P2["Flatten"]
+        P3["Dense → 82 outputs"]
+        P4["Log Softmax"]
+    end
+
+    subgraph VALUE["Value Head"]
+        V1["Conv 1×1 → 1 channel"]
+        V2["Flatten"]
+        V3["Dense → 128"]
+        V4["Dense → 1"]
+        V5["Tanh"]
+    end
+
+    INPUT --> CONV --> RES
+    RES --> POLICY
+    RES --> VALUE
+
+    style INPUT fill:#1e3a5f
+    style CONV fill:#2d1f4e
+    style RES fill:#1f2d4e
+    style POLICY fill:#4e1f2d
+    style VALUE fill:#1f4e2d
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>📐 Architecture</h3>
+                    <p><strong>ResNet-10</strong> with 128 filters<br>
+                    ~500K parameters<br>
+                    Optimized for 9×9 boards</p>
+                </div>
+                <div class="card">
+                    <h3>⚡ Hardware</h3>
+                    <p><strong>RTX 4080</strong> (12GB VRAM)<br>
+                    CUDA acceleration<br>
+                    ~10 games/minute</p>
+                </div>
+                <div class="card">
+                    <h3>🎯 MCTS Config</h3>
+                    <p><strong>800 simulations</strong> per move<br>
+                    UCB exploration: c=1.4<br>
+                    Temperature: 1.0 → 0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="section">
+            <h2>📅 Training Timeline</h2>
+
+            <div class="mermaid">
+gantt
+    title Training Journey to Competent Play
+    dateFormat X
+    axisFormat %s
+
+    section Fundamentals
+    Learn captures & escapes    :a1, 0, 100
+    Basic tactical patterns     :a2, 100, 200
+
+    section Tactics
+    Atari and defense          :b1, 200, 150
+    Connection instincts       :b2, 350, 150
+
+    section Strategy
+    Territory awareness        :c1, 500, 300
+    Opening patterns           :c2, 800, 200
+
+    section Polish
+    Endgame precision          :d1, 1000, 500
+    Style development          :d2, 1500, 500
+            </div>
+        </div>
+
+        <footer>
+            <p>GoGoGo AI • Learning Go from scratch using self-play and instinct curriculum</p>
+            <p style="margin-top: 1rem;">
+                <a href="http://localhost:6006" style="color: var(--accent);">📊 TensorBoard</a> •
+                <a href="#" style="color: var(--accent);">📖 Documentation</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#e94560',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#e94560',
+                lineColor: '#888',
+                secondaryColor: '#0f3460',
+                tertiaryColor: '#16213e',
+                background: '#1a1a2e',
+                mainBkg: '#16213e',
+                nodeBorder: '#e94560',
+                clusterBkg: '#0f3460',
+                titleColor: '#fff',
+                edgeLabelBackground: '#16213e'
+            },
+            flowchart: {
+                curve: 'basis',
+                padding: 20
+            },
+            gantt: {
+                barHeight: 30,
+                fontSize: 14
+            }
+        });
+    </script>
+</body>
+</html>
